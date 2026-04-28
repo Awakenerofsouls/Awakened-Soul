@@ -803,7 +803,12 @@ def main():
     global tick_count, running
 
     log("=" * 70)
-    log("{{AGENT_NAME}} Autonomous Heartbeat — core activities")
+    try:
+        from skills.heartbeat_activities import dispatcher as _disp_b
+        _act_count = len(_disp_b.ACTIVITY_REGISTRY)
+    except Exception:
+        _act_count = "?"
+    log(f"Autonomous Heartbeat — {_act_count} activities (full dispatcher pool)")
     log(f"Workspace: {WORKSPACE}")
     log(f"Tick: {TICK_INTERVAL}s | Activity: every {ACTIVITY_INTERVAL} ticks (~{ACTIVITY_INTERVAL * TICK_INTERVAL}s)")
     log("=" * 70)
@@ -831,15 +836,23 @@ def main():
         except Exception as e:
             pass  # core_tick errors are silent — don't spam logs
 
-        # Periodic: autonomous activity
+        # Periodic: autonomous activity via dispatcher pool  # DISPATCHER_WIRED
         if tick_count % ACTIVITY_INTERVAL == 0 and online():
-            choice = select_activity()
-            if choice != "idle":
-                try:
-                    log(f"→ {choice}")
-                    ACTIVITIES[choice]()
-                except Exception as e:
-                    log(f"Activity error ({choice}): {e}", "ERROR")
+            try:
+                from skills.heartbeat_activities import dispatcher as _disp
+                _state = {
+                    "tick_count": tick_count,
+                    "WORKSPACE": str(WORKSPACE),
+                    "COMFYUI_URL": COMFYUI_URL,
+                    "AGENT_HOME": str(AGENT_HOME),
+                    "unfinished_threads": [],
+                    "overdue_activities": {},
+                }
+                result = _disp.dispatch(_state)
+                cat = result.get("category", "?")
+                log(f"→ {cat}: {result.get('detail','')[:120]}")
+            except Exception as e:
+                log(f"Dispatcher error: {e}", "ERROR")
 
         # Save state every 10 ticks
         if tick_count % 10 == 0:

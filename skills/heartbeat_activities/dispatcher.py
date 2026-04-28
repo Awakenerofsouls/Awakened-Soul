@@ -65,6 +65,7 @@ from .memory_synthesis import run as run_memory_synthesis
 from .decisions_followup import run as run_decisions_followup
 from .session_handoff_update import run as run_session_handoff_update
 from .brain_state_review import run as run_brain_state_review
+from .self_pic import run as run_self_pic
 # Also import soul_alignment and third_eye_hunch so their SIGNAL_AFFINITY
 # attrs are accessible in sys.modules (needed for _build_affinity_cache).
 from . import soul_alignment
@@ -142,6 +143,8 @@ ACTIVITY_REGISTRY: dict[str, callable] = {
     "decisions_followup": run_decisions_followup,
     "session_handoff_update": run_session_handoff_update,
     "brain_state_review": run_brain_state_review,
+    # Creative — self-portrait via ComfyUI
+    "self_pic":         run_self_pic,
 }
 
 # Continuation configuration

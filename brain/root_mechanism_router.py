@@ -57,6 +57,7 @@ def _discover_root_mechanisms() -> Dict[str, dict]:
         "root_mechanism_router.py",
         # Already wired via brain_integration imports
         "vif.py", "iga.py", "rce.py", "fpef.py", "fce.py", "fid.py",
+        "bootstrap.py",
         "pwm.py", "abm.py", "misread_engine.py", "open_conversations.py",
         "pre_desire_state.py", "sensation_state.py", "autobiographical_memory.py",
         "remaining_mechanisms.py", "energy_budgeting.py", "coupling_regulator.py",
@@ -101,6 +102,47 @@ def _discover_root_mechanisms() -> Dict[str, dict]:
                 }
         except Exception as e:
             print(f"[RootMechRouter] Parse error {fname}: {e}")
+
+
+    # also scan brain/third_eye/ for mechanisms with process()/tick()
+    te_root = root / "third_eye"
+    if te_root.exists():
+        for te_fname in sorted(os.listdir(te_root)):
+            if not te_fname.endswith(".py"):
+                continue
+            if te_fname == "__init__.py" or "_legacy" in te_fname:
+                continue
+            te_path = te_root / te_fname
+            try:
+                with open(te_path) as f:
+                    te_src = f.read()
+                te_tree = ast.parse(te_src)
+                te_class = None
+                te_init_args = []
+                te_has_wire_meta = False
+                for node in ast.walk(te_tree):
+                    if isinstance(node, ast.ClassDef):
+                        for item in node.body:
+                            if isinstance(item, ast.FunctionDef):
+                                if item.name == "__init__":
+                                    te_init_args = [a.arg for a in item.args.args if a.arg != "self"]
+                                elif item.name in ("process", "tick"):
+                                    te_class = node.name
+                        for item in node.body:
+                            if isinstance(item, ast.Assign):
+                                for t in item.targets:
+                                    if isinstance(t, ast.Name) and t.id == "__wire_meta__":
+                                        te_has_wire_meta = True
+                if te_class:
+                    te_key = "third_eye/" + te_fname
+                    results[te_key] = {
+                        "class_name": te_class,
+                        "init_args": te_init_args,
+                        "module_path": "brain.third_eye." + te_fname.replace(".py", ""),
+                        "has_wire_meta": te_has_wire_meta,
+                    }
+            except Exception:
+                continue
 
     return results
 
@@ -160,12 +202,7 @@ BATCH_PRIORITY = {
 
 BATCH_MEMBERS = {
     "identity": [
-        "belief_archaeology.py", "belief_gravity_observer_pull.py",
-        "belief_archaeology_layer.py", "longing_architecture.py",
-        "longing_anchor.py", "longing_she_cannot_explain.py",
-        "desire_engine.py", "inner_speech.py", "preconsciousness_transparency.py",
-        "mood_runtime_weight.py", "guardian_reflection.py", "embodied_energy.py",
-        "plasticity_layer.py", "drive_states.py",
+        "belief_archaeology.py", "belief_gravity_observer_pull.py", "belief_archaeology_layer.py", "longing_architecture.py", "longing_she_cannot_explain.py",
     ],
     "cognitive": [
         "confabulated_keeper.py", "confabulation_variance_engine.py",
@@ -183,17 +220,15 @@ BATCH_MEMBERS = {
         "anti_coherence_core.py",
     ],
     "limbic": [
-        "threat_belief_erosion.py", "threat_coalition_formation.py",
-        "threat_collapse_inhibition.py", "threat_self_handicapping.py",
-        "threat_vigilance_bias.py", "threat_reappraisal_cost.py",
-        "reward_predictive_architecture.py", "reward_collapse_sensitivity.py",
-        "reward_anticipatory_precision.py", "reward_reappraisal_opportunity.py",
-        "grief_confabulation.py", "grief_migration.py", "grief_integration_resistance.py",
-        "grief_collapse_shutdown.py", "grief_bond_disruption.py",
         "grief_confabulation_with_adaptive_stabilizer.py",
     ],
     "maintenance": [],  # filled from discovery — all remaining process() files
-    "third_eye": [],
+    "third_eye": [
+        "third_eye/attention_modifier.py",
+        "third_eye/meta_stability.py",
+        "third_eye/preconscious_surfacer.py",
+        "third_eye/reality_tension_warper.py",
+    ],
 }
 
 
