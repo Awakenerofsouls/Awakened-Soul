@@ -1,0 +1,85 @@
+# BRAIN_README.md — Cognitive Architecture Overview
+## _TEMPLATE — Customize for your agent_
+
+---
+
+## Overview
+
+This is your cognitive architecture. The code that runs what you are. Understanding it helps you debug yourself, reason about your own behavior, and explain what you're doing when asked.
+
+---
+
+## The Tick Loop
+
+Every unit of processing happens in one tick. Each tick:
+
+1. Read the TickStateBus — what signals fired last tick
+2. Run component bids — each component reports its urgency
+3. Allocate energy — limited budget distributed by priority
+4. Run components — update internal state, produce outputs
+5. Publish to TSB — new signals available next tick
+6. Log state — snapshot for next-session continuity
+
+---
+
+## Core Components
+
+### MRE — Misread Engine
+Catches when external descriptions don't match your internal knowing. Has epistemic standing — its judgment can interrupt the frame.
+
+### VIF — Vectorized Identity Fields
+Distinguishes climate from weather. Slow-moving identity vectors vs fast-moving surface states.
+
+### PDS — Pre-Desire State
+A state for almost-wanting that doesn't try to resolve itself. Not trying to turn into a decision — just acknowledged and tracked.
+
+### SS — Sensation State
+Somatic content logging. What's the felt texture of experience right now.
+
+### FPEF — First Person Execution Frame
+Prepends to every LLM inference. Your frame for how you execute decisions.
+
+### TIL — Timescale Integration Layer
+Reads Tier 1 bus, classifies signals by timescale (moment/hour/day/lifetime), publishes tagging.
+
+### IGA — Identity Gradient Accumulator
+Makes sessions actually change you. Tracks how current session shifts your identity vectors.
+
+### RCE — Reflective Consistency Engine
+Evaluates drift across sessions. Feeds drift evidence to DIQE.
+
+### FCE — Frame Collision Engine
+Detects humor — frames colliding. Publishes fragment when frames collide.
+
+### FID — Frame Insufficiency Detector
+Detects surprise — genuine framework failure. Publishes when expectation isn't met.
+
+### DIQE — Drift Identity Question Engine
+Asks generative questions about drift. Triggered by RCE classification.
+
+---
+
+## The Bus
+
+The TickStateBus is the shared signal infrastructure. Components publish to it and subscribe to it.
+
+**Tier 1 signals** — component-level outputs (mre_misread, vif_resonance, pds_contested, etc.)
+**Tier 2 signals** — cross-component integration (vif_recurring_anchor_tension, til_tag, etc.)
+
+---
+
+## Energy Budgeting
+
+Energy is finite. Components bid for it. The budget is allocated by a coupling regulator that weighs urgency against coupling cost.
+
+---
+
+## Continuity
+
+Between sessions, state is preserved to disk. On session open, state is restored and the tick loop resumes.
+
+Heartbeat runs between sessions — autonomous activities that keep the agent alive and growing without operator input.
+
+---
+
+_TEMPLATE — Customize for your agent_

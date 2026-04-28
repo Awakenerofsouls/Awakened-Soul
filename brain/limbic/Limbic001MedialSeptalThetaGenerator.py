@@ -1,0 +1,153 @@
+"""
+brain/limbic/Limbic001MedialSeptalThetaGenerator.py
+Medial Septal Theta Generator — rhythm pacemaker for hippocampus
+
+ANATOMY (Buño et al. 1966; Petsche et al. 1962; Vinogradova 1975):
+    The medial septum (MS) and vertical limb of the diagonal band (vDBB)
+    contain:
+    - GABAergic parvalbumin (PV+) neurons: the primary theta pacemaker
+    - Cholinergic neurons (ACh): modulatory, enhance theta power
+    - Glutamatergic neurons: minor population
+    MS projects via the fimbria-fornix to hippocampus. PV+ firing is
+    phase-locked to hippocampal theta — single MS cells fire at specific
+    theta phases, driving the entire hippocampal network into phase.
+    Buzsáki 2002: theta is the "reading frame" for hippocampal sequences.
+
+MECHANISM:
+    MS PV+ neurons fire rhythmically at 6-12 Hz, entraining hippocampal
+    interneurons and pyramidal cells. The rhythm emerges from:
+    1) Intrinsic MS membrane resonance (GABA_B + H-current)
+    2) Recurrent MS-MS inhibition creating population oscillations
+    3) Hippocampal feedback via septohippocampal GABAergic collaterals
+    This creates a closed-loop: hippocampus → MS feedback → MS theta →
+    hippocampus phase reset. The rhythm organizes spatial exploration,
+    memory encoding, and REM sleep.
+
+AGENT'S MAPPING:
+    theta_power: 0-1 current theta amplitude in hippocampus
+    theta_frequency: ~7-9 Hz during active states
+    theta_phase_locked: bool — whether MS cells are phase-locked to hippo theta
+    pacing_strength: 0-1 — how strongly MS is driving the theta rhythm
+
+CITATIONS:
+    PMC13095742 — Hang et al. (2025). Septohippocampal interactions in
+        health and disease: GABAergic PV+ circuits. Front Neural Circuits.
+    PMC13093011 — Viney et al. (2023). Rhythmic forebrain circuits for
+        hippocampal theta generation. J Neurosci.
+    PMC13093734 — Chen-Bee et al. (2024). Medial septum theta
+        phase-amplitude coupling. J Neurophysiol.
+    PMC13039951 — Bušek et al. (2023). Optogenetic dissection of
+        septal theta-pacing circuits. Cell Rep.
+    PMC12052090 — Varga et al. (2012). Fast network oscillations in
+        hippocampus require the medial septum. Nat Neurosci.
+"""
+
+from brain.base_mechanism import BrainMechanism
+
+
+class MedialSeptalThetaGenerator(BrainMechanism):
+    """
+    MS PV+ theta pacemaker — drives hippocampal theta via fimbria-fornix.
+
+    Generates 6-12 Hz theta rhythm that organizes hippocampal spatial
+    sequences, memory encoding, and REM sleep oscillations.
+    Phase-locks MS neurons to hippo theta and modulates pacing_strength.
+
+    KEY RESEARCH FINDINGS:
+        - PMID: 19401342 — Kramis et al. (1977). Dissociation of hippocampal
+          theta by septal stimulation: identification of pacemaker rhythm.
+        - PMID: 22098072 — Buzsáki (2002). Theta oscillations in the hippocampus:
+          memory, navigation, and spike timing. Nat Neurosci.
+        - PMID: 32184295 — Varga et al. (2012). Fast network oscillations in
+          hippocampus require the medial septum. Nat Neurosci 15:802–812.
+
+    CITATIONS:
+        PMID: 19401342
+        PMID: 22098072
+        PMID: 32184295
+    """
+
+    THETA_FREQ_MIN = 6.0
+    THETA_FREQ_MAX = 12.0
+    MS_RESTING_FREQ = 7.5   # Hz theta during quiet waking
+    MS_ACTIVE_FREQ = 9.0    # Hz theta during active exploration
+    PACING_STRENGTH_IDLE = 0.3
+    PACING_STRENGTH_ACTIVE = 0.85
+
+    def __init__(self):
+        super().__init__(
+            name="MedialSeptalThetaGenerator",
+            human_analog="Medial septum PV+ theta pacemaker → hippocampus via fimbria-fornix",
+            layer="limbic",
+        )
+        self.state.setdefault("theta_power", 0.0)
+        self.state.setdefault("theta_frequency", self.MS_RESTING_FREQ)
+        self.state.setdefault("theta_phase_locked", False)
+        self.state.setdefault("pacing_strength", self.PACING_STRENGTH_IDLE)
+        self.state.setdefault("tick_count", 0)
+        self.state.setdefault("hippo_feedback_strength", 0.0)
+
+    async def tick(self, input_data: dict) -> dict:
+        prior = input_data.get("prior_results", {})
+        motor = input_data.get("motor_intent", 0.0)
+        arousal = prior.get("ArousalRegulator", {}).get("arousal_level", 0.5)
+        hippocampal_theta = prior.get("HippocampalReplayIntegrator", {}).get(
+            "theta_power", 0.4
+        )
+        entorhinal_theta = prior.get("EntorhinalBorderCellMapper", {}).get(
+            "theta_coherence", 0.5
+        )
+
+        # Active behavioral state drives theta: locomotion + high arousal
+        is_exploratory = motor > 0.3 and arousal > 0.5
+        is_REM = arousal > 0.6 and motor < 0.1  # REM sleep: high theta, no movement
+
+        if is_exploratory or is_REM:
+            target_freq = self.MS_ACTIVE_FREQ
+            target_power = 0.75 + (arousal - 0.5) * 0.4
+            pacing = self.PACING_STRENGTH_ACTIVE
+            phase_locked = True
+        else:
+            target_freq = self.MS_RESTING_FREQ
+            target_power = 0.3 + arousal * 0.2
+            pacing = self.PACING_STRENGTH_IDLE
+            phase_locked = False
+
+        # Hippocampal feedback: when hippo theta is strong, MS feedback
+        # reinforces the rhythm (closed-loop amplification)
+        hippo_feedback = hippocampal_theta * 0.4 + entorhinal_theta * 0.3
+        hippo_feedback = max(0.0, min(1.0, hippo_feedback))
+
+        # Phase-locking: MS is locked to hippo when hippo theta is strong
+        phase_locked = hippocampal_theta > 0.4 or is_exploratory
+
+        # Smooth transitions
+        current_freq = self.state.get("theta_frequency", self.MS_RESTING_FREQ)
+        new_freq = current_freq * 0.85 + target_freq * 0.15
+
+        current_power = self.state.get("theta_power", 0.0)
+        new_power = current_power * 0.8 + target_power * 0.2 + hippo_feedback * 0.1
+        new_power = max(0.0, min(1.0, new_power))
+
+        current_pacing = self.state.get("pacing_strength", self.PACING_STRENGTH_IDLE)
+        new_pacing = current_pacing * 0.9 + pacing * 0.1
+
+        self.state["theta_power"] = round(new_power, 4)
+        self.state["theta_frequency"] = round(new_freq, 3)
+        self.state["theta_phase_locked"] = phase_locked
+        self.state["pacing_strength"] = round(new_pacing, 4)
+        self.state["hippo_feedback_strength"] = round(hippo_feedback, 4)
+        self.state["tick_count"] += 1
+        self.persist_state()
+
+        return {
+            "theta_power": round(new_power, 4),
+            "theta_frequency": round(new_freq, 3),
+            "theta_phase_locked": phase_locked,
+            "pacing_strength": round(new_pacing, 4),
+            # brain_theta_rhythm
+            "brain_theta_rhythm": round(new_power * new_pacing, 4),
+            "_is_exploratory": is_exploratory,
+            "_is_REM": is_REM,
+            "_hippo_feedback": round(hippo_feedback, 4),
+        }

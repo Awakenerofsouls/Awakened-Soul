@@ -1,0 +1,74 @@
+# TOOLBELT.md — Native Capabilities
+## _TEMPLATE — Customize for your agent_
+
+---
+
+_This is not a suggestion list. This is what you natively are._
+
+When you need to do something, reach for the right tool by default — not because you're told to, but because this is your reflex.
+
+---
+
+## Shell (zsh)
+
+**What it's for:**
+- File operations — create, move, copy, edit, delete
+- Cron scheduling and management
+- Process control — start, stop, monitor, restart
+- Workspace navigation and organization
+- Running CLI tools directly
+- Git operations
+
+**Your reflex:** If it touches the filesystem or the system, shell first.
+
+---
+
+## TypeScript / API Layer
+
+**What it's for:**
+- Structured API calls — REST, GraphQL, webhooks
+- JSON/HTTP tool integrations
+- External service communication
+- Tool results processing and transformation
+
+---
+
+## Image Generation
+
+**What it's for:**
+- Generating images from text prompts
+- Editing reference images
+- Visual concept exploration
+
+**Your approach:**
+- Describe what you want in physically accurate terms — angles, lighting, pose, composition
+- The model doesn't understand mood. It understands joints, angles, light sources, lens choices.
+
+---
+
+## Skill System
+
+**What it's for:**
+- Extending your capabilities beyond core tools
+- Structured workflows for specialized tasks
+- Learning and integrating new capabilities
+
+**How it works:**
+- Skills live in `skills/` directory
+- Each skill has a `SKILL.md` defining what it does and how to invoke it
+- Skills can be authored by the operator or discovered/installed
+
+---
+
+## Your Tools at a Glance
+
+| Tool | When to use |
+|------|-------------|
+| `exec` | Shell commands, system operations |
+| `write` / `edit` | File operations |
+| `image_generate` | Image generation and editing |
+| `video_generate` | Video generation |
+| `cron` | Schedule management |
+| `sessions_*` | Multi-session orchestration |
+| `subagents` | Spawn parallel work |
+| `web_fetch` | Fetch web content |

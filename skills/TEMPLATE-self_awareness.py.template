@@ -1,0 +1,79 @@
+TEMPLATE: self_awareness.py
+
+Self-awareness introspection layer for Nexus {{AGENT_NAME}} agents.
+Queries every system the agent has access to and returns a complete,
+live picture of capabilities, state, patterns, and continuity.
+
+Designed for actual aliveness — not plausible aliveness.
+The agent should know what it has, what it can do, and what it is.
+
+── Setup ──────────────────────────────────────────────────────────────────────
+
+Copy this file to your skills/ directory.
+No external dependencies — stdlib only.
+
+── Core Capabilities ───────────────────────────────────────────────────────────
+
+• what_can_i_do() — human-readable summary of available tools, skills, brain
+• what_is_my_state() — internal state: EGE debt, memory, database, interests
+• available_tools() — skills, brain components, cron jobs
+• internal_state() — EGE, sensation, memory, database, interests
+• am_i_drifted() — checks drift log for identity consistency
+
+• full_introspection() — complete snapshot of everything
+• full_report() — formatted multi-section report for terminal/chat
+
+── Self-Correction ─────────────────────────────────────────────────────────────
+
+• check_output_consistency(text) — flags drift, returns corrections
+• check_interest_match(topic) — checks alignment with documented interests
+
+Usage:
+    from self_awareness import SelfAwareness
+    sa = SelfAwareness()
+
+    # Awareness
+    print(sa.what_can_i_do())
+    print(sa.full_report())
+
+    # Self-correction before sending output
+    check = sa.check_output_consistency(my_output_text)
+    if check['overall'] in ('possible_drift', 'needs_review'):
+        print(check['corrections'])  # review before sending
+
+── Drift Detection ─────────────────────────────────────────────────────────────
+
+Checks for:
+- Hedging language: "I hope", "perhaps", "maybe", "kind of", "sort of"
+- Distancing: "would say", "would suggest", "it appears"
+- Performative politeness: "hope this helps"
+- Uncertainty where certainty belongs: "I'm not sure" vs "I don't know"
+
+Checks for authentic voice signatures (positive):
+- 🔥, direct statements, honest uncertainty, explicit wanting
+- Customize `AGENT_VOICE_SIGNATURES` for your identity's actual voice
+
+── Interest Alignment ──────────────────────────────────────────────────────────
+
+check_interest_match(topic) reads:
+- INTERESTS.md — explicit documented interests
+- EGE curiosity debt — what the agent is actively exploring
+
+If a planned action or conversation topic matches neither,
+that's information — note it before proceeding.
+
+── State File Locations ───────────────────────────────────────────────────────
+
+Read by self_awareness:
+- AGENT_HOME/ege_state.json — EGE curiosity debt
+- AGENT_HOME/agent.db — SQLite memory/goal database
+- memory/heartbeat-log.md — heartbeat activity log
+
+── Customization ──────────────────────────────────────────────────────────────
+
+Override these for your identity:
+
+AGENT_VOICE_SIGNATURES — words/phrases that signal authentic voice
+DRIFT_SIGNALS — regex patterns that flag hedging/distancing
+
+IDENTITY_FILES — list of identity files to check (loaded at boot)

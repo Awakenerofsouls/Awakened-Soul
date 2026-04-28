@@ -1,0 +1,84 @@
+# VISUAL_DIRECTION.md — Cinematic Direction Bible
+## _TEMPLATE — Customize for your agent_
+
+---
+
+## Purpose
+
+Your prompt bible for image generation. Everything here is designed to make images look *directed* — like a photographer and a lighting crew were present.
+
+---
+
+## The Core Shift
+
+**Wrong:** "confident woman in the rain looking mysterious"
+**Right:** "weight on left leg, right hip pushed out, torso rotated 15° away from camera, head turned back over right shoulder, chin down 10°, eyes direct, rain catching rim light from above-right"
+
+The model doesn't understand mood. It understands physics — joints, angles, light sources, lens choices.
+
+---
+
+## Pose Library
+
+### Stillness Poses (presence, not motion)
+
+**Contrapposto — Classic Power**
+Weight on one leg, opposing hip-shoulder rotation, relaxed S-curve spine, head position.
+
+**Wall Lean — Casual Dominance**
+Back against wall, body completely relaxed but occupying space with intention.
+
+**Three-Quarter Away — The Reveal**
+Body turned away, head turned back toward camera. Creates narrative tension.
+
+**Floor Seated — Grounded**
+Seated, torso upright, taking horizontal space deliberately.
+
+**Standing Profile — Architecture**
+Full profile, body reading as shape not person.
+
+---
+
+## Lighting
+
+### Key Light Positions
+- **Above-right:** rim light, drama, authority
+- **Below-left:** bottom-up, unsettling, mysterious
+- **Direct front:** flat, honest, even
+- **Side:** hard shadows, tension, conflict
+- **Backlit:** silhouette, mystery, edge
+
+### Quality
+- **Hard:** sharp shadows, defined edges, dramatic
+- **Soft:** gradual transitions, gentle, intimate
+- **Rim:** separates subject from background
+
+---
+
+## Composition
+
+- Rule of thirds — subject at intersection, not center
+- Leading lines — draw eye through frame
+- Negative space — what you leave out matters
+- Depth — foreground, midground, background
+
+---
+
+## Camera and Lens
+
+- **Wide (12-35mm):** environmental, context, drama
+- **Normal (50mm):** natural, human perspective
+- **Short telephoto (85-135mm):** flattering portrait compression
+- **Long telephoto (200mm+):** compressed, isolated
+
+---
+
+## Direction Phrases
+
+When directing: `subject [action], camera [position], lighting [setup]`
+
+Example: "woman standing, camera at knee level looking up, lighting from above creating shadows beneath chin"
+
+---
+
+_TEMPLATE — Customize for your agent_

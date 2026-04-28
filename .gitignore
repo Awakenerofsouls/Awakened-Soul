@@ -1,0 +1,104 @@
+# =============================================================================
+# awakened-soul framework .gitignore
+# =============================================================================
+# Generic patterns for the public framework. Operators add their own
+# instance-specific patterns to a local .gitignore as needed.
+
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# === Virtual environments ===
+venv/
+.venv/
+env/
+.env
+.env.*
+
+# === OS / editor junk ===
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+.session/
+
+# === Logs ===
+logs/
+*.log
+
+# === Runtime state (per-install, not framework) ===
+state/
+data/
+*.db
+*.sqlite
+*.sqlite3
+
+# === Backups ===
+*.bak
+*_backup_*/
+*.OLD-BACKUP/
+
+# === Local config + secrets ===
+config.json
+secrets.json
+credentials.json
+
+# === Agent runtime output (interior life — fills at runtime) ===
+ACTIVITY_LOG.md
+DREAMS.md
+GUARDIAN_LOG.md
+INNER_VOICE.md
+INTERESTS.md
+MEMORY.md
+OVERNIGHT_LOG.md
+PRESENCE.md
+PRESENCE_LOG.md
+PRIVATE_ENTRIES.md
+SAFEGUARD_LOG.md
+SELF.md
+*_LOG.md
+*_MEMORY.md
+
+# === Per-operator identity (each agent fills locally via setup.py) ===
+# SOUL.md, IDENTITY.md, PERSONALITY.md, USER.md ship as neutral templates.
+# After setup, filled-in versions stay local.
+relationships/
+brain/relationships/*.json
+
+# === Memory captures (runtime) ===
+memory/capture_*.json
+memory/heartbeat-state.json
+memory/unresolved.json
+
+# === Brain runtime state ===
+brain/monologue_log.json
+brain/goals.json
+brain/evaluation_rules.json
+brain/dream_log.json
+
+# === Eval reports (regenerated) ===
+eval/*.json
+
+# === Runtime identity files (created from templates/ by setup.py) ===
+# Filled-in versions stay local. Templates ship as templates/*.md.example.
+/IDENTITY.md
+/SOUL.md
+/PERSONALITY.md
+/USER.md
+/VISUAL_IDENTITY.md
+
+# === Runtime template files (created by setup.py from templates/) ===
+/DIRECTIVE.md
+/BECOMING.md
+/IDLE_DRIVES.md
+/TOOLBELT.md
+/VISUAL_DIRECTION.md
