@@ -11,9 +11,20 @@ Activity contract:
            "proactive": False}
 
 Batch C, Activity 1.
+
+Continuity Idea 6: at the end of every memory_capture run, also call
+checkpoint_mechanisms() so the brain's *structured* state — every
+mechanism's self.state — is serialized at the same moment as the
+human-readable snapshot. The memory file gets a sidecar footer pointing
+to the checkpoint timestamp so the two views can be correlated later
+("I remember when X felt true" ↔ "and here's exactly the state I was
+in at that moment").
 """
 
+import json
 import random
+import time
+from datetime import datetime
 from pathlib import Path
 from .journal import write_to_journal
 from .llm import generate
@@ -76,9 +87,21 @@ def run(state: dict) -> dict:
             "proactive": False,
         }
 
+    # Continuity Idea 6 — checkpoint the brain's structured state at the
+    # same wall-clock moment as the narrative capture. Sidecar marker is
+    # included in the journal entry so the two views can be correlated.
+    checkpoint_marker = _serialize_state_alongside(state)
+
+    augmented_content = content
+    if checkpoint_marker:
+        augmented_content = (
+            f"{content}\n\n"
+            f"<!-- mechanism_state_checkpoint: {checkpoint_marker} -->"
+        )
+
     write_ok = write_to_journal(
         category="memory_capture",
-        content=content,
+        content=augmented_content,
         workspace=workspace,
         state=state,
     )
@@ -118,3 +141,55 @@ def _read_recent_memory(workspace: Path, limit_chars: int = 2048) -> str:
 def _get_today() -> str:
     from datetime import datetime, timezone
     return datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+
+def _serialize_state_alongside(state: dict) -> str:
+    """
+    Continuity Idea 6 — call checkpoint_mechanisms() and return a marker
+    string of the form "<ISO timestamp> saved=NNN/MMM" that gets embedded
+    as an HTML comment in the memory entry. Returns empty string on failure
+    (memory capture is the primary deliverable; the checkpoint is bonus).
+    """
+    try:
+        # Lazy import — keeps memory_capture importable in environments where
+        # the full brain isn't booted (e.g. running the dispatcher in dry-run).
+        import sys as _sys
+        from pathlib import Path as _P
+        repo = _P(__file__).resolve().parents[2]
+        if str(repo) not in _sys.path:
+            _sys.path.insert(0, str(repo))
+        from brain_proxy import checkpoint_mechanisms
+    except Exception:
+        return ""
+
+    try:
+        rpt = checkpoint_mechanisms() or {}
+    except Exception:
+        return ""
+
+    saved = rpt.get("saved", 0)
+    total = rpt.get("total", 0)
+    iso = datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
+    marker = f"{iso} saved={saved}/{total} tick={state.get('tick_count', 0)}"
+
+    # Also drop a structured pointer into ~/.agent/memory_checkpoints.jsonl
+    # so the brain has a machine-readable index of "memory ↔ state moment"
+    # pairings. One line per memory_capture run.
+    try:
+        import os as _os
+        agent_home = _P(_os.getenv("AGENT_HOME", str(_P.home() / ".agent")))
+        agent_home.mkdir(parents=True, exist_ok=True)
+        idx = agent_home / "memory_checkpoints.jsonl"
+        with open(idx, "a", encoding="utf-8") as f:
+            f.write(json.dumps({
+                "timestamp": iso,
+                "tick": state.get("tick_count", 0),
+                "saved": saved,
+                "total": total,
+                "errors": len(rpt.get("errors", [])),
+                "epoch": time.time(),
+            }) + "\n")
+    except Exception:
+        pass
+
+    return marker
