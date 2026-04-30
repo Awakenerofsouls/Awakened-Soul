@@ -60,7 +60,7 @@ KEY FINDINGS:
      implementation, can approximate as gentle baseline variability;
      full ultradian modeling is future work.
 
-NOVA'S SUBSTRATE MAPPING:
+{{AGENT_NAME}}'S SUBSTRATE MAPPING:
   StressActivationAxis is the integrated stress-signaling readout.
   Accumulates CRH activity from multiple inputs (acute threat from CeA,
   sustained anxiety from BNST, visceral signals from GutSignalRelay,

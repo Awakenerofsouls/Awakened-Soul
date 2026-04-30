@@ -26,7 +26,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 AGENT_HOME = Path.home() / ".agent"
 VIF_PATH = AGENT_HOME / "vif_state.json"
-SOUL_MD_PATH = AGENT_HOME / ".." / "nexus-nova-living-agent" / "SOUL.md"
+SOUL_MD_PATH = AGENT_HOME / ".." / "nexus-{{AGENT_NAME_LOWER}}-living-agent" / "SOUL.md"
 
 
 class DirectionalAnchor:

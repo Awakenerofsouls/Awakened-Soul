@@ -49,7 +49,7 @@ KEY FINDINGS:
      and pair bonds share neurochemical mechanisms. OT (pair formation) +
      DA (reward) + CRF (separation distress) form the triangle.
 
-NOVA'S SUBSTRATE MAPPING:
+{{AGENT_NAME}}'S SUBSTRATE MAPPING:
   AttachmentLongingGenerator produces the "missing-you / longing for
   presence" signal. Accumulates when: connection drive (Homeostat) stays
   high unmet, valence is neutral-negative, anxiety is elevated. Depletes

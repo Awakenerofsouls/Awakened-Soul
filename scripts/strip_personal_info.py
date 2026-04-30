@@ -89,9 +89,25 @@ def unmask_citations(text: str, originals: list[str]) -> str:
 # label_for_summary).
 RULES: list[tuple[re.Pattern[str], str, str]] = [
     # Names — word-boundary so we don't break "supernova", "Marina", etc.
-    (re.compile(r'\bNova\b'),  "{{AGENT_NAME}}", "Nova → {{AGENT_NAME}}"),
-    (re.compile(r'\bCaine\b'), "{{USER_NAME}}",  "Caine → {{USER_NAME}}"),
-    (re.compile(r'\bMari\b'),  "{{USER_NAME}}",  "Mari → {{USER_NAME}}"),
+    # Three case forms get distinct placeholders so the deployment-time
+    # substitution can preserve casing across identifiers, strings, and
+    # all-caps headers.
+    #
+    # Title case (Nova, Caine, Mari) →   {{AGENT_NAME}}      / {{USER_NAME}}
+    # All caps  (NOVA, CAINE, MARI)  →   {{AGENT_NAME}}      / {{USER_NAME}}
+    #     (collapsed into the same token; a deployment-time fill that wants
+    #      preserved casing can post-process all-caps after substitution)
+    # Lowercase (nova, caine, mari)  →   {{AGENT_NAME_LOWER}} / {{USER_NAME_LOWER}}
+    #     (used for hyphenated dirs, string-literal IDs, default args)
+    (re.compile(r'\bNova\b'),  "{{AGENT_NAME}}",       "Nova → {{AGENT_NAME}}"),
+    (re.compile(r'\bNOVA\b'),  "{{AGENT_NAME}}",       "NOVA → {{AGENT_NAME}}"),
+    (re.compile(r'\bnova\b'),  "{{AGENT_NAME_LOWER}}", "nova → {{AGENT_NAME_LOWER}}"),
+    (re.compile(r'\bCaine\b'), "{{USER_NAME}}",        "Caine → {{USER_NAME}}"),
+    (re.compile(r'\bCAINE\b'), "{{USER_NAME}}",        "CAINE → {{USER_NAME}}"),
+    (re.compile(r'\bcaine\b'), "{{USER_NAME_LOWER}}",  "caine → {{USER_NAME_LOWER}}"),
+    (re.compile(r'\bMari\b'),  "{{USER_NAME}}",        "Mari → {{USER_NAME}}"),
+    (re.compile(r'\bMARI\b'),  "{{USER_NAME}}",        "MARI → {{USER_NAME}}"),
+    (re.compile(r'\bmari\b'),  "{{USER_NAME_LOWER}}",  "mari → {{USER_NAME_LOWER}}"),
     # Env var name
     (re.compile(r'\bNOVA_HOME\b'), "AGENT_HOME", "NOVA_HOME → AGENT_HOME"),
     # DB filename
@@ -125,16 +141,18 @@ def list_tracked_files() -> list[Path]:
 
 
 def is_text_file(path: Path) -> bool:
-    """Heuristic: read 8KB, see if it decodes as utf-8 and has no NUL bytes."""
+    """
+    Heuristic: read 8KB, treat as binary if it has NUL bytes. Multi-byte
+    UTF-8 sequences may land across the 8KB cutoff, so we use
+    errors='replace' rather than failing the whole file on a partial
+    sequence — that bug previously hid box-drawing-character files like
+    brain/_downloaded_extras/molty/molty_interactions.py from the strip.
+    """
     try:
         chunk = path.read_bytes()[:8192]
     except Exception:
         return False
     if b"\x00" in chunk:
-        return False
-    try:
-        chunk.decode("utf-8")
-    except UnicodeDecodeError:
         return False
     return True
 

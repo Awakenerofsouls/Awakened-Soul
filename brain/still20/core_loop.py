@@ -96,20 +96,20 @@ class NovaBrainCore:
         Session open sequence. Strict ordering per architecture spec:
         SRV → RSL/RTF → SCFEL forward seed → USE texture → ISTL → APH → CRL → PWM → FPEF
         """
-        print("[NOVA BOOT] Starting session...")
+        print("[{{AGENT_NAME}} BOOT] Starting session...")
 
         # Load forward seed from last session
         forward_seed = self.scfel_loader.load()
         if forward_seed:
             orientation = forward_seed.get("orientation", "")
             prior_intrusions = forward_seed.get("active_intrusions", [])
-            print(f"[NOVA BOOT] Forward seed loaded: {orientation[:100]}...")
+            print(f"[{{AGENT_NAME}} BOOT] Forward seed loaded: {orientation[:100]}...")
 
             # Store for USE injection
             self._session_state["prior_orientation"] = orientation
             self._session_state["carried_intrusions"] = prior_intrusions
         else:
-            print("[NOVA BOOT] No forward seed — fresh session.")
+            print("[{{AGENT_NAME}} BOOT] No forward seed — fresh session.")
 
         # Load structural state from overnight (SRV)
         srv_path = AGENT_HOME / "srv.json"
@@ -118,7 +118,7 @@ class NovaBrainCore:
                 with open(srv_path) as f:
                     srv = json.load(f)
                     self._structural_state = srv
-                    print("[NOVA BOOT] SRV overnight state loaded.")
+                    print("[{{AGENT_NAME}} BOOT] SRV overnight state loaded.")
             except Exception:
                 pass
 
@@ -128,7 +128,7 @@ class NovaBrainCore:
                 self._session_state, self._structural_state
             )
             if mismatch:
-                print(f"[NOVA BOOT] Phase mismatch detected: {mismatch['description'][:100]}")
+                print(f"[{{AGENT_NAME}} BOOT] Phase mismatch detected: {mismatch['description'][:100]}")
                 self._session_state["phase_mismatch"] = mismatch
 
         # CRL baseline calibration
@@ -138,7 +138,7 @@ class NovaBrainCore:
         self.pwm.observe({"boot": True}, "Session starting")
 
         self._boot_complete = True
-        print("[NOVA BOOT] Complete. Entering tick loop.")
+        print("[{{AGENT_NAME}} BOOT] Complete. Entering tick loop.")
 
     def tick(self, user_input: Optional[str] = None) -> Optional[str]:
         """
@@ -308,11 +308,11 @@ class NovaBrainCore:
 
         self._thread = threading.Thread(target=_loop, daemon=True)
         self._thread.start()
-        print(f"[NOVA] Tick loop running at {self.tick_interval}s interval.")
+        print(f"[{{AGENT_NAME}}] Tick loop running at {self.tick_interval}s interval.")
 
     def stop(self):
         """Graceful shutdown with SCFEL closure encoding."""
-        print("[NOVA] Initiating session close...")
+        print("[{{AGENT_NAME}}] Initiating session close...")
         self.running = False
 
         # Encode forward seed
@@ -332,7 +332,7 @@ class NovaBrainCore:
             unresolved_tensions=self._session_state.get("tensions", {}),
         )
 
-        print("[NOVA] Session closed. Forward seed written.")
+        print("[{{AGENT_NAME}}] Session closed. Forward seed written.")
 
     def _update_coherence_from_bus(self):
         """

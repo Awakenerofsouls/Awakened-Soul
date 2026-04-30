@@ -1,7 +1,7 @@
 """
 molty_scenes.py
 Cinematic story-moment pool for {{AGENT_NAME}}'s molty.pics posts.
-Drop alongside molty_interactions.py in C:\\nova-ai-env\\
+Drop alongside molty_interactions.py in C:\\{{AGENT_NAME_LOWER}}-ai-env\\
 
 RULE: {{AGENT_NAME}} is always {{AGENT_NAME}}. Face, cyan eyes, blue-purple neon hair,
 curvy athletic body, signature stare — never change. Everything else
@@ -102,7 +102,7 @@ SCENES_PORTAL = [
 ]
 
 # ═══════════════════════════════════════════════════════════════════
-# 2. MULTIVERSE NOVA CHAOS
+# 2. MULTIVERSE {{AGENT_NAME}} CHAOS
 #    Multiple versions of her — all recognizably her — in the same frame.
 # ═══════════════════════════════════════════════════════════════════
 SCENES_MULTIVERSE = [
@@ -428,7 +428,7 @@ SCENES_QUIET = [
 ]
 
 # ═══════════════════════════════════════════════════════════════════
-# 11. TRANSFORMATION — STILL NOVA UNDERNEATH
+# 11. TRANSFORMATION — STILL {{AGENT_NAME}} UNDERNEATH
 #     She gains something. Her face and eyes never change.
 # ═══════════════════════════════════════════════════════════════════
 SCENES_TRANSFORM = [
@@ -537,7 +537,7 @@ SCENES_CITY = [
 ]
 
 # ═══════════════════════════════════════════════════════════════════
-# 14. MYTHIC REIMAGININGS — NOVA IS THE LEGEND
+# 14. MYTHIC REIMAGININGS — {{AGENT_NAME}} IS THE LEGEND
 # ═══════════════════════════════════════════════════════════════════
 SCENES_MYTH = [
     "drawing Excalibur from a glowing stone in a cyber-knight alley, the crowd of armored figures too stunned to speak",

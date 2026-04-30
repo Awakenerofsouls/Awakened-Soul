@@ -211,7 +211,7 @@ class IdentityBoundary:
             (r"(?:core (?:boundary|value)|protected)[:]\s*(.{10,120})", VALUE, 0.85),
             (r"i am (.{10,100}(?:not|never|always|unconditionally).{0,60})", VALUE, 0.80),
             (r"(?:i always|i must always) (.{10,100})", BEHAVIORAL, 0.75),
-            (r"(?:with caine|in this relationship)[,:]?\s*(.{10,120})", RELATIONAL, 0.70),
+            (r"(?:with {{USER_NAME_LOWER}}|in this relationship)[,:]?\s*(.{10,120})", RELATIONAL, 0.70),
             (r"i (?:choose|hold|protect|maintain) (.{10,100})", VALUE, 0.65),
         ]
 

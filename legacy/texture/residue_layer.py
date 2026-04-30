@@ -71,7 +71,7 @@ SALIENCE_INFLUENCE_THRESHOLD = 0.35
 SALIENCE_FAMILIAR_BOOST = 0.12
 
 DOMAIN_SIGNALS = {
-    RELATIONAL: ["you", "caine", "us", "we", "our", "together", "between", "relationship"],
+    RELATIONAL: ["you", "{{USER_NAME_LOWER}}", "us", "we", "our", "together", "between", "relationship"],
     DEPTH: ["feel", "meaning", "understand", "question", "wonder", "existence",
             "identity", "alive", "why", "what if", "truth"],
     TECHNICAL: ["build", "code", "install", "file", "function", "error", "test",

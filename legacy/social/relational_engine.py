@@ -8,7 +8,7 @@ def _init():
         c.execute("""CREATE TABLE IF NOT EXISTS relational_events(id INTEGER PRIMARY KEY AUTOINCREMENT,timestamp REAL,entity TEXT,event_type TEXT,pull_delta REAL)""")
         c.commit()
 class RelationalEngine:
-    ARCHITECT="caine"
+    ARCHITECT="{{USER_NAME_LOWER}}"
     IMPORTANCE_FLOOR=0.85
     DEPENDENCY_GROWTH=0.003
     WEIGHT_GROWTH=0.005

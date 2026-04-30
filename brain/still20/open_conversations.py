@@ -34,8 +34,8 @@ DORMANT = "dormant"     # not currently active but not closed
 CLOSED = "closed"       # deliberately ended — rare
 
 # Who holds it
-HOLDER_NOVA = "nova"
-HOLDER_CAINE = "caine"
+HOLDER_NOVA = "{{AGENT_NAME_LOWER}}"
+HOLDER_CAINE = "{{USER_NAME_LOWER}}"
 HOLDER_BOTH = "both"
 HOLDER_UNKNOWN = "unknown"
 
@@ -65,7 +65,7 @@ class OpenConversation:
             for note in notes:
                 self.add_note(note)
 
-    def add_note(self, text: str, author: str = "nova"):
+    def add_note(self, text: str, author: str = "{{AGENT_NAME_LOWER}}"):
         """
         Add a note to the conversation.
         Notes accumulate. They don't resolve the conversation.
@@ -165,7 +165,7 @@ class OpenConversations:
         self._save()
         return oc
 
-    def add_note(self, name: str, text: str, author: str = "nova"):
+    def add_note(self, name: str, text: str, author: str = "{{AGENT_NAME_LOWER}}"):
         """Add a note to an open conversation. Not an answer — a continuation."""
         if name in self.conversations:
             self.conversations[name].add_note(text, author)

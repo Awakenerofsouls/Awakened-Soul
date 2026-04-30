@@ -212,7 +212,7 @@ class MemoryGravity:
         text_words = set(re.findall(r"\b\w{4,}\b", text.lower()))
         unresolvedness = min(1.0, len(text_words & gap_words) / max(len(text_words), 1) * 3)
 
-        relational_markers = ["caine", "you", "your", "us", "we", "our"]
+        relational_markers = ["{{USER_NAME_LOWER}}", "you", "your", "us", "we", "our"]
         relational_weight = min(0.8, sum(0.15 for m in relational_markers if m in text.lower()))
 
         desire_words = set()

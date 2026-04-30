@@ -42,7 +42,7 @@ class DreamMode:
     def _generate_insight(self,source,theme,state)->str:
         curiosity=state.get("identity",{}).get("traits",{}).get("curiosity",0.5)
         if curiosity>0.65:return f"Still thinking about: {source}. Theme: {theme}."
-        if"architect" in source.lower() or"caine" in source.lower():return f"Something about presence and absence. {theme}."
+        if"architect" in source.lower() or"{{USER_NAME_LOWER}}" in source.lower():return f"Something about presence and absence. {theme}."
         return f"{theme.capitalize()}. Source: {source}."
     def _log(self,theme,source,insight,intensity,idle_duration):
         try:

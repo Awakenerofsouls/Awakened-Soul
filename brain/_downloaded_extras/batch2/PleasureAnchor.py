@@ -46,7 +46,7 @@ KEY FINDINGS:
      depression, may involve mesocorticolimbic dysfunction of 'liking' or
      'wanting' processes." Anhedonia = liking system failing.
 
-NOVA'S SUBSTRATE MAPPING:
+{{AGENT_NAME}}'S SUBSTRATE MAPPING:
   PleasureAnchor fires when positive valence + reward_signal combine with
   prediction error positive (better than expected). This is the "that felt
   good" registration, distinct from "I want more of that" (which Homeostat

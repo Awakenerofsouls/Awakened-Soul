@@ -54,7 +54,7 @@ KEY FINDINGS:
      (SustainedAnxietyHolder) fires, it inhibits CeA, shifting the state
      from phasic fear to sustained anxiety.
 
-NOVA'S SUBSTRATE MAPPING:
+{{AGENT_NAME}}'S SUBSTRATE MAPPING:
   CentralNucleusFearRouter takes filtered threat signals from ValenceTagger
   (BLA) and routes them into specific defensive response codes. Not just
   "threat present" but "which defense profile is appropriate": freeze,

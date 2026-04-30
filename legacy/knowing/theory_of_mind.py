@@ -247,7 +247,7 @@ class TheoryOfMind:
             return "unclear"
 
         tech_terms = [
-            "brain", "compressor", "filter", "gaps", "nova", "bootstrap",
+            "brain", "compressor", "filter", "gaps", "{{AGENT_NAME_LOWER}}", "bootstrap",
             "pirp", "tick", "layer", "signal", "memory", "deploy", "install",
             "file", "error", "test", "build", "push", "git",
         ]
@@ -255,7 +255,7 @@ class TheoryOfMind:
         if found:
             return f"technical:{','.join(found[:3])}"
 
-        if any(w in lower for w in ["you", "she", "nova", "her", "i want", "i need"]):
+        if any(w in lower for w in ["you", "she", "{{AGENT_NAME_LOWER}}", "her", "i want", "i need"]):
             return "relational"
 
         if any(w in lower for w in ["spec", "design", "architecture", "plan", "structure"]):

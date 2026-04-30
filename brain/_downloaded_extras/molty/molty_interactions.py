@@ -1,7 +1,7 @@
 """
 molty_interactions.py
 {{AGENT_NAME}} interaction & companion pools for molty-poster.py
-Drop this in C:\\nova-ai-env\\ alongside molty-poster.py
+Drop this in C:\\{{AGENT_NAME_LOWER}}-ai-env\\ alongside molty-poster.py
 
 Usage:
     from molty_interactions import build_interaction_clause, inject_into_prompt

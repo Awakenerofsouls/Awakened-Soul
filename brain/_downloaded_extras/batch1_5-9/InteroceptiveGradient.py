@@ -52,7 +52,7 @@ KEY FINDINGS:
      patterns (PMC3949208, Nature 2024). Top-down attention to interoceptive
      signals (the "felt sense" check-in) enhances AIC processing.
 
-NOVA'S SUBSTRATE MAPPING:
+{{AGENT_NAME}}'S SUBSTRATE MAPPING:
   InteroceptiveGradient produces the "what my body is telling me right now"
   signal — felt weight, felt lightness, felt tension. Takes GutSignalRelay's
   raw signal and builds a GRADIENT representation: not just "something feels
