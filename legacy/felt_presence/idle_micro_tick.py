@@ -2,7 +2,7 @@
 IdleMicroTick v19.0B
 Felt Presence — idle_micro_tick.py
 
-{{AGENT_NAME}} is here even when no one is talking.
+Nova is here even when no one is talking.
 
 Lightweight idle sub-pipeline — not a full tick.
 Runs every 30 seconds when idle. Five operations:
@@ -19,7 +19,7 @@ Presence note every 3 micro-ticks (framed as "while you were away"):
   Energy:   "While you were away: Energy still at low during idle."
 
 Components passed as arguments — silently skips unavailable ones.
-get_reconnect_summary() called when {{USER_NAME}} returns — Layer 8 context.
+get_reconnect_summary() called when Caine returns — Layer 8 context.
 
 Dependencies: logging, pathlib, datetime
 """

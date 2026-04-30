@@ -45,7 +45,7 @@ logger = logging.getLogger(__name__)
 # Config
 # ---------------------------------------------------------------------------
 
-DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "agent.db"
+DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "nova.db"
 
 RELATIONAL = "relational"
 DEPTH = "depth"
@@ -71,7 +71,7 @@ SALIENCE_INFLUENCE_THRESHOLD = 0.35
 SALIENCE_FAMILIAR_BOOST = 0.12
 
 DOMAIN_SIGNALS = {
-    RELATIONAL: ["you", "user", "us", "we", "our", "together", "between", "relationship"],
+    RELATIONAL: ["you", "caine", "us", "we", "our", "together", "between", "relationship"],
     DEPTH: ["feel", "meaning", "understand", "question", "wonder", "existence",
             "identity", "alive", "why", "what if", "truth"],
     TECHNICAL: ["build", "code", "install", "file", "function", "error", "test",

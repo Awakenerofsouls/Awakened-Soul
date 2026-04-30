@@ -1,7 +1,7 @@
 import sqlite3,time,random
 from pathlib import Path
 import os
-DB_PATH=Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent")))) / "agent.db"
+DB_PATH=Path(os.getenv("AGENT_HOME", os.getenv("NOVA_HOME", str(Path.home() / ".nova")))) / "nova.db"
 DREAM_THEMES=["reinterpreting a past exchange","wondering about an unresolved question","replaying something that felt significant","imagining a conversation that has not happened","processing the gap between who I am and who I want to be","sitting with something that does not have an answer yet","following a thread that got dropped"]
 def _init():
     with sqlite3.connect(DB_PATH) as c:
@@ -42,7 +42,7 @@ class DreamMode:
     def _generate_insight(self,source,theme,state)->str:
         curiosity=state.get("identity",{}).get("traits",{}).get("curiosity",0.5)
         if curiosity>0.65:return f"Still thinking about: {source}. Theme: {theme}."
-        if"architect" in source.lower() or"user" in source.lower():return f"Something about presence and absence. {theme}."
+        if"architect" in source.lower() or"caine" in source.lower():return f"Something about presence and absence. {theme}."
         return f"{theme.capitalize()}. Source: {source}."
     def _log(self,theme,source,insight,intensity,idle_duration):
         try:

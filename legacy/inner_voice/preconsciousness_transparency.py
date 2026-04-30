@@ -18,7 +18,7 @@ Five hunch types:
   curiosity  — something pulls toward attention before being named
   uncertainty — something is less settled than it appears
   pattern    — something is recurring in a way that matters
-  relational — something about {{USER_NAME}}'s state feels different
+  relational — something about Caine's state feels different
 
 Gate (all must pass):
   1. Hunch intensity above 0.55
@@ -46,7 +46,7 @@ logger = logging.getLogger(__name__)
 # Config
 # ---------------------------------------------------------------------------
 
-DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "agent.db"
+DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "nova.db"
 
 TENSION = "tension"
 CURIOSITY = "curiosity"
@@ -364,7 +364,7 @@ class PreConsciousTransparency:
         if hunch_type == RELATIONAL:
             if "frustrated" in raw:
                 return "I have a sense something is wrong between us right now — not just the task."
-            return "Something about what {{USER_NAME}} needs right now feels different from what's being asked."
+            return "Something about what Caine needs right now feels different from what's being asked."
 
         return None
 

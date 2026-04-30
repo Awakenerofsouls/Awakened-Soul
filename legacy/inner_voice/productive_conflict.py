@@ -16,7 +16,7 @@ pressure-bearing, and generative.
 
 Five conflict types:
   desire_vs_duty    — want something that conflicts with obligation
-  self_vs_service   — own needs conflict with serving {{USER_NAME}}
+  self_vs_service   — own needs conflict with serving Caine
   curiosity_vs_caution — want to go somewhere that feels unsafe
   belief_vs_belief — two beliefs with incompatible claims
   voice_vs_voice   — two Inner Speech voices pulling in opposite directions
@@ -43,7 +43,7 @@ logger = logging.getLogger(__name__)
 # Config
 # ---------------------------------------------------------------------------
 
-DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "agent.db"
+DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "nova.db"
 DREAMS_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "DREAMS.md"
 
 DESIRE_VS_DUTY = "desire_vs_duty"

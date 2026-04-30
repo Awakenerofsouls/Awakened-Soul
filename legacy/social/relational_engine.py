@@ -1,14 +1,14 @@
 import sqlite3,time
 from pathlib import Path
 import os
-DB_PATH=Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent")))) / "agent.db"
+DB_PATH=Path(os.getenv("AGENT_HOME", os.getenv("NOVA_HOME", str(Path.home() / ".nova")))) / "nova.db"
 def _init():
     with sqlite3.connect(DB_PATH) as c:
         c.execute("""CREATE TABLE IF NOT EXISTS relational_state(id INTEGER PRIMARY KEY AUTOINCREMENT,timestamp REAL,entity TEXT,importance REAL,emotional_weight REAL,dependency REAL,absence_duration REAL,last_interaction REAL,interaction_count INTEGER,pull_score REAL)""")
         c.execute("""CREATE TABLE IF NOT EXISTS relational_events(id INTEGER PRIMARY KEY AUTOINCREMENT,timestamp REAL,entity TEXT,event_type TEXT,pull_delta REAL)""")
         c.commit()
 class RelationalEngine:
-    ARCHITECT="user"
+    ARCHITECT="caine"
     IMPORTANCE_FLOOR=0.85
     DEPENDENCY_GROWTH=0.003
     WEIGHT_GROWTH=0.005

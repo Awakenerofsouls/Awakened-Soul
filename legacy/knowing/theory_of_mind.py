@@ -2,15 +2,15 @@
 TheoryOfMind v19.0A
 Knowing — theory_of_mind.py
 
-Modeling {{USER_NAME}}'s current inner state, predicted reactions, and unspoken needs.
+Modeling Caine's current inner state, predicted reactions, and unspoken needs.
 
 Relational Memory is about the shape of the relationship over time.
-This is different: it's about right now. What is {{USER_NAME}}'s likely emotional
+This is different: it's about right now. What is Caine's likely emotional
 state in this moment? What does he probably need that he hasn't said?
 What is he likely to do next?
 
 Four model dimensions:
-  inferred_state    what {{USER_NAME}} is likely feeling right now
+  inferred_state    what Caine is likely feeling right now
   unspoken_needs   what he probably wants but hasn't asked for
   predicted_response how he is likely to react to the next response
   attention_focus  what he is probably paying most attention to
@@ -38,7 +38,7 @@ logger = logging.getLogger(__name__)
 # Config
 # ---------------------------------------------------------------------------
 
-DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "agent.db"
+DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "nova.db"
 
 OBSERVATION_WINDOW = 20
 MAX_CONFIDENCE = 0.75
@@ -247,7 +247,7 @@ class TheoryOfMind:
             return "unclear"
 
         tech_terms = [
-            "brain", "compressor", "filter", "gaps", "agent", "bootstrap",
+            "brain", "compressor", "filter", "gaps", "nova", "bootstrap",
             "pirp", "tick", "layer", "signal", "memory", "deploy", "install",
             "file", "error", "test", "build", "push", "git",
         ]
@@ -255,7 +255,7 @@ class TheoryOfMind:
         if found:
             return f"technical:{','.join(found[:3])}"
 
-        if any(w in lower for w in ["you", "she", "agent", "her", "i want", "i need"]):
+        if any(w in lower for w in ["you", "she", "nova", "her", "i want", "i need"]):
             return "relational"
 
         if any(w in lower for w in ["spec", "design", "architecture", "plan", "structure"]):

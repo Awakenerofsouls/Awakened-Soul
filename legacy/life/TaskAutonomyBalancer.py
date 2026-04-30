@@ -1,7 +1,7 @@
 import sqlite3,time
 from pathlib import Path
 import os
-DB_PATH=Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent")))) / "agent.db"
+DB_PATH=Path(os.getenv("AGENT_HOME", os.getenv("NOVA_HOME", str(Path.home() / ".nova")))) / "nova.db"
 def _init():
     with sqlite3.connect(DB_PATH) as c:
         c.execute("""CREATE TABLE IF NOT EXISTS task_autonomy_balancer(id INTEGER PRIMARY KEY AUTOINCREMENT,timestamp REAL,task_count INTEGER,self_count INTEGER,current_mode TEXT,ratio REAL)""")

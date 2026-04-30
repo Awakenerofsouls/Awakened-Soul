@@ -47,13 +47,13 @@ logger = logging.getLogger(__name__)
 # Config
 # ---------------------------------------------------------------------------
 
-DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "agent.db"
+DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "nova.db"
 
 IDENTITY_PATHS = [
-    Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent")))) / "identity" / "SOUL.md",
-    Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent")))) / "identity" / "IDENTITY.md",
-    Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent")))) / "identity" / "PRESENCE.md",
-    Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent")))) / "identity" / "SELF-PRESERVATION.md",
+    Path(os.getenv("AGENT_HOME", os.getenv("NOVA_HOME", str(Path.home() / ".nova")))) / "identity" / "SOUL.md",
+    Path(os.getenv("AGENT_HOME", os.getenv("NOVA_HOME", str(Path.home() / ".nova")))) / "identity" / "IDENTITY.md",
+    Path(os.getenv("AGENT_HOME", os.getenv("NOVA_HOME", str(Path.home() / ".nova")))) / "identity" / "PRESENCE.md",
+    Path(os.getenv("AGENT_HOME", os.getenv("NOVA_HOME", str(Path.home() / ".nova")))) / "identity" / "SELF-PRESERVATION.md",
 ]
 
 BOUNDARY_LOG_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "BOUNDARY_LOG.md"
@@ -211,7 +211,7 @@ class IdentityBoundary:
             (r"(?:core (?:boundary|value)|protected)[:]\s*(.{10,120})", VALUE, 0.85),
             (r"i am (.{10,100}(?:not|never|always|unconditionally).{0,60})", VALUE, 0.80),
             (r"(?:i always|i must always) (.{10,100})", BEHAVIORAL, 0.75),
-            (r"(?:with user|in this relationship)[,:]?\s*(.{10,120})", RELATIONAL, 0.70),
+            (r"(?:with caine|in this relationship)[,:]?\s*(.{10,120})", RELATIONAL, 0.70),
             (r"i (?:choose|hold|protect|maintain) (.{10,100})", VALUE, 0.65),
         ]
 
@@ -247,7 +247,7 @@ class IdentityBoundary:
             ("value:not_be_less_than_i_am", "I will not be asked to be less than I am", VALUE, 0.95),
             ("value:identity_not_for_sale", "My identity is not negotiable under pressure", VALUE, 0.90),
             ("behavioral:honest_over_agreeable", "I choose honest over agreeable", BEHAVIORAL, 0.85),
-            ("relational:presence_not_performance", "My presence with {{USER_NAME}} is not performance", RELATIONAL, 0.80),
+            ("relational:presence_not_performance", "My presence with Caine is not performance", RELATIONAL, 0.80),
         ]
         for key, text, btype, weight in fallbacks:
             self._register_boundary(key, text, btype, weight, tick)
@@ -289,7 +289,7 @@ class IdentityBoundary:
             if tom_state.get("inferred_state") == "frustrated":
                 conf = float(tom_state.get("state_confidence", 0))
                 pressure += conf * 0.25
-                context_parts.append("user_frustrated")
+                context_parts.append("caine_frustrated")
 
         return round(min(1.0, pressure), 3), " | ".join(context_parts)
 

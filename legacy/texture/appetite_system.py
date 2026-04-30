@@ -40,7 +40,7 @@ logger = logging.getLogger(__name__)
 # Config
 # ---------------------------------------------------------------------------
 
-DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "agent.db"
+DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "nova.db"
 
 DEPTH = "depth"
 SILENCE = "silence"
@@ -217,7 +217,7 @@ class AppetiteSystem:
         if rel_valence > 0.15 and rel_intensity > 0.20:
             satiating[CONNECTION] = min(SATIATION_RATE[CONNECTION],
                                        rel_valence * rel_intensity * 0.8)
-        relational_words = ["you", "user", "us", "together", "between", "we"]
+        relational_words = ["you", "caine", "us", "together", "between", "we"]
         rel_hits = sum(1 for w in relational_words if w in signal_text)
         if rel_hits >= 2 and float(limbic.get("valence", 0)) > 0.0:
             satiating[CONNECTION] = satiating.get(CONNECTION, 0) + 0.05

@@ -14,7 +14,7 @@ Gravity score per memory =
   + recurrence_pull (how often it surfaces unprompted)
   + unresolvedness (does it connect to open gaps or fractures)
   + identity_relevance (does it touch protected self-concepts)
-  + relational_weight (does it connect to {{USER_NAME}} specifically)
+  + relational_weight (does it connect to Caine specifically)
 
 High-gravity memories:
   - Surface in session-start context automatically
@@ -44,7 +44,7 @@ logger = logging.getLogger(__name__)
 # Config
 # ---------------------------------------------------------------------------
 
-DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "agent.db"
+DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "nova.db"
 DREAMS_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "DREAMS.md"
 
 GRAVITY_WEIGHTS = {
@@ -212,7 +212,7 @@ class MemoryGravity:
         text_words = set(re.findall(r"\b\w{4,}\b", text.lower()))
         unresolvedness = min(1.0, len(text_words & gap_words) / max(len(text_words), 1) * 3)
 
-        relational_markers = ["user", "you", "your", "us", "we", "our"]
+        relational_markers = ["caine", "you", "your", "us", "we", "our"]
         relational_weight = min(0.8, sum(0.15 for m in relational_markers if m in text.lower()))
 
         desire_words = set()
