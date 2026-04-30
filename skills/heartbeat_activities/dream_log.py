@@ -12,9 +12,19 @@ Activity contract:
 
 Batch D2, Activity 7. Routes to DREAMS.md. Different from dreams_reflection
 (which interprets prior content) — this is raw capture.
+
+Continuity Idea 2: in addition to writing the fragment to DREAMS.md (the
+human-readable diary), the activity also appends a structured record to
+brain/dream_log.json so the DreamsReader BrainMechanism can surface
+waking-time fragments to the rest of the brain on its next tick. Without
+this bridge, DreamsReader only saw the overnight consolidations written by
+skills/dream_generator.py and missed every fragment captured between user
+messages.
 """
 
+import json
 import random
+import time
 from pathlib import Path
 from .journal import write_to_journal
 from .llm import generate
@@ -87,6 +97,10 @@ def run(state: dict) -> dict:
         state=state,
     )
 
+    # Continuity Idea 2 — also bridge to brain/dream_log.json so DreamsReader
+    # picks this fragment up on its next tick (DREAMS.md is human-readable only).
+    _bridge_to_brain_dream_log(workspace, content, tick)
+
     state["prior_dream_content"] = content
     status = "unfinished" if random.random() < UNFINISHED_PROBABILITY else "complete"
 
@@ -110,3 +124,38 @@ def _read_recent_dreams(workspace: Path, limit_chars: int = 2000) -> str:
         return path.read_text(encoding="utf-8")[-limit_chars:]
     except Exception:
         return ""
+
+
+def _bridge_to_brain_dream_log(workspace: Path, content: str, tick: int) -> None:
+    """
+    Append a structured record to brain/dream_log.json so the DreamsReader
+    BrainMechanism can surface this fragment on its next tick. Errors are
+    swallowed — the diary write to DREAMS.md is the canonical capture; the
+    JSON bridge is a soft enhancement, not a critical-path dependency.
+    """
+    try:
+        log_path = workspace / "brain" / "dream_log.json"
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+        existing = {"dream_records": []}
+        if log_path.exists():
+            try:
+                existing = json.loads(log_path.read_text(encoding="utf-8"))
+                if "dream_records" not in existing:
+                    existing["dream_records"] = []
+            except Exception:
+                existing = {"dream_records": []}
+        record = {
+            "id": len(existing["dream_records"]) + 1,
+            "timestamp": time.time(),
+            "tick": tick,
+            "source": "heartbeat_dream_log",
+            "content": content,
+            "word_count": len(content.split()),
+        }
+        existing["dream_records"].append(record)
+        # Cap to last 500 records so the file never grows unbounded
+        if len(existing["dream_records"]) > 500:
+            existing["dream_records"] = existing["dream_records"][-500:]
+        log_path.write_text(json.dumps(existing, indent=2), encoding="utf-8")
+    except Exception:
+        pass
