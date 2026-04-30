@@ -48,7 +48,7 @@ def main():
     print("This will configure the framework for your agent.\n")
 
     # -------------------------------------------------------------------------
-    # 1. Ask for agent name
+    # 1. Ask for agent name + user name
     # -------------------------------------------------------------------------
     agent_name = input("What is your agent's name? ").strip()
 
@@ -56,9 +56,18 @@ def main():
         print_error("Agent name cannot be empty.")
         sys.exit(1)
 
-    # Capitalize first letter for display
+    user_name = input("What is your name (the human the agent talks to)? ").strip()
+
+    if not user_name:
+        print_error("User name cannot be empty.")
+        sys.exit(1)
+
+    # Capitalize first letter for display, lowercase for path/string-id usage
     agent_display = agent_name[0].upper() + agent_name[1:]
-    print(f"\nConfiguring for: {agent_display}\n")
+    user_display = user_name[0].upper() + user_name[1:]
+    agent_lower = agent_name.lower()
+    user_lower = user_name.lower()
+    print(f"\nConfiguring for: {agent_display} (agent), {user_display} (user)\n")
 
     workspace = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace")))
 
@@ -71,26 +80,51 @@ def main():
     total_steps = 6
 
     # -------------------------------------------------------------------------
-    # 2. Substitute agent name in {{AGENT_NAME}} placeholders
+    # 2. Substitute identity placeholders in content files
     # -------------------------------------------------------------------------
-    print_step(1, total_steps, "Substituting agent name in content files")
+    print_step(1, total_steps, "Substituting identity placeholders in content files")
+
+    # All four placeholders the strip script writes. Order matters: do the
+    # _LOWER variants first so the bare {{AGENT_NAME}} substitution doesn't
+    # accidentally clobber a {{AGENT_NAME_LOWER}} (substring of {{AGENT_NAME}} ).
+    substitutions = [
+        ("{{AGENT_NAME_LOWER}}", agent_lower),
+        ("{{USER_NAME_LOWER}}",  user_lower),
+        ("{{AGENT_NAME}}",       agent_display),
+        ("{{USER_NAME}}",        user_display),
+    ]
 
     placeholder_count = 0
-    for filepath in workspace.rglob("*.md"):
-        if ".git" in str(filepath):
-            continue
-        try:
-            content = filepath.read_text(encoding="utf-8")
-            if "{{AGENT_NAME}}" in content:
-                content = content.replace("{{AGENT_NAME}}", agent_name)
-                filepath.write_text(content, encoding="utf-8")
-                placeholder_count += 1
-                print_info(f"Updated: {filepath.relative_to(workspace)}")
-        except Exception as e:
-            print_error(f"Failed to update {filepath}: {e}")
+    files_touched = 0
+    # Walk both .md and .py — the strip script writes placeholders into both
+    # file types (mechanism docstrings, legacy connection-drive comments,
+    # boot order lists, etc.)
+    for pattern in ("*.md", "*.py"):
+        for filepath in workspace.rglob(pattern):
+            if ".git" in str(filepath):
+                continue
+            try:
+                content = filepath.read_text(encoding="utf-8")
+                original = content
+                file_subs = 0
+                for placeholder, replacement in substitutions:
+                    if placeholder in content:
+                        new_content, _ = content, 0
+                        # count + replace
+                        n = content.count(placeholder)
+                        if n:
+                            content = content.replace(placeholder, replacement)
+                            file_subs += n
+                if content != original:
+                    filepath.write_text(content, encoding="utf-8")
+                    placeholder_count += file_subs
+                    files_touched += 1
+                    print_info(f"Updated: {filepath.relative_to(workspace)} ({file_subs} subs)")
+            except Exception as e:
+                print_error(f"Failed to update {filepath}: {e}")
 
     if placeholder_count > 0:
-        print_success(f"Updated {placeholder_count} files with agent name.")
+        print_success(f"Substituted {placeholder_count} placeholders across {files_touched} files.")
     else:
         print_info("No placeholder substitution needed.")
 
