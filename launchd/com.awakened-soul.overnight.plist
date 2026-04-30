@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  com.awakened-soul.overnight.plist
+
+  Continuity Idea 4 — periodic cron wake-ups (overnight pipeline flavor).
+  Runs overnight_pipeline.py at 3:00 AM local time. Pairs with the slow-tick
+  plist for between-session continuity; this is the heavy nightly pass that
+  applies IGA deltas to VIF, compresses RTF patterns into RSL, etc.
+
+  INSTALL:
+    cp launchd/com.awakened-soul.overnight.plist ~/Library/LaunchAgents/
+    launchctl load ~/Library/LaunchAgents/com.awakened-soul.overnight.plist
+
+  EDIT BEFORE INSTALLING — same path/python/env edits as the slow-tick plist.
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.awakened-soul.overnight</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/bin/python3</string>
+    <string>/USERS/CAINE/awakened-soul-repo/overnight_pipeline.py</string>
+  </array>
+
+  <key>WorkingDirectory</key>
+  <string>/USERS/CAINE/awakened-soul-repo</string>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>AGENT_HOME</key>
+    <string>/USERS/CAINE/.agent</string>
+    <key>AGENT_WORKSPACE</key>
+    <string>/USERS/CAINE/.openclaw/workspace</string>
+  </dict>
+
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key>
+    <integer>3</integer>
+    <key>Minute</key>
+    <integer>0</integer>
+  </dict>
+
+  <key>StandardOutPath</key>
+  <string>/USERS/CAINE/.agent/overnight_pipeline.stdout.log</string>
+  <key>StandardErrorPath</key>
+  <string>/USERS/CAINE/.agent/overnight_pipeline.stderr.log</string>
+</dict>
+</plist>

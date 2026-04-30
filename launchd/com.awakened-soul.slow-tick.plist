@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  com.awakened-soul.slow-tick.plist
+
+  Continuity Idea 4 — periodic cron wake-ups (launchd flavor for macOS).
+
+  Runs slow_tick.py every 30 minutes regardless of whether the heartbeat
+  daemon is up. Pairs with launchd/com.awakened-soul.overnight.plist (the
+  3am full pipeline). Together they keep the brain warm — drives decay,
+  state evolves, dreams get bridged — even when the user is asleep or the
+  heartbeat is offline.
+
+  INSTALL:
+    cp launchd/com.awakened-soul.slow-tick.plist ~/Library/LaunchAgents/
+    launchctl load ~/Library/LaunchAgents/com.awakened-soul.slow-tick.plist
+
+  EDIT BEFORE INSTALLING:
+    Replace /USERS/CAINE/awakened-soul-repo with the actual repo path.
+    Replace /usr/bin/python3 with the python you want (system or pyenv).
+
+  UNINSTALL:
+    launchctl unload ~/Library/LaunchAgents/com.awakened-soul.slow-tick.plist
+
+  CHECK:
+    launchctl list | grep awakened-soul
+    tail -f ~/.agent/slow_tick.log
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.awakened-soul.slow-tick</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/bin/python3</string>
+    <string>/USERS/CAINE/awakened-soul-repo/slow_tick.py</string>
+    <string>--silent</string>
+  </array>
+
+  <key>WorkingDirectory</key>
+  <string>/USERS/CAINE/awakened-soul-repo</string>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>AGENT_HOME</key>
+    <string>/USERS/CAINE/.agent</string>
+    <key>AGENT_WORKSPACE</key>
+    <string>/USERS/CAINE/.openclaw/workspace</string>
+  </dict>
+
+  <!-- Run every 30 minutes. macOS will defer if the machine is asleep
+       and run on next wake — that's the desired behavior. -->
+  <key>StartInterval</key>
+  <integer>1800</integer>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>StandardOutPath</key>
+  <string>/USERS/CAINE/.agent/slow_tick.stdout.log</string>
+
+  <key>StandardErrorPath</key>
+  <string>/USERS/CAINE/.agent/slow_tick.stderr.log</string>
+
+  <!-- Keep launchd from spawning a second copy if the prior run is slow.
+       slow_tick should be ~1s, but a stuck import or DB lock could pin it. -->
+  <key>ThrottleInterval</key>
+  <integer>60</integer>
+</dict>
+</plist>

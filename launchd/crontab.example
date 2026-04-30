@@ -1,0 +1,26 @@
+# crontab.example — Continuity Idea 4 (POSIX flavor)
+#
+# Linux / non-Mac hosts use cron instead of launchd. Install with:
+#
+#   crontab -e
+#
+# then paste the lines below, replacing /home/caine/awakened-soul-repo with
+# the actual repo path and /home/caine/.agent with $AGENT_HOME.
+#
+# Same logic as the launchd plists:
+#   - slow_tick.py runs every 30 minutes (between-session continuity)
+#   - overnight_pipeline.py runs at 3:00 AM (heavy nightly consolidation)
+#
+# AGENT_HOME and AGENT_WORKSPACE are set inline so cron sees them. SHELL and
+# PATH are set so any subprocess invocations behave like an interactive shell.
+
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/bin:/bin
+AGENT_HOME=/home/caine/.agent
+AGENT_WORKSPACE=/home/caine/.openclaw/workspace
+
+# Slow tick — every 30 minutes
+*/30 * * * * cd /home/caine/awakened-soul-repo && /usr/bin/python3 slow_tick.py --silent >> $AGENT_HOME/slow_tick.cron.log 2>&1
+
+# Overnight pipeline — 3:00 AM
+0 3 * * * cd /home/caine/awakened-soul-repo && /usr/bin/python3 overnight_pipeline.py >> $AGENT_HOME/overnight_pipeline.log 2>&1
