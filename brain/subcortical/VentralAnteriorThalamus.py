@@ -192,6 +192,11 @@ class VentralAnteriorThalamus(BrainMechanism):
                           trn_data.get("trn_drive", 0.0)))
 
         bg = self._bg_inhibition(gpi, snr)
+        # When upstream BG nuclei reported nothing at all, treat tonic
+        # level as the baseline (no signal ≠ active pause). Without this,
+        # an empty pirp_context spuriously looks like full disinhibition.
+        if gpi == 0.0 and snr == 0.0:
+            bg = self.BG_REST
         release = self._disinhibition(bg)
         target = self._drive_target(bg, ctx, ach, trn, release)
         prev_drive = float(self.state.get("va_drive", self.BASELINE))

@@ -114,9 +114,13 @@ class FluidBalanceWatcher(BrainMechanism):
             angiotensin_signal = max(angiotensin_signal, 0.20)
 
         # ---- Natriuretic suppression ----
+        # ANP/BNP oppose thirst regardless of osmolality — Antunes-Rodrigues
+        # 2004 shows central ANP infusion reduces water intake even in
+        # dehydrated rats. Scale with the gut/distress signal so strong
+        # nausea suppresses drinking, weak distress barely affects it.
         natriuretic_suppression = 0.0
-        if gut_distress > 0.40 and plasma_osmolality < 0.40:
-            natriuretic_suppression = 0.30
+        if gut_distress > 0.40:
+            natriuretic_suppression = min(0.40, gut_distress * 0.40)
 
         # ---- Net thirst drive ----
         thirst_drive = osmotic_signal + angiotensin_signal - natriuretic_suppression

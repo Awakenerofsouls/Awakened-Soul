@@ -156,8 +156,12 @@ class CircadianTimer(BrainMechanism):
         """Circadian core temperature modulation (~1°C swing across day).
         Peak in late afternoon (phase ~0.6), trough early morning (phase ~0.1).
         Returns -0.5 to 0.5 modulation scaled to relative degrees.
+
+        Uses cosine centered on phase 0.6 so the peak lands at late
+        afternoon and the trough at early morning (0.1) — matching the
+        Refinetti & Menaker 1992 core-temperature trace.
         """
-        return amplitude * 0.5 * math.sin((phase - 0.1) * 2 * math.pi)
+        return amplitude * 0.5 * math.cos((phase - 0.6) * 2 * math.pi)
 
     def _amplitude_update(self, prev_amp: float, light: float,
                             recent_light: list) -> float:

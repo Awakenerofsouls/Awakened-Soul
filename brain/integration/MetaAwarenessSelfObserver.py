@@ -75,7 +75,10 @@ class MetaAwarenessSelfObserver(BrainMechanism):
     BASELINE = 0.0
     SMOOTH = 0.18  # slower than typical — meta-awareness integrates over time
     META_THRESHOLD = 0.40
-    WANDER_THRESHOLD = 0.45
+    # Mind-wandering reliably onsets at moderate ignition + DMN engagement
+    # without needing high amplitude (Christoff 2016: stimulus-independent
+    # thought emerges below the threshold of "vivid" rumination).
+    WANDER_THRESHOLD = 0.30
 
     def __init__(self):
         super().__init__(
@@ -146,10 +149,13 @@ class MetaAwarenessSelfObserver(BrainMechanism):
             return "quiet"
         if external_load > 0.50:
             return "task_focused"
-        if wandering > self.WANDER_THRESHOLD:
-            return "mind_wandering"
+        # Active self-monitoring (vmPFC + AIC) outranks mind-wandering: if
+        # the meta-circuits are engaged the agent is observing itself, not
+        # drifting (Smallwood & Schooler 2015).
         if self_obs > self.META_THRESHOLD:
             return "self_observing"
+        if wandering > self.WANDER_THRESHOLD:
+            return "mind_wandering"
         if internal > 0.30:
             return "internally_focused"
         return "quiet"

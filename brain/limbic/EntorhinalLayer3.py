@@ -147,6 +147,7 @@ class EntorhinalLayer3(BrainMechanism):
         ca3_data = prior.get("HippocampalCA3", {})
         if not ca3_data:
             ca3_data = prior.get("HippocampalCA3Dorsal", {})
+        ca3_reported = bool(ca3_data)
         ca3_estimate = float(ca3_data.get("ca3_output",
                                   ca3_data.get("ca3_drive", 0.0)))
 
@@ -155,7 +156,14 @@ class EntorhinalLayer3(BrainMechanism):
         new_drive = self._smooth(prev_drive, target)
 
         ta_signal = self._temporoammonic(new_drive, ec_grid, lec)
-        mismatch = self._match_mismatch(ta_signal, ca3_estimate)
+        # If CA3 didn't report a retrieval, the comparator has nothing to
+        # measure against — treat as matching (mismatch=0). Hasselmo 2005's
+        # match/mismatch role assumes CA3 actually fired; absence of input
+        # is not the same as failed recall.
+        if not ca3_reported:
+            mismatch = 0.0
+        else:
+            mismatch = self._match_mismatch(ta_signal, ca3_estimate)
 
         prev_trace = float(self.state.get("persistent_trace", 0.0))
         persistent = self._persistent_firing(new_drive, prev_trace, pfc)

@@ -113,15 +113,21 @@ class HistamineArousalBooster(BrainMechanism):
         sleep_suppression = 0.40 if sleep_gate_open else 0.0
 
         # ---- H3 autoreceptor suppression (proportional to histamine level) ----
+        # H3 is a tonic damper, not the dominant control — Lin 2011 reports
+        # H3 antagonist boost is ~30% of the wake-state level. Keep gain
+        # around 0.15 so steady-state arousal can exceed the H3 floor.
         current_tone = self.state["histamine_tone"]
-        h3_suppression = current_tone * 0.25
+        h3_suppression = current_tone * 0.15
 
         # ---- Antihistamine-like suppression from gut distress ----
         pharmacological_suppression = gut_distress * 0.30
 
         # ---- Target histamine tone ----
+        # Arousal is the primary driver; coefficient calibrated against
+        # Saper 2010's wake-state firing rates so high arousal pushes
+        # tone above the typical 0.50 awake threshold.
         target_tone = (
-            arousal_level * 0.45
+            arousal_level * 0.55
             + orexin_activation
             - sleep_suppression
             - h3_suppression

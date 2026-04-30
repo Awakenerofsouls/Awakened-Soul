@@ -162,6 +162,21 @@ class NetworkOscillationGlobalBalancer(BrainMechanism):
     async def tick(self, input_data: dict) -> dict:
         prior = input_data.get("prior_results", {})
 
+        # No upstream oscillation drivers reported at all → cortex is quiet,
+        # not in a default-mode rhythm. Empty pirp_context shouldn't be
+        # interpreted as moderate-arousal alpha.
+        no_input = not any(
+            prior.get(k) for k in (
+                "ThetaGammaCrossFrequencyBinding",
+                "MedialSeptum",
+                "DiagonalBandBroca",
+                "ClaustrumGlobalConsciousness",
+                "DorsolateralPrefrontalCortex",
+                "ArousalRegulator",
+                "CingulateAnterior",
+            )
+        )
+
         cfc_data = prior.get("ThetaGammaCrossFrequencyBinding", {})
         theta_coh = float(cfc_data.get("theta_phase_coherence", 0.0))
         gamma_amp = float(cfc_data.get("gamma_amplitude", 0.0))
@@ -206,6 +221,8 @@ class NetworkOscillationGlobalBalancer(BrainMechanism):
         ei = self._ei_balance(gamma, alpha)
 
         state = self._classify_state(delta, theta, gamma, alpha, arousal)
+        if no_input:
+            state = "quiet"
 
         recent = list(self.state.get("recent_states", []))
         recent.append(state)

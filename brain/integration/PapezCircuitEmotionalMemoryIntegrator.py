@@ -103,15 +103,15 @@ class PapezCircuitEmotionalMemoryIntegrator(BrainMechanism):
         active_nodes = sum(1 for v in nodes.values() if v > 0.20)
         if active_nodes < 2:
             return 0.0  # circuit not engaged at all
-        # Find the gap between max and min when most are active
-        active_vals = [v for v in nodes.values() if v > 0.05]
-        if not active_vals:
-            return 0.0
-        max_v = max(active_vals)
-        min_v = min(active_vals)
-        if max_v - min_v > 0.50 and active_nodes >= 3:
-            # Big gap — one node is failing while others fire
-            return min(1.0, (max_v - min_v) * 1.2)
+        # Compare the lowest-firing node against the max across all nodes —
+        # a silent (≤0.10) node sitting alongside several active ones is
+        # exactly the Vann-2009 mammillary-lesion pattern.
+        all_vals = list(nodes.values())
+        max_v = max(all_vals)
+        min_v = min(all_vals)
+        gap = max_v - min_v
+        if gap > 0.40 and active_nodes >= 3:
+            return min(1.0, gap * 1.2)
         return 0.0
 
     def _loop_closure(self, hpc: float, mam: float, atn: float,
@@ -119,10 +119,16 @@ class PapezCircuitEmotionalMemoryIntegrator(BrainMechanism):
         """Full circuit closure — product across nodes (multiplicative
         because failure at any node breaks the loop)."""
         product = hpc * mam * atn * cing * ec
-        # Take the 5th root to normalize to comparable scale
         if product <= 0:
             return 0.0
-        return min(1.0, product ** 0.2 * 1.4)
+        # 5th root for geometric mean across the five nodes — Vann 2009 /
+        # Aggleton 2010 require ALL nodes; weakest-link gate ensures a
+        # silent mammillary node craters the loop even if siblings fire.
+        geometric = product ** 0.2
+        weakest = min(hpc, mam, atn, cing, ec)
+        if weakest < 0.20:
+            geometric *= weakest / 0.20
+        return min(1.0, geometric * 1.2)
 
     def _thalamocingulate(self, atn: float, cing: float) -> float:
         """Anterior thalamic → cingulate output arm (Catani 2023)."""

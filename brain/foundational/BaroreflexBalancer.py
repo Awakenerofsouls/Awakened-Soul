@@ -141,9 +141,19 @@ class BaroreflexBalancer(BrainMechanism):
         ar_data = prior.get("ArousalRegulator", {})
         arousal = float(ar_data.get("tonic_level", 0.30))
 
+        # If no upstream pressure signal at all, the brainstem reads tonic
+        # MAP as the resting set-point — empty pirp_context isn't the same
+        # as a hypotensive crash.
+        no_input = (nts == 0.0 and c1_drive == 0.0
+                    and not prior.get("NucleusTractusSolitariusFull")
+                    and not prior.get("A2NoradrenergicNTS")
+                    and not prior.get("C1AdrenergicRVLM"))
+
         pressure_target = self._pressure_estimate(nts, c1_drive, arousal)
         prev_pressure = float(self.state.get("pressure_estimate", 0.5))
         pressure = self._smooth(prev_pressure, pressure_target)
+        if no_input:
+            pressure = 0.5  # tonic resting MAP
 
         target = self._drive_target(nts, pressure)
         prev_drive = float(self.state.get("baroreflex_drive", self.BASELINE))

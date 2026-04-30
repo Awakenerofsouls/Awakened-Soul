@@ -170,7 +170,12 @@ class OrbitofrontalCortexMedial(BrainMechanism):
         prev_var = float(self.state.get("value_variance", 0.0))
         new_var = self._update_variance(prev_var, value_mag, prev_value)
 
-        risk = self._risk_sensitivity(new_var, value_mag)
+        # Risk signal carries forward between ticks — variance is a slow
+        # state, and intermittent low-value ticks shouldn't reset it
+        # (O'Neill 2010: risk-sensitivity is built up across trials).
+        risk_target = self._risk_sensitivity(new_var, value_mag)
+        prev_risk = float(self.state.get("risk_sensitivity_signal", 0.0))
+        risk = max(prev_risk * 0.85, risk_target)
         choice = self._choice_strength(value_mag, new_drive)
 
         state = self._classify_state(new_drive, value_mag, risk)

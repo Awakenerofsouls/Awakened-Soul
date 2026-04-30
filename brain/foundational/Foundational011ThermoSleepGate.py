@@ -113,7 +113,11 @@ class ThermoSleepGate(BrainMechanism):
         fever_mode = fever_signal > self.FEVER_THRESHOLD
 
         # ---- Warmth drive ----
-        warmth_base = core_temp * 0.50
+        # MnPO has a constitutive baseline (Szymusiak 2008: ~30% of MnPO
+        # neurons fire tonically at thermoneutrality). Body-temperature
+        # deviations modulate around the baseline rather than scaling
+        # warmth from zero.
+        warmth_base = 0.45 + (core_temp - 0.5) * 1.00
 
         # Fever amplifies the warmth signal (PGE2 shifts set-point)
         fever_boost = 0.20 if fever_mode else 0.0

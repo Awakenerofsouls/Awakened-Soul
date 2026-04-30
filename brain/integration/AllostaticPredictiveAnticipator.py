@@ -173,6 +173,16 @@ class AllostaticPredictiveAnticipator(BrainMechanism):
 
         predicted = self._predicted_demand(circadian_demand, feeding,
                                               intensity)
+        # If no interoceptive sources reported anything, the brain hasn't
+        # received a contradicting actual-demand signal — Sterling 2012's
+        # predictive regulation falls through to the predicted value
+        # rather than treating absence as a zero-demand mismatch.
+        no_actual = (aic == 0.0 and pi == 0.0 and gr_load == 0.0
+                     and not prior.get("InsulaAnterior")
+                     and not prior.get("InsulaPosterior")
+                     and not prior.get("ParaventricularNucleusHypothalamus"))
+        if no_actual:
+            actual_demand = predicted
         pe = self._prediction_error(predicted, actual_demand)
 
         prev_pe = float(self.state.get("prediction_error", 0.0))
