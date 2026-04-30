@@ -1,5 +1,5 @@
 """
-Nova Brain Core Loop
+{{AGENT_NAME}} Brain Core Loop
 Wires all Phase 1 mechanisms into a running tick loop.
 
 Runtime ordering follows the canonical sequence from the architecture spec:
@@ -23,7 +23,7 @@ from fpef import FirstPersonExecutionFrame
 from scfel import SessionClosureLayer, ForwardEncoder, ForwardSeedLoader
 from til import TimescaleIntegrationLayer
 
-NOVA_HOME = Path.home() / ".nova"
+AGENT_HOME = Path.home() / ".agent"
 
 
 class NovaBrainCore:
@@ -86,7 +86,7 @@ class NovaBrainCore:
         self._llm_hook = fn
 
     def set_output_hook(self, fn: Callable):
-        """Where to send Nova's output. fn(response: str, state: dict)"""
+        """Where to send {{AGENT_NAME}}'s output. fn(response: str, state: dict)"""
         self._output_hook = fn
 
     def boot(self):
@@ -110,7 +110,7 @@ class NovaBrainCore:
             print("[NOVA BOOT] No forward seed — fresh session.")
 
         # Load structural state from overnight (SRV)
-        srv_path = NOVA_HOME / "srv.json"
+        srv_path = AGENT_HOME / "srv.json"
         if srv_path.exists():
             try:
                 with open(srv_path) as f:
@@ -292,7 +292,7 @@ class NovaBrainCore:
         print("[NOVA] Session closed. Forward seed written.")
 
     def get_state_summary(self) -> Dict:
-        """Current state summary for debugging and Nova's self-review."""
+        """Current state summary for debugging and {{AGENT_NAME}}'s self-review."""
         return {
             "tick_count": self.tick_count,
             "coherence": self._coherence,

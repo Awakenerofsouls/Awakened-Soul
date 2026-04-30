@@ -38,7 +38,7 @@ Beyond memory, CA3 contains place cells with broader, less precise
 fields than CA1 -- consistent with autoassociative coarse-coding rather
 than CA1's pattern-completed precise coding.
 
-In Nova's substrate this provides the autoassociative recall engine --
+In {{AGENT_NAME}}'s substrate this provides the autoassociative recall engine --
 takes DG mossy-fiber input + EC perforant input and emits a
 pattern-completed CA3 activity signal feeding CA1, plus a SWR
 generator signal during quiet/sleep states.

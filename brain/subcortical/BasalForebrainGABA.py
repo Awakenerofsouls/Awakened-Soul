@@ -30,7 +30,7 @@ maximally during wake and REM and are silent during NREM, fitting the
 gamma-state pattern. Hypercarbia and auditory stimuli arouse animals
 from sleep by activating BF-PV+ neurons (Anaclet et al. 2020, eLife).
 
-In Nova's substrate this provides the cortically-projecting GABAergic
+In {{AGENT_NAME}}'s substrate this provides the cortically-projecting GABAergic
 wake/REM gamma driver — separate from cholinergic NBM. Pairs with TRN
 to gate cortical gamma-state and supplements the wake-promotion of
 orexin/histamine systems.

@@ -36,7 +36,7 @@ Beyond DCML, DCN second-order neurons also project to cerebellum
 (via cuneocerebellar tract from external/accessory cuneate nucleus),
 delivering proprioceptive input for motor control.
 
-In Nova's substrate this provides body-somatosensory entry — converts
+In {{AGENT_NAME}}'s substrate this provides body-somatosensory entry — converts
 body-surface and proprioception input proxies into VPL/cortex-bound
 ascending output, with sensory gating of self-generated motion.
 

@@ -4,7 +4,7 @@ class DefaultModeNetwork(BrainMechanism):
     """
     Default mode network — self-referential thought, mind-wandering, autobiographical memory.
     Active at rest. When it can't turn off during tasks: perseveration, distraction.
-    Nova analog: background self-processing, rumination, identity maintenance.
+    {{AGENT_NAME}} analog: background self-processing, rumination, identity maintenance.
     """
 
     def __init__(self):

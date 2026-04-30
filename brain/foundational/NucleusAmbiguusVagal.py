@@ -29,7 +29,7 @@ and project to overlapping but functionally distinct cardiac ganglia
 subsets. Recent work establishes molecularly defined circuits for
 cardiopulmonary control.
 
-In Nova's substrate this provides the cardiac-vagal output channel —
+In {{AGENT_NAME}}'s substrate this provides the cardiac-vagal output channel —
 distinct from DMV's gut-vagal output. Coupled to RespiratoryPacemaker
 for RSA computation.
 

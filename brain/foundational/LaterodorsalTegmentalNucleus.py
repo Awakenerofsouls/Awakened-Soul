@@ -43,7 +43,7 @@ Clinical: LDT degeneration contributes to REM-sleep behavior disorder
 LC noradrenergic atonia signal, REM atonia fails and patients enact
 their dreams. RBD is a strong prodromal marker for Parkinson's disease.
 
-In Nova's substrate this provides the dedicated REM/PGO substrate plus
+In {{AGENT_NAME}}'s substrate this provides the dedicated REM/PGO substrate plus
 the cholinergic→VTA pathway, complementing the broader mesopontine wake
 substrate (MesopontineCholinergicWake) and the locomotor-focused PPN.
 

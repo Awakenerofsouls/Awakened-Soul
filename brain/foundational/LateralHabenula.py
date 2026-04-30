@@ -30,7 +30,7 @@ LHb hyperactivity is a signature of major depression. Burst firing
 behavior in rodents; ketamine selectively blocks LHb burst firing
 (Yang 2018), explaining its rapid antidepressant action.
 
-In Nova's substrate this provides the dedicated negative-RPE / anti-reward
+In {{AGENT_NAME}}'s substrate this provides the dedicated negative-RPE / anti-reward
 signal generator, distinct from VTA dopamine (positive RPE) and from
 amygdala fear circuits (different valence dimension).
 

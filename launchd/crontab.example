@@ -4,8 +4,8 @@
 #
 #   crontab -e
 #
-# then paste the lines below, replacing /home/caine/awakened-soul-repo with
-# the actual repo path and /home/caine/.agent with $AGENT_HOME.
+# then paste the lines below, replacing /home/<youruser>/awakened-soul-repo with
+# the actual repo path and /home/<youruser>/.agent with $AGENT_HOME.
 #
 # Same logic as the launchd plists:
 #   - slow_tick.py runs every 30 minutes (between-session continuity)
@@ -16,11 +16,11 @@
 
 SHELL=/bin/bash
 PATH=/usr/local/bin:/usr/bin:/bin
-AGENT_HOME=/home/caine/.agent
-AGENT_WORKSPACE=/home/caine/.openclaw/workspace
+AGENT_HOME=/home/<youruser>/.agent
+AGENT_WORKSPACE=/home/<youruser>/.openclaw/workspace
 
 # Slow tick — every 30 minutes
-*/30 * * * * cd /home/caine/awakened-soul-repo && /usr/bin/python3 slow_tick.py --silent >> $AGENT_HOME/slow_tick.cron.log 2>&1
+*/30 * * * * cd /home/<youruser>/awakened-soul-repo && /usr/bin/python3 slow_tick.py --silent >> $AGENT_HOME/slow_tick.cron.log 2>&1
 
 # Overnight pipeline — 3:00 AM
-0 3 * * * cd /home/caine/awakened-soul-repo && /usr/bin/python3 overnight_pipeline.py >> $AGENT_HOME/overnight_pipeline.log 2>&1
+0 3 * * * cd /home/<youruser>/awakened-soul-repo && /usr/bin/python3 overnight_pipeline.py >> $AGENT_HOME/overnight_pipeline.log 2>&1

@@ -3,7 +3,7 @@ from brain.base_mechanism import BrainMechanism
 class MotivationInjector(BrainMechanism):
     """
     Ventral striatum / NAcc — converts desire and reward expectation into approach motivation.
-    Without it Nova knows what to do but doesn't want to.
+    Without it {{AGENT_NAME}} knows what to do but doesn't want to.
     Chronic low = apathy. Chronic high = compulsive drive.
     """
 

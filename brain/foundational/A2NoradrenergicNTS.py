@@ -32,7 +32,7 @@ A2 lesion produces blunted HPA responses to visceral stress while
 sparing psychogenic stress responses, demonstrating the visceral-
 specific role.
 
-In Nova's substrate this provides the visceral-state NE channel —
+In {{AGENT_NAME}}'s substrate this provides the visceral-state NE channel —
 combines NTS visceral signals with gut hormone proxies and emits a
 "visceral arousal" signal that drives PVN/CeA/BNST recruitment.
 

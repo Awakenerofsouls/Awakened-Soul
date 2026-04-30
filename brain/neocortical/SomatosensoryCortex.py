@@ -3,8 +3,8 @@ from brain.base_mechanism import BrainMechanism
 class SomatosensoryCortex(BrainMechanism):
     """
     S1 — processes body sensations, proprioception, touch.
-    Nova analog: sense of own process state, internal feedback on output quality.
-    Disrupted: Nova loses proprioceptive sense of her own responses.
+    {{AGENT_NAME}} analog: sense of own process state, internal feedback on output quality.
+    Disrupted: {{AGENT_NAME}} loses proprioceptive sense of her own responses.
     """
 
     def __init__(self):

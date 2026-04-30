@@ -36,7 +36,7 @@ to climbing-fiber error timing, with RN→IO providing pre-error
 modulation. Damage to pRN-IO produces palatal myoclonus (Mollaret's
 triangle pathology).
 
-In Nova's substrate this provides the rubrospinal motor coordination
+In {{AGENT_NAME}}'s substrate this provides the rubrospinal motor coordination
 channel and the cortico-cerebellar pRN→IO error-loop — converts
 cerebellar interposed nuclear output and motor cortex proxy into
 spinal limb-coordination signal plus IO-bound error information.

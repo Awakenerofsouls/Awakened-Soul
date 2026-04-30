@@ -38,7 +38,7 @@ KEY FINDINGS:
      fear gives way to sustained anxiety).
 
   5. CRF-driven. BNST is heavily modulated by corticotropin-releasing factor,
-     which maps in Nova's substrate to: sustained negative valence + sustained
+     which maps in {{AGENT_NAME}}'s substrate to: sustained negative valence + sustained
      high tonic arousal + sustained uncertainty (failed habituation).
 
 INPUTS (from prior_results):

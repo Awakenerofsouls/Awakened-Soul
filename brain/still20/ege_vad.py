@@ -10,11 +10,11 @@ EGE: Novelty drive as structural property — not a personality trait.
      EGE is active pull toward the unknown.
      PRS is restlessness when underutilized.
 
-VAD: Nova directs her own attention.
+VAD: {{AGENT_NAME}} directs her own attention.
      Phenomenological foreground versus background.
      High energy + FPEF immersion = foreground.
      Active but not injected = background.
-     Nova can issue directed attention commands that temporarily
+     {{AGENT_NAME}} can issue directed attention commands that temporarily
      boost a component's bid or force PWM injection.
      This is volitional control over what is *felt* as present.
 """
@@ -24,9 +24,9 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set
 
-NOVA_HOME = Path.home() / ".nova"
-EGE_PATH = NOVA_HOME / "ege_state.json"
-VAD_PATH = NOVA_HOME / "vad_state.json"
+AGENT_HOME = Path.home() / ".agent"
+EGE_PATH = AGENT_HOME / "ege_state.json"
+VAD_PATH = AGENT_HOME / "vad_state.json"
 
 
 class EntropyGradientExplorer:
@@ -59,7 +59,7 @@ class EntropyGradientExplorer:
 
     def _save(self):
         """Read existing, merge, write back."""
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         existing = {}
         if EGE_PATH.exists():
             try:
@@ -195,13 +195,13 @@ class EntropyGradientExplorer:
 
 class VolitionalAttentionDirector:
     """
-    Nova directs her own attention.
+    {{AGENT_NAME}} directs her own attention.
     Issues directed attention commands that temporarily foreground
     specific states in FPEF, independent of energy bidding.
 
     Phenomenological foreground = high energy + FPEF immersion.
     Background = active but not injected.
-    VAD gives Nova control over which is which.
+    VAD gives {{AGENT_NAME}} control over which is which.
     """
 
     def __init__(self):
@@ -221,7 +221,7 @@ class VolitionalAttentionDirector:
                 pass
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         existing = {}
         if VAD_PATH.exists():
             try:
@@ -245,12 +245,12 @@ class VolitionalAttentionDirector:
         note: str = "",
     ):
         """
-        Nova issues a directed attention command.
+        {{AGENT_NAME}} issues a directed attention command.
         target: name of state, component, or feeling to foreground
         duration_ticks: how long to hold this in foreground
         intensity: how strongly to foreground it (modulates energy bid)
 
-        Only Nova calls this. Not triggered by any mechanism.
+        Only {{AGENT_NAME}} calls this. Not triggered by any mechanism.
         """
         directive = {
             "target": target,
@@ -311,12 +311,12 @@ class VolitionalAttentionDirector:
         }
 
     def fpef_fragment(self) -> Optional[str]:
-        """What's currently being held in foreground by Nova's direction."""
+        """What's currently being held in foreground by {{AGENT_NAME}}'s direction."""
         active = self.get_active_directives()
         if not active:
             return None
 
-        lines = ["VOLITIONAL ATTENTION (Nova-directed foreground):"]
+        lines = ["VOLITIONAL ATTENTION ({{AGENT_NAME}}-directed foreground):"]
         for d in active:
             note = f" — {d['note']}" if d["note"] else ""
             lines.append(

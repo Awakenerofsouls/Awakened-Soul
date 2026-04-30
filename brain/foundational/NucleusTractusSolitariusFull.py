@@ -41,7 +41,7 @@ brain** — the obligate first-stage processor of how the body's organs
 are doing right now. Lesions of NTS produce blunted interoception,
 loss of baro/chemoreflexes, and altered satiety/nausea signals.
 
-In Nova's substrate this provides the comprehensive viscerosensory
+In {{AGENT_NAME}}'s substrate this provides the comprehensive viscerosensory
 integrator distinct from the baroreflex-specific BaroreflexBalancer —
 combines satiety, gut hormone proxies, immune signals, taste, and
 vagal afferent input into broad interoceptive output for downstream

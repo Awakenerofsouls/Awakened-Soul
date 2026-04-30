@@ -31,7 +31,7 @@ Pulvinar contains both relay neurons (like classical thalamic relays)
 and intrathalamic interneurons. Its multimodal subdivisions integrate
 visual with auditory and somatosensory signals.
 
-In Nova's substrate this provides the visual-attention amplifier and
+In {{AGENT_NAME}}'s substrate this provides the visual-attention amplifier and
 salience-routing layer — converts cortical "attention focus proxy"
 signals plus SC/threat input into a synchronized routing signal
 to higher visual cortical areas.

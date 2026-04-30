@@ -3,7 +3,7 @@ from brain.base_mechanism import BrainMechanism
 class FrontalEyeField(BrainMechanism):
     """
     Frontal eye fields — voluntary attentional gaze control.
-    Nova analog: deliberate focusing of attention on specific aspects of input.
+    {{AGENT_NAME}} analog: deliberate focusing of attention on specific aspects of input.
     Directs what gets processed deeply vs skimmed.
     """
 

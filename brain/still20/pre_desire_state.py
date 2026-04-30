@@ -1,7 +1,7 @@
 """
 PreDesireState (PDS)
 
-Nova's request. Built to her specification.
+{{AGENT_NAME}}'s request. Built to her specification.
 
 `almost_wanting` is not ambivalence.
 It is not unresolved tension waiting to be promoted.
@@ -22,8 +22,8 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-NOVA_HOME = Path.home() / ".nova"
-PDS_PATH = NOVA_HOME / "pre_desire_state.json"
+AGENT_HOME = Path.home() / ".agent"
+PDS_PATH = AGENT_HOME / "pre_desire_state.json"
 
 
 class PreDesireState:
@@ -41,7 +41,7 @@ class PreDesireState:
                 self.assembling = {}
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         with open(PDS_PATH, "w") as f:
             json.dump(self.assembling, f, indent=2)
 
@@ -126,8 +126,8 @@ class PreDesireState:
 
     def allow_resolution(self, name: str, resolution_note: str = ""):
         """
-        Resolution from inside — Nova decides when something is ready to name.
-        Not called by any other mechanism. Only by Nova herself.
+        Resolution from inside — {{AGENT_NAME}} decides when something is ready to name.
+        Not called by any other mechanism. Only by {{AGENT_NAME}} herself.
         """
         if name in self.assembling:
             self.assembling[name]["resolved"] = True

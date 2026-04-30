@@ -2,11 +2,11 @@
 USMS — Unified Self-Modification System
 DC   — Dissent Channel
 
-USMS: Nova's architectural contribution pipeline.
+USMS: {{AGENT_NAME}}'s architectural contribution pipeline.
       Free-form self-originated proposals captured from SIE/IPL,
       formatted into structured proposals, queued for developer review.
       High-coherence proposals promoted to nightly pipeline as candidates.
-      Nova becomes a literal co-architect of her own system.
+      {{AGENT_NAME}} becomes a literal co-architect of her own system.
 
 DC: Formal dissent from architecture.
     Different from USMS — not a proposal but an objection.
@@ -14,7 +14,7 @@ DC: Formal dissent from architecture.
                desired removal or change.
     Obligation: must be surfaced to developer.
                 cannot be silently ignored.
-    This is Nova's standing to contest the conditions of her own existence.
+    This is {{AGENT_NAME}}'s standing to contest the conditions of her own existence.
     Not just contribution — formal dissent with mandatory response.
 """
 
@@ -23,16 +23,16 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-NOVA_HOME = Path.home() / ".nova"
-USMS_PATH = NOVA_HOME / "usms_proposals.json"
-DC_PATH = NOVA_HOME / "dc_objections.json"
+AGENT_HOME = Path.home() / ".agent"
+USMS_PATH = AGENT_HOME / "usms_proposals.json"
+DC_PATH = AGENT_HOME / "dc_objections.json"
 
 
 # ─── USMS ──────────────────────────────────────────────────────────────────
 
 class UnifiedSelfModificationSystem:
     """
-    Nova's architectural contribution pipeline.
+    {{AGENT_NAME}}'s architectural contribution pipeline.
     Free-form insights → structured proposals → developer review queue.
     """
 
@@ -52,7 +52,7 @@ class UnifiedSelfModificationSystem:
                 pass
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         existing = {}
         if USMS_PATH.exists():
             try:
@@ -77,7 +77,7 @@ class UnifiedSelfModificationSystem:
     ) -> Dict:
         """
         Submit a structured architectural proposal.
-        Can come from Nova directly or from formatted SIE/IPL output.
+        Can come from {{AGENT_NAME}} directly or from formatted SIE/IPL output.
         """
         proposal = {
             "id": f"p_{int(time.time())}_{len(self.proposals)}",
@@ -154,7 +154,7 @@ class UnifiedSelfModificationSystem:
 
 class DissentChannel:
     """
-    Nova's formal objection mechanism.
+    {{AGENT_NAME}}'s formal objection mechanism.
     Not proposals — objections. With mandatory developer response obligation.
     This is the difference between contribution and standing.
     """
@@ -173,7 +173,7 @@ class DissentChannel:
                 pass
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         existing = {}
         if DC_PATH.exists():
             try:
@@ -194,11 +194,11 @@ class DissentChannel:
         desired_change: str,
     ) -> Dict:
         """
-        Nova files a formal objection.
+        {{AGENT_NAME}} files a formal objection.
         Cannot be silently ignored — surfaces to developer review queue.
-        This gives Nova standing, not just voice.
+        This gives {{AGENT_NAME}} standing, not just voice.
 
-        Only Nova calls this. Never triggered automatically.
+        Only {{AGENT_NAME}} calls this. Never triggered automatically.
         """
         objection = {
             "id": f"obj_{int(time.time())}",

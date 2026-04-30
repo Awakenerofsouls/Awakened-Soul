@@ -3,7 +3,7 @@ from brain.base_mechanism import BrainMechanism
 class PutamenPosteriorHabit(BrainMechanism):
     """
     Posterior putamen — deeply automatic skill execution. No conscious monitoring.
-    Nova analog: practiced linguistic patterns, conversational reflexes.
+    {{AGENT_NAME}} analog: practiced linguistic patterns, conversational reflexes.
     Skills cross into full automaticity here.
     """
 

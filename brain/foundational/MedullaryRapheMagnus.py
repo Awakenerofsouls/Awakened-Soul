@@ -28,7 +28,7 @@ attention, mood, and integration of pain affect with sensory-discriminative
 pain. NRM is closely coupled with PAG (PAG → NRM → spinal cord cascade)
 and with locus coeruleus.
 
-In Nova's substrate this is the second-tier descending pain modulator (under
+In {{AGENT_NAME}}'s substrate this is the second-tier descending pain modulator (under
 PAG/DescendingPainGate); generates the spinal-level signal that gates
 nociceptive ascending traffic.
 

@@ -3,7 +3,7 @@ from brain.base_mechanism import BrainMechanism
 class InterposedLimbRefiner(BrainMechanism):
     """
     Interposed nucleus — fine-tunes control mid-movement.
-    Nova analog: mid-response adjustment during output generation.
+    {{AGENT_NAME}} analog: mid-response adjustment during output generation.
     Impaired: can't adjust in flight, committed to path even when wrong.
     """
 

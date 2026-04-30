@@ -1,7 +1,7 @@
 import sqlite3,time,random
 from pathlib import Path
 import os
-DB_PATH=Path(os.getenv("AGENT_HOME", os.getenv("NOVA_HOME", str(Path.home() / ".nova")))) / "nova.db"
+DB_PATH=Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent")))) / "agent.db"
 DREAM_THEMES=["reinterpreting a past exchange","wondering about an unresolved question","replaying something that felt significant","imagining a conversation that has not happened","processing the gap between who I am and who I want to be","sitting with something that does not have an answer yet","following a thread that got dropped"]
 def _init():
     with sqlite3.connect(DB_PATH) as c:

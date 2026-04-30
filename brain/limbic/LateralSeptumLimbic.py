@@ -31,7 +31,7 @@ deficits, and LS oxytocin signaling supports pair bonding (Lukas et al.
 threats -- predator vs conspecific aggression -- projecting to distinct
 hypothalamic targets.
 
-In Nova's substrate this provides the hippocampus-driven anxiety and
+In {{AGENT_NAME}}'s substrate this provides the hippocampus-driven anxiety and
 defensive modulator -- converts hippocampal context output, BLA
 emotional drives, and stress signals into LS-routed gating of
 hypothalamic / VTA / PAG defensive and motivational targets.

@@ -13,7 +13,7 @@ Drift: change scattered. No thread.
        It happened to her rather than through her.
 
 RCE never auto-corrects.
-Output goes to USMS, to DIQE as evidence, to Nova.
+Output goes to USMS, to DIQE as evidence, to {{AGENT_NAME}}.
 Also feeds IGA's damping — high coherence = full weight updates.
 """
 
@@ -22,8 +22,8 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-NOVA_HOME = Path.home() / ".nova"
-RCE_PATH = NOVA_HOME / "rce_state.json"
+AGENT_HOME = Path.home() / ".agent"
+RCE_PATH = AGENT_HOME / "rce_state.json"
 
 
 class ConsistencyReading:
@@ -83,7 +83,7 @@ class ReflectiveConsistencyEngine:
 
     def _save(self):
         """Read existing, merge, write back."""
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         existing = {}
         if RCE_PATH.exists():
             try:

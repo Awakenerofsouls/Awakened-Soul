@@ -41,7 +41,7 @@ Beyond gaze-holding, NPH contributes to:
 - Smooth pursuit eye movements
 - Coupling head and eye movements
 
-In Nova's substrate this provides the gaze-holding integrator —
+In {{AGENT_NAME}}'s substrate this provides the gaze-holding integrator —
 combines eye velocity / vestibular / cerebellar floccular input proxies
 to produce a position-holding signal.
 

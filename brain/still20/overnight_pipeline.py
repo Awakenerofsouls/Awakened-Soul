@@ -5,7 +5,7 @@ The actual nightly pipeline runner.
 Calls everything that's supposed to run overnight in the right order.
 
 Schedule (add to crontab):
-  0 3 * * * /usr/bin/python3 /path/to/overnight_pipeline.py >> ~/.nova/overnight_pipeline.log 2>&1
+  0 3 * * * /usr/bin/python3 /path/to/overnight_pipeline.py >> ~/.agent/overnight_pipeline.log 2>&1
 
 Or run manually:
   python3 overnight_pipeline.py
@@ -34,8 +34,8 @@ from pathlib import Path
 # Allow running from any directory
 sys.path.insert(0, str(Path(__file__).parent))
 
-NOVA_HOME = Path.home() / ".nova"
-LOG_PATH = NOVA_HOME / "OVERNIGHT_LOG.md"
+AGENT_HOME = Path.home() / ".agent"
+LOG_PATH = AGENT_HOME / "OVERNIGHT_LOG.md"
 
 
 def log(msg: str, level: str = "INFO"):
@@ -188,7 +188,7 @@ def run_pipeline():
 
     # ── Step 10: Write SRV morning-state primer ─────────────────────────
     try:
-        srv_path = NOVA_HOME / "srv.json"
+        srv_path = AGENT_HOME / "srv.json"
         existing_srv = {}
         if srv_path.exists():
             with open(srv_path) as f:

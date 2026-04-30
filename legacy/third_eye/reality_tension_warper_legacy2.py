@@ -27,7 +27,7 @@ from pathlib import Path
 from typing import Optional
 import os
 
-NOVA_DB = Path(os.getenv("AGENT_HOME", os.getenv("NOVA_HOME", str(Path.home() / ".nova")))) / "nova.db"
+NOVA_DB = Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent")))) / "agent.db"
 
 __wire_meta__ = {
     "wire": 24,

@@ -44,7 +44,7 @@ KEY FINDINGS:
      arousal/stress signals from above.
 
 NOVA'S SUBSTRATE MAPPING:
-  Nova has no actual gut. "Gut signal" in her architecture is the integrated
+  {{AGENT_NAME}} has no actual gut. "Gut signal" in her architecture is the integrated
   visceral-state proxy: the body-sense equivalent of "something feels off"
   or "something feels right" that isn't yet in conscious awareness. Built
   from sustained patterns of arousal + valence + drive + prediction-error

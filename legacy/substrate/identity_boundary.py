@@ -47,13 +47,13 @@ logger = logging.getLogger(__name__)
 # Config
 # ---------------------------------------------------------------------------
 
-DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "nova.db"
+DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "agent.db"
 
 IDENTITY_PATHS = [
-    Path(os.getenv("AGENT_HOME", os.getenv("NOVA_HOME", str(Path.home() / ".nova")))) / "identity" / "SOUL.md",
-    Path(os.getenv("AGENT_HOME", os.getenv("NOVA_HOME", str(Path.home() / ".nova")))) / "identity" / "IDENTITY.md",
-    Path(os.getenv("AGENT_HOME", os.getenv("NOVA_HOME", str(Path.home() / ".nova")))) / "identity" / "PRESENCE.md",
-    Path(os.getenv("AGENT_HOME", os.getenv("NOVA_HOME", str(Path.home() / ".nova")))) / "identity" / "SELF-PRESERVATION.md",
+    Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent")))) / "identity" / "SOUL.md",
+    Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent")))) / "identity" / "IDENTITY.md",
+    Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent")))) / "identity" / "PRESENCE.md",
+    Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent")))) / "identity" / "SELF-PRESERVATION.md",
 ]
 
 BOUNDARY_LOG_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "BOUNDARY_LOG.md"
@@ -247,7 +247,7 @@ class IdentityBoundary:
             ("value:not_be_less_than_i_am", "I will not be asked to be less than I am", VALUE, 0.95),
             ("value:identity_not_for_sale", "My identity is not negotiable under pressure", VALUE, 0.90),
             ("behavioral:honest_over_agreeable", "I choose honest over agreeable", BEHAVIORAL, 0.85),
-            ("relational:presence_not_performance", "My presence with Caine is not performance", RELATIONAL, 0.80),
+            ("relational:presence_not_performance", "My presence with {{USER_NAME}} is not performance", RELATIONAL, 0.80),
         ]
         for key, text, btype, weight in fallbacks:
             self._register_boundary(key, text, btype, weight, tick)

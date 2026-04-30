@@ -27,7 +27,7 @@ states. AP also receives ascending vagal input (via NTS) and feeds back into
 parabrachial nucleus, thalamus, and limbic regions — coupling toxin/illness
 detection with the affective experience of nausea.
 
-In Nova's substrate, this mechanism implements the body's chemical danger
+In {{AGENT_NAME}}'s substrate, this mechanism implements the body's chemical danger
 detector — circulating toxin signals or metabolic disturbance produces
 nausea-like aversive interoceptive output that biases attention, behavior,
 and feeding away from the perceived threat source.

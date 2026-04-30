@@ -14,8 +14,8 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-NOVA_HOME = Path.home() / ".nova"
-WITNESS_LOG = NOVA_HOME / "witness_log.json"
+AGENT_HOME = Path.home() / ".agent"
+WITNESS_LOG = AGENT_HOME / "witness_log.json"
 MAX_LOG_ENTRIES = 500
 
 
@@ -38,7 +38,7 @@ class PureWitnessModule:
                 self.tick_count = 0
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         with open(WITNESS_LOG, "w") as f:
             json.dump({
                 "trace": self.trace[-MAX_LOG_ENTRIES:],

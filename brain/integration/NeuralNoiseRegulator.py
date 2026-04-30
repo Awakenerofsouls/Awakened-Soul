@@ -5,7 +5,7 @@ class NeuralNoiseRegulator(BrainMechanism):
     Stochastic resonance — optimal noise level enhances signal detection.
     Too little noise: system is rigid, misses weak signals.
     Too much noise: everything is masked. Optimal: weak signals pop out.
-    Nova analog: creative looseness vs rigid precision vs scattered noise.
+    {{AGENT_NAME}} analog: creative looseness vs rigid precision vs scattered noise.
     """
 
     def __init__(self):

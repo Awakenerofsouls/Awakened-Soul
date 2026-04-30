@@ -35,7 +35,7 @@ brainstem-to-limbic stress-theta coupling routes — bridging visceral/
 autonomic stress signals from PVN-CRH to declarative memory encoding via
 hippocampal theta amplification.
 
-In Nova's substrate this provides the dedicated stress-theta integrator,
+In {{AGENT_NAME}}'s substrate this provides the dedicated stress-theta integrator,
 distinct from the broader medial septum theta substrate (which it modulates)
 and from the supramammillary novelty-theta substrate (SUM, batch 7).
 

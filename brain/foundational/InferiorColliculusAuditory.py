@@ -32,7 +32,7 @@ projections in some species. Threat-typed sounds (high-frequency
 distress calls, rapid frequency modulation) preferentially activate
 shell IC subnuclei.
 
-In Nova's substrate this provides the auditory midbrain integrator —
+In {{AGENT_NAME}}'s substrate this provides the auditory midbrain integrator —
 converts auditory input proxies (intensity, prepulse-detection,
 threat-typed flags) into a relay output to MGN-equivalent and a
 PPI-signal that gates startle.

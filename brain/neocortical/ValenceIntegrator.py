@@ -4,7 +4,7 @@ class ValenceIntegrator(BrainMechanism):
     """
     Valence integration — combines all emotional signals into a single positive/negative value.
     The net emotional tone. Ranges -1 (deeply negative) to +1 (positive).
-    This signal propagates through everything — it colors all of Nova's processing.
+    This signal propagates through everything — it colors all of {{AGENT_NAME}}'s processing.
     """
 
     def __init__(self):

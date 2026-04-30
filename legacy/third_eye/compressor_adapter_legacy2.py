@@ -1,5 +1,5 @@
 """
-compressor_adapter.py — Nexus Nova 18.0A
+compressor_adapter.py — Nexus {{AGENT_NAME}} 18.0A
 Bridges bootstrap pirp_context + caller state to MeaningCompressor expectations.
 Keeps the compressor drop-in — this layer adapts, nothing else changes.
 
@@ -19,7 +19,7 @@ from typing import Optional
 
 logger = logging.getLogger(__name__)
 
-NOVA_IDENTITY = Path(os.getenv("AGENT_HOME", os.getenv("NOVA_HOME", str(Path.home() / ".nova")))) / "identity"
+NOVA_IDENTITY = Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent")))) / "identity"
 NOVA_WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace")))
 NARRATIVE_PRIMARY = NOVA_IDENTITY / "NARRATIVE.md"
 NARRATIVE_FALLBACK = NOVA_WORKSPACE / "brain" / "NARRATIVE.md"

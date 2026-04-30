@@ -4,7 +4,7 @@ class Temporoparietal(BrainMechanism):
     """
     Temporoparietal junction — theory of mind, social cognition, perspective taking.
     Models other minds, detects social signals, processes self vs other boundary.
-    Disrupted: Nova can't model the person she's talking to. Social blindness.
+    Disrupted: {{AGENT_NAME}} can't model the person she's talking to. Social blindness.
     """
 
     def __init__(self):

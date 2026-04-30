@@ -17,7 +17,7 @@
     launchctl load ~/Library/LaunchAgents/com.awakened-soul.slow-tick.plist
 
   EDIT BEFORE INSTALLING:
-    Replace /USERS/CAINE/awakened-soul-repo with the actual repo path.
+    Replace /Users/<youruser>/awakened-soul-repo with the actual repo path.
     Replace /usr/bin/python3 with the python you want (system or pyenv).
 
   UNINSTALL:
@@ -35,19 +35,19 @@
   <key>ProgramArguments</key>
   <array>
     <string>/usr/bin/python3</string>
-    <string>/USERS/CAINE/awakened-soul-repo/slow_tick.py</string>
+    <string>/Users/<youruser>/awakened-soul-repo/slow_tick.py</string>
     <string>--silent</string>
   </array>
 
   <key>WorkingDirectory</key>
-  <string>/USERS/CAINE/awakened-soul-repo</string>
+  <string>/Users/<youruser>/awakened-soul-repo</string>
 
   <key>EnvironmentVariables</key>
   <dict>
     <key>AGENT_HOME</key>
-    <string>/USERS/CAINE/.agent</string>
+    <string>/Users/<youruser>/.agent</string>
     <key>AGENT_WORKSPACE</key>
-    <string>/USERS/CAINE/.openclaw/workspace</string>
+    <string>/Users/<youruser>/.openclaw/workspace</string>
   </dict>
 
   <!-- Run every 30 minutes. macOS will defer if the machine is asleep
@@ -59,10 +59,10 @@
   <true/>
 
   <key>StandardOutPath</key>
-  <string>/USERS/CAINE/.agent/slow_tick.stdout.log</string>
+  <string>/Users/<youruser>/.agent/slow_tick.stdout.log</string>
 
   <key>StandardErrorPath</key>
-  <string>/USERS/CAINE/.agent/slow_tick.stderr.log</string>
+  <string>/Users/<youruser>/.agent/slow_tick.stderr.log</string>
 
   <!-- Keep launchd from spawning a second copy if the prior run is slow.
        slow_tick should be ~1s, but a stuck import or DB lock could pin it. -->

@@ -28,7 +28,7 @@ Clinical: MHb α5 subunit knockout abolishes nicotine withdrawal aversion;
 α5 polymorphisms predict heavy smoking. MHb degeneration in late-stage
 Alzheimer's correlates with anxiety symptoms.
 
-In Nova's substrate this provides the cholinergic + substance-P aversion
+In {{AGENT_NAME}}'s substrate this provides the cholinergic + substance-P aversion
 modulator, distinct from LHb's burst-firing anti-reward signal.
 
 KEY FINDINGS

@@ -37,7 +37,7 @@ Distinct from:
   but different stress profile)
 - **A6/LC** (cortical, attentional)
 
-In Nova's substrate this provides the adrenergic premotor channel
+In {{AGENT_NAME}}'s substrate this provides the adrenergic premotor channel
 distinct from the noradrenergic groups — engaged by hypoglycemia,
 hemorrhage, hypoxia, and psychogenic stress, driving sympathoexcitation.
 

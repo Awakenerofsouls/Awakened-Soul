@@ -25,7 +25,7 @@ PBN receives ascending input from spinal lamina I (nociceptive), NTS (taste,
 visceral), and trigeminal sensory complex (face/oral) and modulates breathing
 through the Kölliker-Fuse subnucleus.
 
-In Nova's substrate this is the integrative aversive-interoceptive relay —
+In {{AGENT_NAME}}'s substrate this is the integrative aversive-interoceptive relay —
 combining multiple aversive signals into a single "general alarm" output that
 drives downstream affect and defense.
 

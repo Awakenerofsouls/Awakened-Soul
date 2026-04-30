@@ -31,7 +31,7 @@ positive vs negative valence and project to distinct downstream
 targets. VP→VTA projections support reinforcement; VP→LHb projections
 encode aversive valence and engage anti-reward.
 
-In Nova's substrate this provides the reward-output pallidum — combines
+In {{AGENT_NAME}}'s substrate this provides the reward-output pallidum — combines
 NAc-core/shell drives, integrates hedonic and incentive signals, and
 emits the principal reward-output that downstream MD-thalamus and
 LH/VTA mechanisms read.

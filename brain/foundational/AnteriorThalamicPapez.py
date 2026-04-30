@@ -33,7 +33,7 @@ Vertes' lab and others have shown coherent theta across the Papez
 circuit during memory encoding and REM sleep. ATN burst-tonic mode
 switching (like other thalamic nuclei) is modulated by sleep state.
 
-In Nova's substrate this provides the Papez-circuit memory-relay node —
+In {{AGENT_NAME}}'s substrate this provides the Papez-circuit memory-relay node —
 combines mammillary body MTT input with subicular input, supports
 theta-coherent transmission, and emits cortical-bound output.
 

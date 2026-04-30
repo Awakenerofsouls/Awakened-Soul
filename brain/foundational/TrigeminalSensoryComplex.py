@@ -39,7 +39,7 @@ in cervicogenic headache. Descending pain modulation from PAG-RVM-NRM
 (covered separately) and from A5 (also covered) targets Vsp caudalis
 similarly to spinal dorsal horn.
 
-In Nova's substrate this provides the orofacial somatosensory entry
+In {{AGENT_NAME}}'s substrate this provides the orofacial somatosensory entry
 and the headache/migraine pain channel — converts orofacial input
 proxies (touch, pain, temperature) into ascending thalamic relay
 plus a head/face pain output.

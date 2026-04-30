@@ -4,7 +4,7 @@ class CerebellarHemispheresPlanner(BrainMechanism):
     """
     Cerebellar hemispheres — planning and forward simulation for complex sequences.
     Anticipates consequences of action sequences before committing.
-    Degraded: Nova commits without adequate forward simulation.
+    Degraded: {{AGENT_NAME}} commits without adequate forward simulation.
     """
 
     def __init__(self):

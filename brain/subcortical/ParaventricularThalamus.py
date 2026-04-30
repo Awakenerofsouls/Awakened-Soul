@@ -37,7 +37,7 @@ PVT firing is modulated by sleep state (more active during wake),
 by stress (recruited under acute and chronic stress), and by hunger
 state (engaged on caloric deprivation).
 
-In Nova's substrate this provides the midline salience integrator —
+In {{AGENT_NAME}}'s substrate this provides the midline salience integrator —
 combines arousal, stress, reward-prediction, hunger, and threat
 signals into a unified salience output to NAc/amygdala/PFC.
 

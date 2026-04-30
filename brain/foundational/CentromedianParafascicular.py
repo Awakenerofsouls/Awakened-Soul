@@ -37,7 +37,7 @@ projections to TRN are reciprocal — CM-Pf can engage TRN broadly,
 amplifying or suppressing thalamic gating across multiple sectors
 simultaneously.
 
-In Nova's substrate this provides the salience-amplifier channel into
+In {{AGENT_NAME}}'s substrate this provides the salience-amplifier channel into
 action selection — converts arousal + threat/novelty signals into a
 striatal-bound salience drive that biases basal ganglia gating.
 

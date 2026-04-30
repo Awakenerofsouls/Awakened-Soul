@@ -29,7 +29,7 @@ intrinsically photosensitive retinal ganglion cells (ipRGCs) reaches
 SCN, which disengages the descending pathway. This is why bright light
 at night (or shift work) suppresses melatonin and disrupts sleep.
 
-In Nova's substrate this provides the circadian melatonin signal —
+In {{AGENT_NAME}}'s substrate this provides the circadian melatonin signal —
 slow phase-locked output rising in subjective night and falling in
 subjective day, with light-suppression mode and SCN-coordinated timing.
 

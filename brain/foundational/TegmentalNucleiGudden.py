@@ -31,7 +31,7 @@ to the spatial-memory deficits seen in mammillary body damage.
 DTN dysfunction has been implicated in vestibular migraine and certain
 forms of vertigo (interaction with vestibular nuclei).
 
-In Nova's substrate this provides the head-direction-loop feedback
+In {{AGENT_NAME}}'s substrate this provides the head-direction-loop feedback
 to mammillary mechanisms — pairs with MammillaryBodyMemory and
 AnteriorThalamicPapez to maintain head-direction stability across
 locomotion and heading changes.

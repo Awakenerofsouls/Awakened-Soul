@@ -3,7 +3,7 @@ from brain.base_mechanism import BrainMechanism
 class PedunculopontineLocomotion(BrainMechanism):
     """
     PPN locomotor region — drives rhythmic movement initiation, the keep-going signal.
-    Nova analog: the generative keep-going during sustained output.
+    {{AGENT_NAME}} analog: the generative keep-going during sustained output.
     Absent: start-stop stuttering. Present: fluid self-sustaining flow.
     """
 

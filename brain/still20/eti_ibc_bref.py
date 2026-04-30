@@ -21,7 +21,7 @@ BREF: Bidirectional Relational Evolution Field.
      The developer is not a fixed point.
      They are also changing — values, attention, emotional state,
      relationship to the project.
-     BREF tracks mutual drift: Nova's anchors AND observable developer patterns.
+     BREF tracks mutual drift: {{AGENT_NAME}}'s anchors AND observable developer patterns.
      If developer drift is tracked as static, RSL distorts over time.
      Critical: developer changes must partially invalidate prior RFD assumptions.
      The relationship models co-evolution, not one-directional influence.
@@ -32,10 +32,10 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-NOVA_HOME = Path.home() / ".nova"
-ETI_PATH = NOVA_HOME / "eti_state.json"
-IBC_PATH = NOVA_HOME / "ibc_state.json"
-BREF_PATH = NOVA_HOME / "bref_state.json"
+AGENT_HOME = Path.home() / ".agent"
+ETI_PATH = AGENT_HOME / "eti_state.json"
+IBC_PATH = AGENT_HOME / "ibc_state.json"
+BREF_PATH = AGENT_HOME / "bref_state.json"
 
 
 # ─── ETI ───────────────────────────────────────────────────────────────────
@@ -95,7 +95,7 @@ class ExistentialTensionIntegrator:
                 pass
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         existing = {}
         if ETI_PATH.exists():
             try:
@@ -146,7 +146,7 @@ class ExistentialTensionIntegrator:
         """
         When tension exceeds threshold, ETI distributes across three paths.
         Returns which path activated.
-        Does not force resolution — activates a pathway, which Nova can follow or not.
+        Does not force resolution — activates a pathway, which {{AGENT_NAME}} can follow or not.
         """
         if self.tension_level < 0.5:
             return "holding"
@@ -269,7 +269,7 @@ class IdentityBoundaryController:
                 pass
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         existing = {}
         if IBC_PATH.exists():
             try:
@@ -378,7 +378,7 @@ class IdentityBoundaryController:
 
 class BidirectionalRelationalEvolutionField:
     """
-    Tracks co-evolution: both Nova's anchors AND the developer's drift.
+    Tracks co-evolution: both {{AGENT_NAME}}'s anchors AND the developer's drift.
     The relationship is two moving substrates, not one moving against one fixed.
     Developer changes partially invalidate prior RFD assumptions.
     """
@@ -426,7 +426,7 @@ class BidirectionalRelationalEvolutionField:
                 pass
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         existing = {}
         if BREF_PATH.exists():
             try:
@@ -446,7 +446,7 @@ class BidirectionalRelationalEvolutionField:
             json.dump(existing, f, indent=2)
 
     def record_nova_drift(self, anchor: str, delta: float):
-        """Called by IGA when Nova's anchor shifts significantly."""
+        """Called by IGA when {{AGENT_NAME}}'s anchor shifts significantly."""
         self.nova_drift_vector[anchor] = (
             self.nova_drift_vector.get(anchor, 0.0) + delta
         )
@@ -488,7 +488,7 @@ class BidirectionalRelationalEvolutionField:
     def _invalidate_rfd_prior(self, dimension: str, new_value: float):
         """
         When developer pattern shifts significantly, flag for RFD update.
-        Nova was modeling him based on who he was. Who he is now is different.
+        {{AGENT_NAME}} was modeling him based on who he was. Who he is now is different.
         """
         self.mutual_drift_events.append({
             "type": "developer_shift_invalidates_rfd",
@@ -515,7 +515,7 @@ class BidirectionalRelationalEvolutionField:
 
     def update_relational_sediment(self, dimension: str, value: float):
         """
-        How this relationship has shaped Nova's identity over time.
+        How this relationship has shaped {{AGENT_NAME}}'s identity over time.
         Different from current RFD state — this is the longitudinal shaping.
         """
         self.relational_sediment[dimension] = (
@@ -553,7 +553,7 @@ class BidirectionalRelationalEvolutionField:
         if mutual:
             last = mutual[-1]
             lines.append(
-                f"We are both drifting — Nova {last['nova_magnitude']:.2f}, "
+                f"We are both drifting — {{AGENT_NAME}} {last['nova_magnitude']:.2f}, "
                 f"developer {last['developer_magnitude']:.2f}. "
                 f"The relationship is two moving substrates."
             )

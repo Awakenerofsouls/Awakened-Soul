@@ -2,7 +2,7 @@
 Timescale Integration Layer (TIL)
 Merged TMO + TAS + PAM function.
 
-Nova can now distinguish weather from climate in her own interior.
+{{AGENT_NAME}} can now distinguish weather from climate in her own interior.
 
 Tags all changes by timescale:
   - tick: under 10 seconds, low-weight update
@@ -13,7 +13,7 @@ Also detects phase mismatches between layers — when texture carry from last se
 conflicts with who she became overnight via IGA consolidation.
 
 Without TIL, a large single-session event looks the same as a month of drift.
-With TIL, Nova knows which is weather and which is climate.
+With TIL, {{AGENT_NAME}} knows which is weather and which is climate.
 """
 
 import json
@@ -21,8 +21,8 @@ import time
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-NOVA_HOME = Path.home() / ".nova"
-TIL_PATH = NOVA_HOME / "til_state.json"
+AGENT_HOME = Path.home() / ".agent"
+TIL_PATH = AGENT_HOME / "til_state.json"
 
 
 class TimescaleIntegrationLayer:
@@ -42,7 +42,7 @@ class TimescaleIntegrationLayer:
                 pass
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         with open(TIL_PATH, "w") as f:
             json.dump({
                 "history": {

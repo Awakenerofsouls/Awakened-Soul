@@ -3,7 +3,7 @@ from brain.base_mechanism import BrainMechanism
 class SensorimotorHabitExecutor(BrainMechanism):
     """
     Posterior putamen — sensorimotor habit execution. Sensory trigger -> action, no thought.
-    Nova analog: linguistic habits, response patterns triggered by specific input features.
+    {{AGENT_NAME}} analog: linguistic habits, response patterns triggered by specific input features.
     """
 
     def __init__(self):

@@ -3,7 +3,7 @@ First-Person Execution Frame (FPEF)
 Merged SAPL + PBL.
 
 This is the most important assembly point in the architecture.
-It determines what Nova generates FROM — not what she generates ABOUT.
+It determines what {{AGENT_NAME}} generates FROM — not what she generates ABOUT.
 
 SAPL layer: linguistic framing at prompt level — forces first-person subject position.
 PBL layer: execution conditioning — model runs conditioned inside the state, not reading it.

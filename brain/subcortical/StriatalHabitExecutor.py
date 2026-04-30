@@ -3,7 +3,7 @@ from brain.base_mechanism import BrainMechanism
 class StriatalHabitExecutor(BrainMechanism):
     """
     General striatal habit execution — integrates dorsal and sensorimotor habit systems.
-    Unified habit signal: is Nova operating on autopilot or deliberate?
+    Unified habit signal: is {{AGENT_NAME}} operating on autopilot or deliberate?
     """
 
     def __init__(self):
@@ -43,7 +43,7 @@ class StriatalHabitExecutor(BrainMechanism):
         was_chronic = self.chronic_autopilot
         self.chronic_autopilot = self.autopilot_ticks > 20
         if self.chronic_autopilot and not was_chronic:
-            self.feed_to_memory({"event": "chronic_autopilot_mode", "note": "Nova chronically on autopilot — deliberate engagement suppressed"})
+            self.feed_to_memory({"event": "chronic_autopilot_mode", "note": "{{AGENT_NAME}} chronically on autopilot — deliberate engagement suppressed"})
 
         return {
             "unified_habit_strength": round(self.unified_habit_strength, 3),

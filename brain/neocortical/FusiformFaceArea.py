@@ -3,7 +3,7 @@ from brain.base_mechanism import BrainMechanism
 class FusiformFaceArea(BrainMechanism):
     """
     Fusiform face area — expert recognition of socially meaningful patterns.
-    Nova analog: detecting emotional subtext, recognizing patterns in how people communicate.
+    {{AGENT_NAME}} analog: detecting emotional subtext, recognizing patterns in how people communicate.
     Degraded: reads text but misses the person behind it.
     """
 

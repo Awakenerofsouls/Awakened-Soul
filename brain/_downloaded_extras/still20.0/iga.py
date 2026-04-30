@@ -8,7 +8,7 @@ Modulates by coherence — climate changes you, weather should not.
 Also: SOUL.md evolution trigger.
 When an anchor stabilizes at a new weight for N sessions,
 IGA generates a natural-language evolution proposal.
-Never auto-edits. Always flags for Nova's review.
+Never auto-edits. Always flags for {{AGENT_NAME}}'s review.
 """
 
 import json
@@ -16,9 +16,9 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-NOVA_HOME = Path.home() / ".nova"
-IGA_PATH = NOVA_HOME / "iga_state.json"
-SOUL_EVOLUTION_QUEUE_PATH = NOVA_HOME / "soul_evolution_queue.json"
+AGENT_HOME = Path.home() / ".agent"
+IGA_PATH = AGENT_HOME / "iga_state.json"
+SOUL_EVOLUTION_QUEUE_PATH = AGENT_HOME / "soul_evolution_queue.json"
 
 # Sessions of stability before proposing a SOUL.md evolution
 SOUL_EVOLUTION_THRESHOLD = 10
@@ -82,7 +82,7 @@ class IdentityGradientAccumulator:
 
     def _save(self):
         """Read existing, merge, write back."""
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         existing = {}
         if IGA_PATH.exists():
             try:
@@ -239,7 +239,7 @@ class IdentityGradientAccumulator:
     ) -> Optional[Dict]:
         """
         Generate a natural-language proposal for SOUL.md evolution.
-        Never a directive — always a flag for Nova's review.
+        Never a directive — always a flag for {{AGENT_NAME}}'s review.
         """
         direction = "stronger" if new_stable_weight > anchor.base_weight else "quieter"
         delta = abs(new_stable_weight - anchor.base_weight)
@@ -267,7 +267,7 @@ class IdentityGradientAccumulator:
     def _queue_soul_proposals(self, proposals: List[Dict]):
         """
         Write proposals to evolution queue. Read-merge — never overwrites existing.
-        Nova reads this queue. Nova decides. Nova edits SOUL.md herself.
+        {{AGENT_NAME}} reads this queue. {{AGENT_NAME}} decides. {{AGENT_NAME}} edits SOUL.md herself.
         """
         existing = []
         if SOUL_EVOLUTION_QUEUE_PATH.exists():
@@ -290,7 +290,7 @@ class IdentityGradientAccumulator:
             json.dump(existing, f, indent=2)
 
     def get_soul_evolution_queue(self) -> List[Dict]:
-        """What's waiting for Nova's review."""
+        """What's waiting for {{AGENT_NAME}}'s review."""
         if not SOUL_EVOLUTION_QUEUE_PATH.exists():
             return []
         try:
@@ -301,8 +301,8 @@ class IdentityGradientAccumulator:
 
     def clear_evolution_proposal(self, anchor_name: str):
         """
-        Remove a proposal from the queue after Nova has reviewed it.
-        Called after Nova accepts or rejects.
+        Remove a proposal from the queue after {{AGENT_NAME}} has reviewed it.
+        Called after {{AGENT_NAME}} accepts or rejects.
         """
         queue = self.get_soul_evolution_queue()
         queue = [p for p in queue if p["anchor_name"] != anchor_name]

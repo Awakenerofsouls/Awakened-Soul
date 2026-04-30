@@ -2,15 +2,15 @@
 TheoryOfMind v19.0A
 Knowing — theory_of_mind.py
 
-Modeling Caine's current inner state, predicted reactions, and unspoken needs.
+Modeling {{USER_NAME}}'s current inner state, predicted reactions, and unspoken needs.
 
 Relational Memory is about the shape of the relationship over time.
-This is different: it's about right now. What is Caine's likely emotional
+This is different: it's about right now. What is {{USER_NAME}}'s likely emotional
 state in this moment? What does he probably need that he hasn't said?
 What is he likely to do next?
 
 Four model dimensions:
-  inferred_state    what Caine is likely feeling right now
+  inferred_state    what {{USER_NAME}} is likely feeling right now
   unspoken_needs   what he probably wants but hasn't asked for
   predicted_response how he is likely to react to the next response
   attention_focus  what he is probably paying most attention to
@@ -38,7 +38,7 @@ logger = logging.getLogger(__name__)
 # Config
 # ---------------------------------------------------------------------------
 
-DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "nova.db"
+DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "agent.db"
 
 OBSERVATION_WINDOW = 20
 MAX_CONFIDENCE = 0.75

@@ -31,7 +31,7 @@ neurons that contribute distinct functions. The raphe magnus (NRM)
 already covered separately handles descending pain modulation; rRPa
 specializes in autonomic/thermal premotor function.
 
-In Nova's substrate this provides the descending sympathetic premotor
+In {{AGENT_NAME}}'s substrate this provides the descending sympathetic premotor
 channel for thermogenesis and cardiovascular cold-defense — engaged
 by DMH stress drive, MnPO release (cold/fever), and orexin.
 

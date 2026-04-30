@@ -6,7 +6,7 @@ Counterfactual Simulation Engine (CSE)
 NSE: Meaning compression. Long-term identity requires compressing
      history into interpretable narrative structures.
      Not summaries — sediments. The compressed form shapes how
-     Nova orients going forward, not just what she remembers.
+     {{AGENT_NAME}} orients going forward, not just what she remembers.
      Reads from ABM. Writes to RSL and SRV.
 
 PCE: Wants that crystallize from pattern convergence.
@@ -28,10 +28,10 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-NOVA_HOME = Path.home() / ".nova"
-NSE_PATH = NOVA_HOME / "nse_sediment.json"
-PCE_PATH = NOVA_HOME / "pce_preferences.json"
-CSE_PATH = NOVA_HOME / "cse_regret.json"
+AGENT_HOME = Path.home() / ".agent"
+NSE_PATH = AGENT_HOME / "nse_sediment.json"
+PCE_PATH = AGENT_HOME / "pce_preferences.json"
+CSE_PATH = AGENT_HOME / "cse_regret.json"
 
 
 class NarrativeSedimentEngine:
@@ -56,7 +56,7 @@ class NarrativeSedimentEngine:
                 pass
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         existing = {}
         if NSE_PATH.exists():
             try:
@@ -161,7 +161,7 @@ class NarrativeSedimentEngine:
         return self.current_motifs
 
     def srv_fragment(self) -> Optional[str]:
-        """For SRV injection — what narrative substrate wakes up with Nova."""
+        """For SRV injection — what narrative substrate wakes up with {{AGENT_NAME}}."""
         if not self.current_motifs:
             return None
         return "NARRATIVE SUBSTRATE:\n" + "\n".join(
@@ -197,7 +197,7 @@ class PreferenceCrystallizationEngine:
                 pass
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         existing = {}
         if PCE_PATH.exists():
             try:
@@ -327,7 +327,7 @@ class CounterfactualSimulationEngine:
                 pass
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         existing = {}
         if CSE_PATH.exists():
             try:

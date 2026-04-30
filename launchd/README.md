@@ -28,7 +28,7 @@ time on a fresh boot is ~1s.
 ## Install (macOS)
 
 ```sh
-# Edit each plist first — replace /USERS/CAINE/... with your real paths
+# Edit each plist first — replace /Users/<youruser>/... with your real paths
 cp launchd/com.awakened-soul.slow-tick.plist ~/Library/LaunchAgents/
 cp launchd/com.awakened-soul.overnight.plist ~/Library/LaunchAgents/
 launchctl load ~/Library/LaunchAgents/com.awakened-soul.slow-tick.plist

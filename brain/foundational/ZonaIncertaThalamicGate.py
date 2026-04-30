@@ -28,7 +28,7 @@ parafascicular projections suppress fear generalization (Wang et al.
 Lin & Cole (2006) showed ZI GABAergic neurons are silenced during arousal,
 releasing thalamic and midbrain targets from inhibition.
 
-In Nova's substrate this provides the GABAergic thalamic-gate layer —
+In {{AGENT_NAME}}'s substrate this provides the GABAergic thalamic-gate layer —
 controls how much sensory traffic passes through higher-order thalamic
 nuclei to cortex, biases superior colliculus orienting, and gates fear
 generalization through parafascicular projections.

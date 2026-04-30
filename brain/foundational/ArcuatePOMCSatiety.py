@@ -38,7 +38,7 @@ hedonic eating. POMC also modulates HPA stress axis through ACTH
 (another POMC product, though primarily produced by anterior pituitary
 not arcuate).
 
-In Nova's substrate this provides the satiety counterbalance to NPY —
+In {{AGENT_NAME}}'s substrate this provides the satiety counterbalance to NPY —
 combines leptin/insulin signaling proxies with energy balance state and
 emits α-MSH-style satiety drive that downstream PVN/LH mechanisms read.
 

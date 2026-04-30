@@ -38,7 +38,7 @@ unresponsive to L-DOPA). Low-frequency PPN deep brain stimulation has been
 trialed for L-DOPA-resistant gait dysfunction (Mazzone 2005). PPN cell loss
 is also documented in progressive supranuclear palsy.
 
-In Nova's substrate this provides the brainstem locomotor command + ascend-
+In {{AGENT_NAME}}'s substrate this provides the brainstem locomotor command + ascend-
 ing thalamic arousal modulator, distinct from the more dorsal mesopontine
 cholinergic wake substrate (MesopontineCholinergicWake) and from the
 laterodorsal tegmental REM/PGO substrate (LaterodorsalTegmentalNucleus).

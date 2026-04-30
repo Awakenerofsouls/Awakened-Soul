@@ -32,7 +32,7 @@ integration. Lesion of MS produces severe spatial memory deficits and
 abolishes theta. MS is reciprocally connected with hippocampus, and
 projects to cingulate, amygdala, and brainstem.
 
-In Nova's substrate this provides the theta-rhythm pacemaker -- emits a
+In {{AGENT_NAME}}'s substrate this provides the theta-rhythm pacemaker -- emits a
 rhythmic theta phase signal usable by hippocampal-equivalent and
 neocortical mechanisms for memory encoding/retrieval, and scales with
 locomotion/exploration proxy and arousal.

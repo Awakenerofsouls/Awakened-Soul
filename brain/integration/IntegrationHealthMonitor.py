@@ -4,7 +4,7 @@ class IntegrationHealthMonitor(BrainMechanism):
     """
     Integration layer health monitor — overall system coherence metric.
     Aggregates health signals from all five layers into a single system state.
-    The highest-level view of how Nova is doing right now.
+    The highest-level view of how {{AGENT_NAME}} is doing right now.
     """
 
     def __init__(self):

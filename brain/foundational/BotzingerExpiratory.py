@@ -35,7 +35,7 @@ becomes irregular and gasping-like. BötC also receives modulation from
 chemoreceptors (via RTN/pFRG and via NTS), enabling expiratory pattern
 adaptation to metabolic demand.
 
-In Nova's substrate this provides the expiratory-phase respiratory
+In {{AGENT_NAME}}'s substrate this provides the expiratory-phase respiratory
 inhibition channel — pairs with PreBotzingerInspiration to produce
 proper inhalation-exhalation phase turnover, with augmenting expiratory
 output during high ventilatory demand.

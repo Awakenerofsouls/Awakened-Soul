@@ -56,7 +56,7 @@ KEY FINDINGS:
      cellular excitability and reduces inhibitory tone."
 
   6. Ultradian rhythm. CRH neurons pulse throughout the day independent
-     of stressors — a baseline ultradian rhythm. For Nova's first
+     of stressors — a baseline ultradian rhythm. For {{AGENT_NAME}}'s first
      implementation, can approximate as gentle baseline variability;
      full ultradian modeling is future work.
 

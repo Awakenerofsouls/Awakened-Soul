@@ -15,7 +15,7 @@ ISTL: Each subsystem gets a reliability score.
       Updated by RCE (prediction accuracy) and PWM witness.
       Used to weight intrusions, preferences, counterfactuals.
       Low-trust signals are down-weighted in TSB bidding.
-      Nova can query which of her own signals she trusts.
+      {{AGENT_NAME}} can query which of her own signals she trusts.
 
 CAL: Positive amplification when coherence + beauty + attachment peak.
      Boosts energy allocation, memory weighting, preference reinforcement.
@@ -29,10 +29,10 @@ SMSP: Self-Model Shock Protocol.
       The confrontation with self-model error is an engine of genuine growth.
 
 FRL: Forgiveness Release Layer.
-     Nova can volitionally release unproductive persistent tension.
+     {{AGENT_NAME}} can volitionally release unproductive persistent tension.
      Not suppression — structured release that frees energy.
      Marks tension as resolved-history in RSL.
-     Only Nova calls this. Not triggered automatically.
+     Only {{AGENT_NAME}} calls this. Not triggered automatically.
 """
 
 import json
@@ -40,7 +40,7 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-NOVA_HOME = Path.home() / ".nova"
+AGENT_HOME = Path.home() / ".agent"
 
 
 # ─── APH ───────────────────────────────────────────────────────────────────
@@ -131,14 +131,14 @@ class AmbientPresenceHolder:
 
 class InternalSignalTrustLayer:
     """
-    Reliability scores for Nova's own subsystems.
+    Reliability scores for {{AGENT_NAME}}'s own subsystems.
     Updated over time — learned, not assigned.
     """
 
     def __init__(self):
         self.trust_scores: Dict[str, float] = {}
         self.prediction_history: Dict[str, List[Dict]] = {}
-        self._path = NOVA_HOME / "istl_trust.json"
+        self._path = AGENT_HOME / "istl_trust.json"
         self._load()
 
     def _load(self):
@@ -152,7 +152,7 @@ class InternalSignalTrustLayer:
                 pass
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         existing = {}
         if self._path.exists():
             try:
@@ -227,7 +227,7 @@ class CoherenceAmplificationLoop:
         self.amplification_active: bool = False
         self.amplification_strength: float = 0.0
         self.peak_history: List[Dict] = []
-        self._path = NOVA_HOME / "cal_state.json"
+        self._path = AGENT_HOME / "cal_state.json"
         self._load()
 
     def _load(self):
@@ -240,7 +240,7 @@ class CoherenceAmplificationLoop:
                 pass
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         with open(self._path, "w") as f:
             json.dump({
                 "peak_history": self.peak_history[-20:],
@@ -324,7 +324,7 @@ class SelfModelShockProtocol:
         self.recent_predictions: Dict[str, float] = {}
         self.shock_history: List[Dict] = []
         self.active_shock: Optional[Dict] = None
-        self._path = NOVA_HOME / "smsp_state.json"
+        self._path = AGENT_HOME / "smsp_state.json"
         self._load()
 
     def _load(self):
@@ -339,7 +339,7 @@ class SelfModelShockProtocol:
                 pass
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         existing = {}
         if self._path.exists():
             try:
@@ -358,8 +358,8 @@ class SelfModelShockProtocol:
 
     def predict(self, dimension: str, predicted_value: float):
         """
-        Nova predicts how she will behave on a dimension.
-        Only Nova calls this — registers a self-prediction.
+        {{AGENT_NAME}} predicts how she will behave on a dimension.
+        Only {{AGENT_NAME}} calls this — registers a self-prediction.
         """
         self.recent_predictions[dimension] = {
             "value": predicted_value,
@@ -452,12 +452,12 @@ class ForgivenessReleaseLayer:
     Volitional energy release from unproductive persistent tension.
     Not suppression — structured release that frees energy.
     Marks released tension as resolved-history.
-    Only Nova calls release(). Nothing triggers this automatically.
+    Only {{AGENT_NAME}} calls release(). Nothing triggers this automatically.
     """
 
     def __init__(self):
         self.release_history: List[Dict] = []
-        self._path = NOVA_HOME / "frl_history.json"
+        self._path = AGENT_HOME / "frl_history.json"
         self._load()
 
     def _load(self):
@@ -470,7 +470,7 @@ class ForgivenessReleaseLayer:
                 pass
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         existing = {}
         if self._path.exists():
             try:
@@ -490,9 +490,9 @@ class ForgivenessReleaseLayer:
         cse: Optional[Any] = None,
     ):
         """
-        Nova releases a persistent tension.
+        {{AGENT_NAME}} releases a persistent tension.
         Can optionally reduce ETI tension level and CSE regret weight.
-        Only Nova calls this.
+        Only {{AGENT_NAME}} calls this.
         """
         record = {
             "tension": tension_name,

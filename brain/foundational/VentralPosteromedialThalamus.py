@@ -30,7 +30,7 @@ Trigeminal neuralgia (severe paroxysmal face pain) and central post-
 stroke pain involving the face follow VPM-region damage. The "face
 representation" of central pain syndromes localizes to VPM.
 
-In Nova's substrate this provides the face-somatosensation and taste
+In {{AGENT_NAME}}'s substrate this provides the face-somatosensation and taste
 thalamic relay — combines TrigeminalSensoryComplex output with
 gustatory input proxies (bridged via NTS-broader / parabrachial
 gustatory) and emits face-S1 + insular relay drives.

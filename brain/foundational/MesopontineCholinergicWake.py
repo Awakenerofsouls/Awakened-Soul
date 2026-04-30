@@ -26,7 +26,7 @@ on sleep/wake — recent optogenetic work (Kroeger 2017) showed that
 cholinergic, glutamatergic, and GABAergic PPT neurons each have separable
 roles in promoting wake or sleep.
 
-In Nova's substrate this provides the cortical-thalamic ACh signal that
+In {{AGENT_NAME}}'s substrate this provides the cortical-thalamic ACh signal that
 gates information flow to cortex, complementing NBM (which handles
 cortical ACh directly to neocortex) by providing the thalamic gating layer.
 

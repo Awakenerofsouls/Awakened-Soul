@@ -27,7 +27,7 @@ The core-shell architecture is essential — VIP entrains and synchronizes
 SCN neurons to light, while AVP determines period. Postnatal development
 of these signaling systems establishes coherent circadian rhythms.
 
-In Nova's substrate this provides per-target circadian distribution drives
+In {{AGENT_NAME}}'s substrate this provides per-target circadian distribution drives
 — different target nuclei receive scaled circadian signals at different
 phases, enabling rhythm-specific outputs (feeding rhythm vs sleep rhythm
 vs cortisol awakening response).

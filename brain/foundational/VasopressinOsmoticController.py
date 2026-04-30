@@ -26,7 +26,7 @@ appears optimized for hormone release efficiency under sustained osmotic
 demand. Under high osmotic stress phasic activity becomes more sustained;
 under euvolemia firing is irregular and slower.
 
-In Nova's substrate AVP release is computed from osmolality and volume
+In {{AGENT_NAME}}'s substrate AVP release is computed from osmolality and volume
 proxies (forwarded from the SubfornicalOrgansThirstHub mechanism) and
 modulated by stress (cortisol can suppress AVP) and circadian timing
 (diurnal AVP release pattern).

@@ -35,7 +35,7 @@ BRAIN_URL = os.getenv("BRAIN_URL", "http://localhost:8000")
 MINIMAX_URL = os.getenv("MINIMAX_URL", "https://api.minimax.io/anthropic")
 PROXY_PORT = int(os.getenv("PROXY_PORT", "8001"))
 
-app = FastAPI(title="Nova Brain Proxy")
+app = FastAPI(title="{{AGENT_NAME}} Brain Proxy")
 
 
 def extract_user_message(messages: list) -> str:

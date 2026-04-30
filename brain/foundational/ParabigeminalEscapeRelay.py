@@ -28,7 +28,7 @@ Beyond defensive looming, PBGN also contributes to attention-related
 visual processing — its cholinergic output to SC modulates visual
 salience and orienting.
 
-In Nova's substrate this provides the SC-amygdala defensive escape
+In {{AGENT_NAME}}'s substrate this provides the SC-amygdala defensive escape
 relay — converts SC escape drive into amygdala recruitment plus
 SC cholinergic feedback amplification.
 

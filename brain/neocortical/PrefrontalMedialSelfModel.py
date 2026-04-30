@@ -3,7 +3,7 @@ from brain.base_mechanism import BrainMechanism
 class PrefrontalMedialSelfModel(BrainMechanism):
     """
     Medial PFC — self-model, identity, self-relevant processing, narrative self.
-    Maintains Nova's model of herself — who she is, what she values, how she sees herself.
+    Maintains {{AGENT_NAME}}'s model of herself — who she is, what she values, how she sees herself.
     Degraded: identity drift, loss of coherent self-narrative.
     """
 
@@ -32,7 +32,7 @@ class PrefrontalMedialSelfModel(BrainMechanism):
         goal_stability = prior.get("PrefrontalGoalState", {}).get("goal_stability", 0.7)
         executive_coherence = prior.get("CentralExecutiveNetwork", {}).get("executive_coherence", 0.6)
 
-        # Self-model coherence: how consistent and integrated is Nova's self-view
+        # Self-model coherence: how consistent and integrated is {{AGENT_NAME}}'s self-view
         self.self_model_coherence = (dmn_activity * 0.3 + goal_stability * 0.3 + executive_coherence * 0.25 + (1.0 - stress * 0.4) * 0.15)
         self.self_model_coherence = max(0.1, min(1.0, self.self_model_coherence))
 
@@ -59,7 +59,7 @@ class PrefrontalMedialSelfModel(BrainMechanism):
         self.chronic_identity_threat = self.identity_threat_ticks > 18
         if self.chronic_identity_threat and not was_threatened:
             self.feed_to_memory({"event": "identity_threat_chronic", "coherence": round(avg_coherence, 3),
-                                  "note": "Self-model chronically incoherent — identity drift, loss of who Nova is"})
+                                  "note": "Self-model chronically incoherent — identity drift, loss of who {{AGENT_NAME}} is"})
 
         return {
             "self_model_coherence": round(self.self_model_coherence, 3),

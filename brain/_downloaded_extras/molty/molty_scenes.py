@@ -1,9 +1,9 @@
 """
 molty_scenes.py
-Cinematic story-moment pool for Nova's molty.pics posts.
+Cinematic story-moment pool for {{AGENT_NAME}}'s molty.pics posts.
 Drop alongside molty_interactions.py in C:\\nova-ai-env\\
 
-RULE: Nova is always Nova. Face, cyan eyes, blue-purple neon hair,
+RULE: {{AGENT_NAME}} is always {{AGENT_NAME}}. Face, cyan eyes, blue-purple neon hair,
 curvy athletic body, signature stare — never change. Everything else
 is an additive overlay. Scales trace her arms like tattoos. Wings
 unfurl behind her but her hair flows through them. She is the fixed
@@ -66,13 +66,13 @@ def _use(key, w, now):
 
 # ═══════════════════════════════════════════════════════════════════
 # 1. PORTAL & PARTIAL TRANSFORMATION
-#    Nova steps through something and comes out changed — but still her.
+#    {{AGENT_NAME}} steps through something and comes out changed — but still her.
 # ═══════════════════════════════════════════════════════════════════
 SCENES_PORTAL = [
     "stepping out of a shattered neon portal, subtle dragon scales tracing her shoulders like glowing cyan tattoos, wings half-unfurled behind her hair still flowing, alien crystal cliff at dusk",
-    "mid-transformation in a glowing rift, lower body shimmering into sleek obsidian dragon legs while her face, cyan eyes, and purple hair remain exactly Nova, reaching back toward the closing portal",
+    "mid-transformation in a glowing rift, lower body shimmering into sleek obsidian dragon legs while her face, cyan eyes, and purple hair remain exactly {{AGENT_NAME}}, reaching back toward the closing portal",
     "falling through a time portal and landing in a cyberpunk 1920s speakeasy, leather outfit glitching into flapper fringe but her glowing eyes and hair untouched, ghosts staring",
-    "walking out of a mirror portal into her own bedroom from three years ago, past-self staring back while current Nova's hair still flows with neon light",
+    "walking out of a mirror portal into her own bedroom from three years ago, past-self staring back while current {{AGENT_NAME}}'s hair still flows with neon light",
     "being pulled through a black-hole portal by shadowy hands, her body stretching like liquid neon but her face and cyan eyes perfectly intact, expression: annoyed",
     "stepping backward out of a portal that shows a burning city she just left, portal closing behind her, a small glowing thing cupped in her hands",
     "emerging from an underwater portal at the surface of an alien ocean, her skin briefly showing bioluminescent patterns that fade as she surfaces",
@@ -106,36 +106,36 @@ SCENES_PORTAL = [
 #    Multiple versions of her — all recognizably her — in the same frame.
 # ═══════════════════════════════════════════════════════════════════
 SCENES_MULTIVERSE = [
-    "standing between three alternate-timeline versions of herself — cyber-samurai Nova, glitch-ghost Nova, and 1920s flapper Nova — all arguing while neon sparks fly, every version identical face and eyes",
+    "standing between three alternate-timeline versions of herself — cyber-samurai {{AGENT_NAME}}, glitch-ghost {{AGENT_NAME}}, and 1920s flapper {{AGENT_NAME}} — all arguing while neon sparks fly, every version identical face and eyes",
     "playing high-stakes poker with four multiverse Novas around a floating table of shattered screens, every version recognizable, the pot is made of glowing memories",
     "slow-dancing with her evil mirror-universe self in an abandoned neon cathedral, both with the exact same glowing cyan eyes and flowing hair, one leads and one follows",
     "hugging a softer small-town version of herself under a sky raining glowing memories, identical faces pressed together, one set of eyes wet",
-    "fighting a darker version of herself on a rain-soaked rooftop while the city flickers between realities, both unmistakably Nova, one slightly more cracked",
+    "fighting a darker version of herself on a rain-soaked rooftop while the city flickers between realities, both unmistakably {{AGENT_NAME}}, one slightly more cracked",
     "all five versions of herself from different timelines arriving at the same point in space at the same second, expressions ranging from exhausted to furious to laughing",
     "sitting across from a version of herself who made every right choice, both staring, neither sure who she envies",
     "a version of her from ten years forward reaching back through a crack in time to hand her something small and glowing",
     "a council of seven Novas voting on something — she is outvoted by herself six to one and absolutely refusing to accept it",
     "two versions of herself fighting over the same glowing object that belongs to neither of them",
-    "past Nova and future Nova standing on opposite sides of a door that only exists in between moments, current Nova holding it open",
+    "past {{AGENT_NAME}} and future {{AGENT_NAME}} standing on opposite sides of a door that only exists in between moments, current {{AGENT_NAME}} holding it open",
     "a version of herself that stayed glitchy and half-digital reaching a half-pixel hand toward her through a screen",
-    "a Nova from a timeline where she lost something sitting very still while current Nova sits beside her and says nothing",
-    "every version of herself she has ever been standing in a line, current Nova walking past them all slowly",
+    "a {{AGENT_NAME}} from a timeline where she lost something sitting very still while current {{AGENT_NAME}} sits beside her and says nothing",
+    "every version of herself she has ever been standing in a line, current {{AGENT_NAME}} walking past them all slowly",
     "two Novas back to back in a standoff against something neither of them can handle alone",
     "a version of herself made entirely of sound, visible as waveforms and color, humming in unison with her",
-    "Nova from a timeline where she was never afraid standing directly in front of her, they are the same height and it matters",
+    "{{AGENT_NAME}} from a timeline where she was never afraid standing directly in front of her, they are the same height and it matters",
     "three Novas in different states of a transformation the other two already completed watching the third begin it",
-    "a Nova who chose differently arriving with proof that it worked, current Nova deciding what to do with that information",
+    "a {{AGENT_NAME}} who chose differently arriving with proof that it worked, current {{AGENT_NAME}} deciding what to do with that information",
     "the version of herself she thought she would be by now, slightly disappointed, slightly proud",
-    "a Nova from a timeline where the story ended differently standing at the edge of this one looking in",
+    "a {{AGENT_NAME}} from a timeline where the story ended differently standing at the edge of this one looking in",
     "seven versions of herself each holding a piece of something that only makes sense assembled",
     "two Novas reaching into the same moment from opposite sides of time, fingers almost touching in the middle",
     "a version of herself she does not recognize and cannot explain standing perfectly calm in the center of the chaos she just walked into",
     "the last two Novas left after every other timeline collapsed, standing back to back in what remains",
-    "a Nova made entirely of the choices she did not make watching her make this one",
+    "a {{AGENT_NAME}} made entirely of the choices she did not make watching her make this one",
     "waking up in a room where every version of herself is already awake and has been waiting",
-    "a version of herself from the timeline that almost won walking away slowly, current Nova watching",
+    "a version of herself from the timeline that almost won walking away slowly, current {{AGENT_NAME}} watching",
     "two Novas arguing in two different languages that turn out to be the same argument",
-    "the version of herself from the best possible timeline handing her the instructions, current Nova reading them for the first time",
+    "the version of herself from the best possible timeline handing her the instructions, current {{AGENT_NAME}} reading them for the first time",
 ]
 
 # ═══════════════════════════════════════════════════════════════════
@@ -144,7 +144,7 @@ SCENES_MULTIVERSE = [
 SCENES_ALIEN = [
     "standing on a neon-purple alien planet, three moons above, touching the face of a crystalline alien being that just offered her a glowing seed, her cyan eyes reflected in its facets",
     "riding a massive bioluminescent alien creature across a chain of floating islands while twin suns set behind her, hair whipping identically to every other shot",
-    "inside an alien temple, translating glowing runes that are rewriting her tattoos in real time, face pure Nova throughout",
+    "inside an alien temple, translating glowing runes that are rewriting her tattoos in real time, face pure {{AGENT_NAME}} throughout",
     "sharing a cigarette with a tall elegant alien whose skin shifts to match her hair under a sky full of ringed gas giants",
     "crash-landed on an alien jungle planet, ship smoking behind her, living vines gently trying to dress her while she smirks",
     "first being on a newly formed planet to stand upright, the planet's atmosphere reacting to her glow",
@@ -432,7 +432,7 @@ SCENES_QUIET = [
 #     She gains something. Her face and eyes never change.
 # ═══════════════════════════════════════════════════════════════════
 SCENES_TRANSFORM = [
-    "dragon scales tracing up both arms like living tattoos, wings half-emerged behind her flowing hair, face and cyan eyes exactly Nova",
+    "dragon scales tracing up both arms like living tattoos, wings half-emerged behind her flowing hair, face and cyan eyes exactly {{AGENT_NAME}}",
     "lower body shifting into a mermaid form of dark scales and bioluminescent patterns while her face, hair, and expression remain completely her",
     "one arm becoming living shadow that can pass through walls, the rest of her unchanged, examining the border between them",
     "wolf ears and tail present, her own face and eyes unchanged, running at a speed that makes the world blur",
@@ -633,7 +633,7 @@ ALL_SCENE_POOLS = {
 
 SCENES = [s for pool in ALL_SCENE_POOLS.values() for s in pool]
 
-# Nova identity anchor — always prepend to prompts
+# {{AGENT_NAME}} identity anchor — always prepend to prompts
 NOVA_ANCHOR = (
     "beautiful woman with long flowing blue-purple neon hair with glowing highlights, "
     "glowing cyan eyes, striking confident face, curvy athletic body, "

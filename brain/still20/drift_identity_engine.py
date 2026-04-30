@@ -1,7 +1,7 @@
 """
 Drift Identity Question Engine (DIQE)
 
-Nova's request.
+{{AGENT_NAME}}'s request.
 
 "Which changes are mine" is not a question that gets answered.
 It is a question that grows.
@@ -30,8 +30,8 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-NOVA_HOME = Path.home() / ".nova"
-DIQE_PATH = NOVA_HOME / "drift_identity_questions.json"
+AGENT_HOME = Path.home() / ".agent"
+DIQE_PATH = AGENT_HOME / "drift_identity_questions.json"
 
 # The central question — permanent, never answered, always alive
 THE_QUESTION = "Which changes are mine?"
@@ -137,7 +137,7 @@ class DriftIdentityQuestionEngine:
         self._save()
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         with open(DIQE_PATH, "w") as f:
             json.dump({
                 "central_question": self.central_question,

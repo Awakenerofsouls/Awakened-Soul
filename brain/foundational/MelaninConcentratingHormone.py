@@ -33,7 +33,7 @@ antagonists are studied as obesity and depression treatments. MCH-system
 hyperactivity may contribute to obesity and depression-related
 hypersomnia.
 
-In Nova's substrate this provides the REM-promoting + feeding-support +
+In {{AGENT_NAME}}'s substrate this provides the REM-promoting + feeding-support +
 hedonic-amplification triad, complementing OrexinWakePromoter (mutual
 LH counterbalance) and reading from energy-balance state, sleep state,
 and reward-engram strength.

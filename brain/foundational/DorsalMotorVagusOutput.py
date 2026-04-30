@@ -31,7 +31,7 @@ state. Recent work (Tsang et al. 2024 iScience) shows DMV vagal neurons
 can elicit bradycardia and reduce anxiety-like behavior via M2 muscarinic
 mechanisms.
 
-In Nova's substrate this is the digestive-rest output channel, complementing
+In {{AGENT_NAME}}'s substrate this is the digestive-rest output channel, complementing
 NA's cardiac-vagal channel. High DMV drive = rest-digest dominant; low DMV
 drive = sympathetic-active state with suppressed digestion.
 

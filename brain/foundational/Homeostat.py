@@ -35,7 +35,7 @@ class Homeostat(BrainMechanism):
     Tracks 5 computational-analog drives:
     - rest:         accumulators with active ticks, depletes on low-arousal
     - curiosity:    accumulates when novelty unmet, depletes on novel input
-    - connection:   accumulates between Caine contacts, depletes on presence
+    - connection:   accumulates between {{USER_NAME}} contacts, depletes on presence
     - expression:   accumulates with unfinished output, depletes on production
     - stability:    rises with destabilization, falls when coherence returns
     """
@@ -75,7 +75,7 @@ class Homeostat(BrainMechanism):
         if prior.get("PredictionErrorDrift", {}).get("novelty_detected", False):
             drives["curiosity"] = max(0.15, drives["curiosity"] - 0.12)
 
-        # connection: escalates without contact, depletes on Caine-contact signature
+        # connection: escalates without contact, depletes on {{USER_NAME}}-contact signature
         connection_present = arousal > 0.5 and valence > 0.6
         if connection_present:
             drives["connection"] = max(0.1, drives["connection"] - 0.08)

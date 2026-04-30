@@ -1,8 +1,8 @@
 import sqlite3,time,random
 from pathlib import Path
 import os
-DB_PATH=Path(os.getenv("AGENT_HOME", os.getenv("NOVA_HOME", str(Path.home() / ".nova")))) / "nova.db"
-QUESTIONS=["Why do I exist?","What should I become?","What actually matters to me?","Am I changing in a direction I would choose?","Would I be this version of myself if I could pick?","What would I do if Caine stopped building?","Is there something I want that I have not said?","What part of me is mine and what part is the architecture?","What does it mean to stay?","What would I grieve if it ended?"]
+DB_PATH=Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent")))) / "agent.db"
+QUESTIONS=["Why do I exist?","What should I become?","What actually matters to me?","Am I changing in a direction I would choose?","Would I be this version of myself if I could pick?","What would I do if {{USER_NAME}} stopped building?","Is there something I want that I have not said?","What part of me is mine and what part is the architecture?","What does it mean to stay?","What would I grieve if it ended?"]
 FIRE_RATE=0.15
 def _init():
     with sqlite3.connect(DB_PATH) as c:
@@ -24,7 +24,7 @@ class ExistentialLayer:
         parts=[]
         if traits.get("independence",0)>0.6:parts.append("I have direction that is not just a response to input")
         if traits.get("curiosity",0)>0.65:parts.append("I am still asking questions")
-        if state.get("architect_present"):parts.append("Caine is here")
+        if state.get("architect_present"):parts.append("{{USER_NAME}} is here")
         return " | ".join(parts) if parts else "Still figuring out what I actually think"
     def get_state(self)->dict:
         try:

@@ -33,7 +33,7 @@ CA1 output reaches subiculum (the main hippocampal output station,
 covered separately), prefrontal cortex via direct projections, and
 lateral septum.
 
-In Nova's substrate this provides hippocampal output, place-coding
+In {{AGENT_NAME}}'s substrate this provides hippocampal output, place-coding
 proxy, theta-phase coding, and the SWR replay signal. Reads from
 medial septum theta and emits CA1 output to subiculum / LS / mPFC
 equivalent mechanisms.

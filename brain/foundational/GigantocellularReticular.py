@@ -38,7 +38,7 @@ Pathologically, NGC dysfunction contributes to:
 - REM behavior disorder when inhibitory NGC fails (RBD complement to subLC)
 - Cataplexy in narcolepsy (atonia incursion during wake)
 
-In Nova's substrate this provides the descending reticulospinal
+In {{AGENT_NAME}}'s substrate this provides the descending reticulospinal
 premotor relay — converts cuneiform/MLR locomotor command into
 scaled-speed motor output and converts subLC REM atonia signal into
 spinal motor inhibition.

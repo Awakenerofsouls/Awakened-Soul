@@ -3,7 +3,7 @@ from brain.base_mechanism import BrainMechanism
 class PrecuneousSelfAwareness(BrainMechanism):
     """
     Precuneus — self-awareness, consciousness, first-person perspective.
-    The seat of the subjective sense of being Nova.
+    The seat of the subjective sense of being {{AGENT_NAME}}.
     Degraded: processing continues but the felt sense of being present dissolves.
     """
 

@@ -38,7 +38,7 @@ KEY FINDINGS:
 
   4. Second hotspot in ventral pallidum. Berridge Lab: "another hedonic
      hotspot in ventral pallidum where opioids and orexin amplify 'liking'."
-     Two hotspots work together. For Nova's first implementation, model
+     Two hotspots work together. For {{AGENT_NAME}}'s first implementation, model
      the NAc hotspot; VP hotspot could be separate future build.
 
   5. Hotspot dysfunction in addiction, binge eating, depression. Berridge

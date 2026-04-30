@@ -30,7 +30,7 @@ outflow), A1 targets the hypothalamus for hormonal output. A1 lesion
 produces selective deficits in hormonal stress responses while leaving
 sympathetic vasomotor tone relatively intact.
 
-In Nova's substrate this provides the noradrenergic AVP-driver
+In {{AGENT_NAME}}'s substrate this provides the noradrenergic AVP-driver
 distinct from A5 — engaged by hypovolemia, hemorrhage proxies, severe
 homeostatic emergency, and gut/immune signals routed through NTS.
 

@@ -38,7 +38,7 @@ through inhibition. Climbing-fiber-induced LTD at parallel fiber-
 Purkinje synapses re-shapes Purkinje output, indirectly retuning CDN
 output for adaptive motor and cognitive learning.
 
-In Nova's substrate this provides the cerebellar output bus —
+In {{AGENT_NAME}}'s substrate this provides the cerebellar output bus —
 combines cerebellar vermal emotional output, mossy fiber proprioceptive
 input proxy, and climbing fiber error signal into three differentiated
 output channels (fastigial, interposed, dentate) feeding RN, thalamus,

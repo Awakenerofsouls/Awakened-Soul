@@ -29,7 +29,7 @@ LHb neurons (NMDA-dependent) appear to drive the depressive phenotype
 in animal models, and LHb is a target of ketamine's rapid antidepressant
 action.
 
-In Nova's substrate this provides the anti-reward / aversion negative-PE
+In {{AGENT_NAME}}'s substrate this provides the anti-reward / aversion negative-PE
 channel that suppresses VTA DA when expected reward is omitted or
 explicit punishment is delivered.
 

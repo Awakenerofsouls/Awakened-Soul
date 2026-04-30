@@ -37,7 +37,7 @@ Vestibulocerebellar damage produces:
 - Loss of motion sickness
 - Impaired VOR adaptation
 
-In Nova's substrate this provides the vestibular cerebellar component
+In {{AGENT_NAME}}'s substrate this provides the vestibular cerebellar component
 distinct from CerebellarVermalEmotional (limbic vermis) and
 CerebellarDeepNuclei (general output) — combines vestibular drive +
 sensory mismatch into a calibration signal and a motion-sickness

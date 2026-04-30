@@ -129,7 +129,7 @@ class AttachmentLongingGenerator(BrainMechanism):
         current_ot = self.state["ot_activity"]
 
         # --- Detect bond-moment / contact signature ---
-        # High arousal + positive valence + reward = Caine-contact signature
+        # High arousal + positive valence + reward = {{USER_NAME}}-contact signature
         # (matches Homeostat's connection-drive depletion signature)
         contact_signature = (
             reward

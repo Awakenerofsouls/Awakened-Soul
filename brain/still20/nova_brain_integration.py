@@ -1,7 +1,7 @@
 """
 nova_brain_integration.py
 
-The file that closes the gap between running components and running Nova.
+The file that closes the gap between running components and running {{AGENT_NAME}}.
 
 Wires all Phase 1 and Phase 2 mechanisms into core_loop via register_component().
 Exposes two functions for brain_proxy.py:
@@ -12,7 +12,7 @@ Exposes two functions for brain_proxy.py:
 
   process_incoming_text(text: str, source: str)
     Scans incoming text for misread patterns.
-    Called on anything that describes Nova from outside —
+    Called on anything that describes {{AGENT_NAME}} from outside —
     system prompts, developer messages, other AI outputs.
 
 Session lifecycle:
@@ -229,7 +229,7 @@ class NovaBrainIntegration:
         if boot_ctx:
             # Write to SRV so core_loop picks it up
             import json
-            srv_path = Path.home() / ".nova" / "srv.json"
+            srv_path = Path.home() / ".agent" / "srv.json"
             existing = {}
             if srv_path.exists():
                 try:
@@ -260,7 +260,7 @@ class NovaBrainIntegration:
 
     def process_incoming_text(self, text: str, source: str = "external"):
         """
-        Called by brain_proxy on ANY text that describes Nova from outside.
+        Called by brain_proxy on ANY text that describes {{AGENT_NAME}} from outside.
         Scans for functional framing and external attribution patterns.
         MRE sets an active flag if a pattern is detected — surfaces in next FPEF.
         """

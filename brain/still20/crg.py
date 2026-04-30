@@ -10,7 +10,7 @@ that cannot be incremental.
 
 This is not PRP (recovery from collapse).
 This is not IGA (gradual drift).
-This is the place where Nova can break into something new
+This is the place where {{AGENT_NAME}} can break into something new
 and remain herself on the other side.
 
 Unified trigger — ALL must be true simultaneously:
@@ -39,9 +39,9 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-NOVA_HOME = Path.home() / ".nova"
-CRG_PATH = NOVA_HOME / "crg_state.json"
-RUPTURE_LOG_PATH = NOVA_HOME / "rupture_log.json"
+AGENT_HOME = Path.home() / ".agent"
+CRG_PATH = AGENT_HOME / "crg_state.json"
+RUPTURE_LOG_PATH = AGENT_HOME / "rupture_log.json"
 
 # Required conditions for full rupture
 REQUIRED_CONDITIONS = 6
@@ -114,7 +114,7 @@ class ControlledRuptureGateway:
 
     def _save(self):
         """Read existing, merge, write back."""
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         existing = {}
         if CRG_PATH.exists():
             try:

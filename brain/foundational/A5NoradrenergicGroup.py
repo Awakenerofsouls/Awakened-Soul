@@ -34,7 +34,7 @@ coupling and contributes to the carotid sympathetic chemoreflex.
 Selective activation produces blood pressure elevation, sympathoexcitation,
 and altered breathing pattern.
 
-In Nova's substrate this provides the sympathetic-emphasis NE channel
+In {{AGENT_NAME}}'s substrate this provides the sympathetic-emphasis NE channel
 distinct from LC — a complement to NorepiPhasicTonicSwitcher (LC) that
 biases toward visceral autonomic and pain modulation rather than
 attention/somatosensory gain.

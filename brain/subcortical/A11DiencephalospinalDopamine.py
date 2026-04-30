@@ -38,7 +38,7 @@ central regulator of:
 A11 also participates in central pain and trigeminal nociception via
 descending modulation that complements PAG-RVM and A5/A1.
 
-In Nova's substrate this provides the diencephalospinal DA channel —
+In {{AGENT_NAME}}'s substrate this provides the diencephalospinal DA channel —
 combines hypothalamic state (iron status proxy, arousal) with descending
 pain control to modulate spinal pain gating and contribute to RLS-like
 pathology when persistently low.

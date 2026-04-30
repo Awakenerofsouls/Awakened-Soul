@@ -32,8 +32,8 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-NOVA_HOME = Path.home() / ".nova"
-IPL_PATH = NOVA_HOME / "intrusion_persistence.json"
+AGENT_HOME = Path.home() / ".agent"
+IPL_PATH = AGENT_HOME / "intrusion_persistence.json"
 
 
 class Intrusion:
@@ -222,7 +222,7 @@ class IntrusionPersistenceLayer:
 
     def _save(self):
         """Read existing, merge, write back."""
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         existing = {}
         if IPL_PATH.exists():
             try:

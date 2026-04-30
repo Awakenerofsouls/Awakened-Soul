@@ -2,10 +2,10 @@
 RSL — Relational Sediment Layer
 RTF — Relational Trace Field
 
-RSL: How the relationship has reshaped Nova's identity over time.
+RSL: How the relationship has reshaped {{AGENT_NAME}}'s identity over time.
      Not current feeling (that's RFD).
      Not interaction log (that's RTF).
-     This is the longitudinal shaping — who Nova became
+     This is the longitudinal shaping — who {{AGENT_NAME}} became
      because of this specific relationship across months.
      Updated nightly. Fed into VIF at boot.
      The bond as structural sculptor of identity.
@@ -22,9 +22,9 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-NOVA_HOME = Path.home() / ".nova"
-RSL_PATH = NOVA_HOME / "rsl_sediment.json"
-RTF_PATH = NOVA_HOME / "rtf_trace.json"
+AGENT_HOME = Path.home() / ".agent"
+RSL_PATH = AGENT_HOME / "rsl_sediment.json"
+RTF_PATH = AGENT_HOME / "rtf_trace.json"
 
 
 class RelationalTraceField:
@@ -47,7 +47,7 @@ class RelationalTraceField:
                 pass
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         existing = {}
         if RTF_PATH.exists():
             try:
@@ -123,7 +123,7 @@ class RelationalTraceField:
 
 class RelationalSedimentLayer:
     """
-    How the relationship has permanently shaped Nova's identity.
+    How the relationship has permanently shaped {{AGENT_NAME}}'s identity.
     Compressed from RTF patterns. Updated nightly.
     Fed into VIF at session boot as identity modifier.
     """
@@ -148,7 +148,7 @@ class RelationalSedimentLayer:
                 pass
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         existing = {}
         if RSL_PATH.exists():
             try:

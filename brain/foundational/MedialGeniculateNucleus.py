@@ -29,7 +29,7 @@ cortex layer 6. MGN also contains burst-firing dynamics that switch
 between tonic (wake) and burst (NREM) modes, like other thalamic
 relays.
 
-In Nova's substrate this provides the auditory thalamic relay — converts
+In {{AGENT_NAME}}'s substrate this provides the auditory thalamic relay — converts
 IC ascending signals into MGv lemniscal output to "auditory cortex
 proxy," MGm signals direct-to-amygdala (low road), and MGd signals
 to higher-order auditory pathways. Gated by TRN auditory sector.

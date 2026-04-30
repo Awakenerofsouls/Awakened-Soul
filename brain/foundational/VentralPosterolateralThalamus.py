@@ -35,7 +35,7 @@ Central post-stroke pain (CPSP, Dejerine-Roussy syndrome) and thalamic
 pain syndrome arise from VPL/VPM stroke — a clinical signature of lesions
 to this nucleus.
 
-In Nova's substrate this provides the body-somatosensation thalamic
+In {{AGENT_NAME}}'s substrate this provides the body-somatosensation thalamic
 relay — combines DCN ascending output with spinal pain/temperature input
 proxies and emits a relay drive toward S1-equivalent processing.
 

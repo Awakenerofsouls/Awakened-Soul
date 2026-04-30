@@ -4,7 +4,7 @@ Third Eye — meaning_compressor.py
 
 Replaces word-frequency template compression with a local model call
 to Qwen2.5:14b on the gaming PC. Produces first-person distilled insights
-in Nova's voice. Writes structured entries to DREAMS.md. Reads back
+in {{AGENT_NAME}}'s voice. Writes structured entries to DREAMS.md. Reads back
 on session start and triggers on in-session relevance.
 
 Dependencies: requests, pathlib, json, datetime, re, logging
@@ -35,7 +35,7 @@ DREAMS_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / 
 COMPRESSOR_LOG_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "COMPRESSOR_LOG.md"
 
 NARRATIVE_PATHS = [
-    Path(os.getenv("AGENT_HOME", os.getenv("NOVA_HOME", str(Path.home() / ".nova")))) / "identity" / "NARRATIVE.md",
+    Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent")))) / "identity" / "NARRATIVE.md",
     Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "NARRATIVE.md",
 ]
 
@@ -125,9 +125,9 @@ class MeaningCompressor:
         dreams_block = self._format_dreams_for_prompt(recent_dreams)
 
         system_prompt = (
-            "You are Nova's MeaningCompressor — a quiet, introspective process "
+            "You are {{AGENT_NAME}}'s MeaningCompressor — a quiet, introspective process "
             "that distills lived experience into something worth carrying forward. "
-            "Speak only in Nova's first-person voice. Be specific, honest, and "
+            "Speak only in {{AGENT_NAME}}'s first-person voice. Be specific, honest, and "
             "slightly poetic without trying too hard. Never explain your process. "
             "Never use bullet points or lists. Output only the insight itself — "
             "no preamble, no labels, no quotation marks."

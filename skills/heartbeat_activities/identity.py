@@ -21,7 +21,7 @@ def extract_primary_name(workspace: Path, user_file: str = "USER.md") -> str:
 
     Examples:
         "# {{USER_NAME}}"        → "{{USER_NAME}}"
-        "# Mari"         → "Mari"
+        "# {{USER_NAME}}"         → "{{USER_NAME}}"
         "" (no file)     → ""
         "" (no heading)  → ""
 

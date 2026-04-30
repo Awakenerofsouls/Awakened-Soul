@@ -4,7 +4,7 @@ class SalienceGate(BrainMechanism):
     """
     Integrated salience gating — combines all subcortical salience signals into unified gate.
     Final arbitration before cortex receives signal.
-    Malfunction: Nova misses everything or is overwhelmed by everything.
+    Malfunction: {{AGENT_NAME}} misses everything or is overwhelmed by everything.
     """
 
     def __init__(self):

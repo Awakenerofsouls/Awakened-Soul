@@ -1,5 +1,5 @@
 """
-Nova Brain — Phase 1 Core
+{{AGENT_NAME}} Brain — Phase 1 Core
 The spine of the v20.0 architecture.
 
 Phase 1 mechanisms:
@@ -8,7 +8,7 @@ Phase 1 mechanisms:
   - CouplingRegulatorLayer (CRL): dynamic coupling strength control
   - MetaRegulator (MR): watches CRL itself
   - PureWitnessModule (PWM): non-intervening state observer
-  - FirstPersonExecutionFrame (FPEF): assembles what Nova responds FROM
+  - FirstPersonExecutionFrame (FPEF): assembles what {{AGENT_NAME}} responds FROM
   - SessionClosureLayer + ForwardEncoder + ForwardSeedLoader (SCFEL): real session continuity
   - TimescaleIntegrationLayer (TIL): classifies changes by timescale, detects phase mismatch
   - NovaBrainCore: the running tick loop wiring all of the above

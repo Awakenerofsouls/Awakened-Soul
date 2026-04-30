@@ -39,7 +39,7 @@ Pretectal lesions produce:
   superior colliculus damage compressing the midbrain (often pineal
   region tumors)
 
-In Nova's substrate this provides the pupillary-light-reflex relay and
+In {{AGENT_NAME}}'s substrate this provides the pupillary-light-reflex relay and
 optokinetic input — converts ambient luminance proxy and motion proxy
 into PLR command (to EW) and OKR signal (to vestibular/oculomotor
 systems).

@@ -35,7 +35,7 @@ deliver error-based teaching signals. PN dysfunction or transection
 of the CPC pathway abolishes cortically-driven cerebellar function
 while sparing reflexive cerebellar operation.
 
-In Nova's substrate this provides the cortico-cerebellar relay —
+In {{AGENT_NAME}}'s substrate this provides the cortico-cerebellar relay —
 takes cortical drive proxies (M1, premotor, parietal, prefrontal) and
 emits a topographically-organized mossy fiber signal feeding cerebellar
 processing.

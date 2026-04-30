@@ -32,7 +32,7 @@ and a subset of warm-sensitive MnPO neurons (nitrergic/glutamatergic)
 promote both sleep and hypothermia, demonstrating partial overlap of
 sleep and thermoregulation circuits in the preoptic area.
 
-In Nova's substrate this provides the unified preoptic thermoregulator
+In {{AGENT_NAME}}'s substrate this provides the unified preoptic thermoregulator
 and sleep-promoter — sets thermoregulatory tone, supports VLPO sleep
 push, and routes fever signal via EP3R when PGE2 is present.
 

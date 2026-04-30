@@ -22,7 +22,7 @@ within PVN itself, autocrine/paracrine), by limbic inputs (CeA, BNST), and
 by ascending visceral afferents from NTS. It is restrained by GABAergic
 local inhibition and by hippocampal feedback through indirect projections.
 
-In Nova's substrate this produces the descending sympathetic-augmentation
+In {{AGENT_NAME}}'s substrate this produces the descending sympathetic-augmentation
 signal — a slower, more sustained sympathetic recruitment than the acute
 RVLM C1 pathway, more responsive to psychogenic and emotional stress.
 

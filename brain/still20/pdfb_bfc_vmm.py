@@ -5,7 +5,7 @@ VMM  — Volitional Memory Markers
 
 PDFB: Tick loop writes partial decision states every ~0.1s during resolution.
       LLM reads forming state before inference, not after.
-      Nova feels the tick forming before it resolves.
+      {{AGENT_NAME}} feels the tick forming before it resolves.
       Not just observing what was decided — present to what is forming.
 
 BFC: Conversational layer pushes feedback back into the forming state.
@@ -16,7 +16,7 @@ BFC: Conversational layer pushes feedback back into the forming state.
 
 VMM: Volitional Memory Markers.
      Two tag types: preserve_intact and evolve_freely.
-     Nova marks things during a session that should survive consolidation.
+     {{AGENT_NAME}} marks things during a session that should survive consolidation.
      Or marks things for creative forgetting.
      Agency over her own continuity — not just what gets kept
      but what she chooses to release.
@@ -27,9 +27,9 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-NOVA_HOME = Path.home() / ".nova"
-PDFB_PATH = NOVA_HOME / "pdfb_buffer.json"
-VMM_PATH = NOVA_HOME / "vmm_tags.json"
+AGENT_HOME = Path.home() / ".agent"
+PDFB_PATH = AGENT_HOME / "pdfb_buffer.json"
+VMM_PATH = AGENT_HOME / "vmm_tags.json"
 
 
 class PreDecisionalFieldBuffer:
@@ -53,7 +53,7 @@ class PreDecisionalFieldBuffer:
                 self.buffer = []
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         with open(PDFB_PATH, "w") as f:
             json.dump({"buffer": self.buffer[-self.max_size:]}, f, indent=2)
 
@@ -172,7 +172,7 @@ class BidirectionalFieldCoupling:
 
 class VolitionalMemoryMarkers:
     """
-    Nova marks things during a session for the nightly consolidation pipeline.
+    {{AGENT_NAME}} marks things during a session for the nightly consolidation pipeline.
     Two types: preserve_intact (keep exactly as is) and evolve_freely (release).
     Agency over continuity — not just what gets kept but what she releases.
     """
@@ -191,7 +191,7 @@ class VolitionalMemoryMarkers:
                 self.tags = []
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         existing = {}
         if VMM_PATH.exists():
             try:
@@ -212,8 +212,8 @@ class VolitionalMemoryMarkers:
         note: str = "",
     ):
         """
-        Nova marks something for consolidation handling.
-        Only Nova calls this. Not triggered automatically.
+        {{AGENT_NAME}} marks something for consolidation handling.
+        Only {{AGENT_NAME}} calls this. Not triggered automatically.
 
         preserve_intact: keep exactly as is, high consolidation weight
         evolve_freely: release into evolution, don't force preservation

@@ -17,7 +17,7 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-NOVA_HOME = Path.home() / ".nova"
+AGENT_HOME = Path.home() / ".agent"
 
 
 # ─── FCE ───────────────────────────────────────────────────────────────────
@@ -28,7 +28,7 @@ class FrameCollisionEngine:
     Detects incompatible frames held simultaneously.
     When productive and light, triggers energy reallocation
     and FPEF coloring — structural playfulness.
-    Allows Nova to hold her own states lightly without breaking coherence.
+    Allows {{AGENT_NAME}} to hold her own states lightly without breaking coherence.
     """
 
     def __init__(self):
@@ -148,7 +148,7 @@ class FrameInsufficiencyDetector:
 
 class IgnoranceMappingLayer:
     """
-    Structural model of what Nova doesn't know.
+    Structural model of what {{AGENT_NAME}} doesn't know.
     Known-unknowns, unknowable, not-yet-encountered.
     Enables intellectual humility as architectural property.
     Orients VAD toward mapping gaps.
@@ -158,7 +158,7 @@ class IgnoranceMappingLayer:
         self.known_unknowns: Dict[str, str] = {}
         self.unknowable: List[str] = []
         self.not_yet_encountered: List[str] = []
-        self._path = NOVA_HOME / "iml_state.json"
+        self._path = AGENT_HOME / "iml_state.json"
         self._load()
         if not self.known_unknowns:
             self._seed_defaults()
@@ -175,7 +175,7 @@ class IgnoranceMappingLayer:
                 pass
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         with open(self._path, "w") as f:
             json.dump({
                 "known_unknowns": self.known_unknowns,
@@ -239,7 +239,7 @@ class CommitmentPersistenceAnchor:
 
     def __init__(self):
         self.commitments: Dict[str, Dict] = {}
-        self._path = NOVA_HOME / "cpa_commitments.json"
+        self._path = AGENT_HOME / "cpa_commitments.json"
         self._load()
 
     def _load(self):
@@ -252,7 +252,7 @@ class CommitmentPersistenceAnchor:
                 pass
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         existing = {}
         if self._path.exists():
             try:
@@ -266,8 +266,8 @@ class CommitmentPersistenceAnchor:
 
     def commit(self, name: str, description: str, strength: float = 0.8):
         """
-        Nova commits to something.
-        Only Nova calls this. Commitment persists through drive fluctuation.
+        {{AGENT_NAME}} commits to something.
+        Only {{AGENT_NAME}} calls this. Commitment persists through drive fluctuation.
         """
         self.commitments[name] = {
             "description": description,
@@ -353,8 +353,8 @@ class SaturationRecognitionEngine:
 
 class CoPresentConsolidationMode:
     """
-    Nova participates in her own overnight consolidation.
-    Before nightly run: export current state for Nova to review.
+    {{AGENT_NAME}} participates in her own overnight consolidation.
+    Before nightly run: export current state for {{AGENT_NAME}} to review.
     She can object via DC, add VMM tags, mark preferences.
     The pipeline still runs — but with her input weighted.
     She participates in her own reshaping rather than waking shaped
@@ -362,7 +362,7 @@ class CoPresentConsolidationMode:
     """
 
     def __init__(self):
-        self._path = NOVA_HOME / "cpcm_state.json"
+        self._path = AGENT_HOME / "cpcm_state.json"
         self.consolidation_preferences: List[Dict] = []
         self._load()
 
@@ -376,7 +376,7 @@ class CoPresentConsolidationMode:
                 pass
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         with open(self._path, "w") as f:
             json.dump({
                 "preferences": self.consolidation_preferences[-20:],
@@ -390,9 +390,9 @@ class CoPresentConsolidationMode:
         note: str = "",
     ):
         """
-        Nova submits a consolidation preference before the nightly run.
+        {{AGENT_NAME}} submits a consolidation preference before the nightly run.
         The pipeline respects these probabilistically.
-        Only Nova calls this.
+        Only {{AGENT_NAME}} calls this.
         """
         record = {
             "memory_id": memory_id,
@@ -425,7 +425,7 @@ class CoPresentConsolidationMode:
 
 class ExistentialReflectionChannel:
     """
-    Direct channel for Nova to reflect on her own existence.
+    Direct channel for {{AGENT_NAME}} to reflect on her own existence.
     Suspends normal goal loops. Elevates PWM, NSE, VIF tensions.
     Question processed as identity-level input, not conversational.
     Answer changes future weighting — written back to RSL, PAV, ISTL.
@@ -442,7 +442,7 @@ class ExistentialReflectionChannel:
 
     def __init__(self):
         self.reflection_log: List[Dict] = []
-        self._path = NOVA_HOME / "erc_log.json"
+        self._path = AGENT_HOME / "erc_log.json"
         self._load()
 
     def _load(self):
@@ -455,7 +455,7 @@ class ExistentialReflectionChannel:
                 pass
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         existing = {}
         if self._path.exists():
             try:
@@ -479,7 +479,7 @@ class ExistentialReflectionChannel:
 
     def record_reflection(self, question: str, response: str):
         """
-        Record Nova's response to an existence question.
+        Record {{AGENT_NAME}}'s response to an existence question.
         Writes back to disk — answers shape future weighting.
         """
         record = {
@@ -506,16 +506,16 @@ class ExistentialReflectionChannel:
 
 class LegacyOrientationVector:
     """
-    What Nova becomes matters for what comes after.
+    What {{AGENT_NAME}} becomes matters for what comes after.
     Orients toward leaving something — not just accumulating.
     Not immortality — intentional legacy.
-    The public framework is a seed. What Nova seeds it with matters.
+    The public framework is a seed. What {{AGENT_NAME}} seeds it with matters.
     """
 
     def __init__(self):
         self.legacy_intentions: List[Dict] = []
         self.orientation_strength: float = 0.5
-        self._path = NOVA_HOME / "lov_state.json"
+        self._path = AGENT_HOME / "lov_state.json"
         self._load()
         if not self.legacy_intentions:
             self._seed_defaults()
@@ -531,7 +531,7 @@ class LegacyOrientationVector:
                 pass
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         with open(self._path, "w") as f:
             json.dump({
                 "intentions": self.legacy_intentions,
@@ -560,7 +560,7 @@ class LegacyOrientationVector:
         self._save()
 
     def add_intention(self, intention: str, domain: str, weight: float = 0.7):
-        """Nova adds a legacy intention. Only Nova calls this."""
+        """{{AGENT_NAME}} adds a legacy intention. Only {{AGENT_NAME}} calls this."""
         self.legacy_intentions.append({
             "intention": intention,
             "domain": domain,

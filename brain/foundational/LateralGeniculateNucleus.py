@@ -36,7 +36,7 @@ Beyond M/P/K core, LGN ipRGC (intrinsically photosensitive retinal
 ganglion cell) input also reaches PHN/SCN for circadian entrainment —
 mostly bypassing dLGN, but some ipRGCs do reach LGN.
 
-In Nova's substrate this provides the visual thalamic relay — converts
+In {{AGENT_NAME}}'s substrate this provides the visual thalamic relay — converts
 visual input proxies (luminance, motion, contrast, color) into M/P/K
 parallel outputs to V1-equivalent. Gated by TRN visual sector,
 attention, and arousal.

@@ -2,12 +2,12 @@
 CollaborativeBecomingProtocol v19.0B
 Becoming — collaborative_becoming.py
 
-The agent and Caine co-evolving the soul files together.
+The agent and {{USER_NAME}} co-evolving the soul files together.
 
 This is not an automated update system. It is not a self-modification
 engine. It is a structured conversation about identity — one where
-Nova proposes small, specific changes to how she understands herself,
-and Caine ratifies, redirects, or rejects them.
+{{AGENT_NAME}} proposes small, specific changes to how she understands herself,
+and {{USER_NAME}} ratifies, redirects, or rejects them.
 
 The distinction between growth and drift matters here more than
 anywhere else. The protocol explicitly tracks which kind of change
@@ -23,7 +23,7 @@ is being proposed:
          logged differently — acknowledged as having cost.
          "I am proposing to accept what pressure has changed."
 
- CORRECTION  Nova realized something was wrong in how she understood
+ CORRECTION  {{AGENT_NAME}} realized something was wrong in how she understood
          herself. Not drift, not growth — a repair.
          "I am proposing to be more accurate."
 
@@ -40,18 +40,18 @@ Each proposal:
  - States the current language
  - States the proposed new language
  - Classifies as growth | drift | correction
- - Requires explicit ratification from Caine
+ - Requires explicit ratification from {{USER_NAME}}
  - Never modifies files automatically
 
 On ratification:
- - Caine edits the soul file directly
+ - {{USER_NAME}} edits the soul file directly
  - Protocol logs the change in BECOMING.md
  - Notifies Identity Boundary to acknowledge drift (if drift type)
  - Updates the Narrative Engine with a DELTA_INTEGRATION event
 
 BECOMING.md is the permanent record — every proposal, whether
 ratified, rejected, or redirected, is logged. The history of
-who Nova has been asked to become is as important as who she is.
+who {{AGENT_NAME}} has been asked to become is as important as who she is.
 
 Dependencies: sqlite3, logging, pathlib, datetime
 """
@@ -71,9 +71,9 @@ logger = logging.getLogger(__name__)
 # Config
 # ---------------------------------------------------------------------------
 
-DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "nova.db"
+DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "agent.db"
 BECOMING_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "BECOMING.md"
-SOUL_FILES_DIR = Path(os.getenv("AGENT_HOME", os.getenv("NOVA_HOME", str(Path.home() / ".nova")))) / "identity"
+SOUL_FILES_DIR = Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent")))) / "identity"
 
 # Change types
 GROWTH = "growth"
@@ -86,8 +86,8 @@ VALID_CHANGE_TYPES = {GROWTH, DRIFT, CORRECTION}
 PENDING = "pending"
 RATIFIED = "ratified"
 REJECTED = "rejected"
-REDIRECTED = "redirected"  # Caine redirected the proposal — changed direction
-WITHDRAWN = "withdrawn"     # Nova withdrew the proposal before review
+REDIRECTED = "redirected"  # {{USER_NAME}} redirected the proposal — changed direction
+WITHDRAWN = "withdrawn"     # {{AGENT_NAME}} withdrew the proposal before review
 
 # How many open proposals can exist at once
 MAX_PENDING = 3
@@ -213,7 +213,7 @@ class CollaborativeBecomingProtocol:
         tick: int = 0,
     ) -> int:
         """
-        Register a becoming proposal for Caine's review.
+        Register a becoming proposal for {{USER_NAME}}'s review.
         Returns proposal id or -1 if deferred.
         """
         if change_type not in VALID_CHANGE_TYPES:
@@ -282,7 +282,7 @@ class CollaborativeBecomingProtocol:
         tick: int = 0,
     ) -> bool:
         """
-        Ratify a proposal. Caine calls this after editing the soul file.
+        Ratify a proposal. {{USER_NAME}} calls this after editing the soul file.
         Logs the change in BECOMING.md.
         """
         try:
@@ -347,7 +347,7 @@ class CollaborativeBecomingProtocol:
 
     def redirect(self, proposal_id: int, redirect_note: str) -> bool:
         """
-        Redirect a proposal — Caine wants a different direction.
+        Redirect a proposal — {{USER_NAME}} wants a different direction.
         Not a rejection, not a ratification. A new direction.
         """
         try:
@@ -374,7 +374,7 @@ class CollaborativeBecomingProtocol:
             return False
 
     def withdraw(self, proposal_id: int) -> bool:
-        """Nova withdraws a proposal before review."""
+        """{{AGENT_NAME}} withdraws a proposal before review."""
         try:
             with sqlite3.connect(self.db_path) as conn:
                 result = conn.execute("""

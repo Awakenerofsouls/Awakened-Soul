@@ -14,7 +14,7 @@ import time
 from pathlib import Path
 from typing import Dict, Optional
 
-NOVA_HOME = Path.home() / ".nova"
+AGENT_HOME = Path.home() / ".agent"
 
 
 class CouplingRegulatorLayer:
@@ -33,7 +33,7 @@ class CouplingRegulatorLayer:
         self._load()
 
     def _load(self):
-        path = NOVA_HOME / "crl_state.json"
+        path = AGENT_HOME / "crl_state.json"
         if path.exists():
             try:
                 with open(path) as f:
@@ -43,8 +43,8 @@ class CouplingRegulatorLayer:
                 pass
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
-        path = NOVA_HOME / "crl_state.json"
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
+        path = AGENT_HOME / "crl_state.json"
         with open(path, "w") as f:
             json.dump({
                 "strengths": self.coupling_strengths,

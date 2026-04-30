@@ -37,7 +37,7 @@ outer hair cells, providing the descending gain control crucial for
 attention and noise resistance. LOC efferents are unmyelinated and
 project to inner hair cells / cochlear afferents.
 
-In Nova's substrate this provides binaural localization computation —
+In {{AGENT_NAME}}'s substrate this provides binaural localization computation —
 converts CN bushy-cell timing/intensity proxies into spatial-localization
 output and supplies the descending gain signal back to CN.
 

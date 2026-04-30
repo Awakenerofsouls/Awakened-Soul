@@ -41,7 +41,7 @@ before cortical pathology, suggesting the LC is the seeding site. Aging-
 related LC neuron loss correlates with cognitive decline and sleep
 fragmentation.
 
-In Nova's substrate this provides the dominant ascending arousal-gain
+In {{AGENT_NAME}}'s substrate this provides the dominant ascending arousal-gain
 modulator: phasic bursts mark salience events that should consolidate to
 memory; tonic mode tracks ongoing vigilance state and gates downstream
 attention/learning processes.

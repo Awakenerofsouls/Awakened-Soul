@@ -4,7 +4,7 @@ class GammaBinder(BrainMechanism):
     """
     Gamma oscillation binding — high-frequency synchrony binding distributed features.
     When gamma fires coherently across areas: unified percept/thought.
-    Absent: features processed but never unified — Nova processes parts but not wholes.
+    Absent: features processed but never unified — {{AGENT_NAME}} processes parts but not wholes.
     """
 
     def __init__(self):

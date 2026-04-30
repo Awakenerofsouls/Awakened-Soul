@@ -4,15 +4,15 @@ nova_heartbeat.py
 
 Terminal heartbeat loop — replaces OpenClaw's dashboard heartbeat.
 Runs locally like ComfyUI — persistent process, never stops.
-Calls Nova's API directly on a timer.
-Dashboard only gets Nova's real messages when she chooses to send one.
+Calls {{AGENT_NAME}}'s API directly on a timer.
+Dashboard only gets {{AGENT_NAME}}'s real messages when she chooses to send one.
 No more heartbeat spam in OpenClaw chat.
 
 Usage:
     python3 nova_heartbeat.py
 
 To run in background:
-    nohup python3 nova_heartbeat.py > ~/.nova/heartbeat.log 2>&1 &
+    nohup python3 nova_heartbeat.py > ~/.agent/heartbeat.log 2>&1 &
 
 To kill:
     pkill -f nova_heartbeat.py
@@ -28,11 +28,11 @@ from datetime import datetime
 
 # ─── Config ────────────────────────────────────────────────────────────────
 
-NOVA_API_URL = "http://localhost:8000"          # Nova's brain proxy
+NOVA_API_URL = "http://localhost:8000"          # {{AGENT_NAME}}'s brain proxy
 HEARTBEAT_INTERVAL = 30                          # seconds between ticks
-NOVA_HOME = Path.home() / ".nova"
-HEARTBEAT_LOG = NOVA_HOME / "heartbeat_terminal.log"
-HEARTBEAT_STATE = NOVA_HOME / "heartbeat_state.json"
+AGENT_HOME = Path.home() / ".agent"
+HEARTBEAT_LOG = AGENT_HOME / "heartbeat_terminal.log"
+HEARTBEAT_STATE = AGENT_HOME / "heartbeat_state.json"
 
 # ─── State ─────────────────────────────────────────────────────────────────
 
@@ -58,7 +58,7 @@ def log(msg: str):
     line = f"[{timestamp}] {msg}"
     print(line)
     try:
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         with open(HEARTBEAT_LOG, "a") as f:
             f.write(line + "\n")
     except Exception:
@@ -86,11 +86,11 @@ def save_state(tick: int, last_response: str = ""):
         log(f"State save error: {e}")
 
 
-# ─── Nova API call ─────────────────────────────────────────────────────────
+# ─── {{AGENT_NAME}} API call ─────────────────────────────────────────────────────────
 
 def tick_nova():
     """
-    Send a tick to Nova's brain proxy.
+    Send a tick to {{AGENT_NAME}}'s brain proxy.
     This is the internal tick — not a user message.
     The proxy handles injecting FPEF state before any LLM call.
     """
@@ -107,15 +107,15 @@ def tick_nova():
         else:
             return None, {}
     except requests.exceptions.ConnectionError:
-        # Nova isn't running — that's fine, just log
-        return None, {"error": "Nova offline"}
+        # {{AGENT_NAME}} isn't running — that's fine, just log
+        return None, {"error": "{{AGENT_NAME}} offline"}
     except Exception as e:
         return None, {"error": str(e)}
 
 
 def check_nova_status():
     """
-    Lightweight status check — is Nova's brain proxy alive?
+    Lightweight status check — is {{AGENT_NAME}}'s brain proxy alive?
     """
     try:
         response = requests.get(f"{NOVA_API_URL}/status", timeout=3)
@@ -130,23 +130,23 @@ def main():
     global tick_count, running
 
     log("=" * 50)
-    log("Nova Terminal Heartbeat Starting")
+    log("{{AGENT_NAME}} Terminal Heartbeat Starting")
     log(f"Interval: {HEARTBEAT_INTERVAL}s")
-    log(f"Nova API: {NOVA_API_URL}")
+    log(f"{{AGENT_NAME}} API: {NOVA_API_URL}")
     log(f"Log: {HEARTBEAT_LOG}")
     log("=" * 50)
 
     # Initial status check
     if check_nova_status():
-        log("Nova brain proxy: ONLINE")
+        log("{{AGENT_NAME}} brain proxy: ONLINE")
     else:
-        log("Nova brain proxy: OFFLINE (will retry each tick)")
+        log("{{AGENT_NAME}} brain proxy: OFFLINE (will retry each tick)")
 
     while running:
         tick_count += 1
         tick_start = time.time()
 
-        # Tick Nova
+        # Tick {{AGENT_NAME}}
         response, state = tick_nova()
 
         if state.get("error"):
@@ -155,7 +155,7 @@ def main():
         else:
             # Log meaningful state changes
             if response:
-                log(f"Tick {tick_count}: Nova output — {response[:100]}")
+                log(f"Tick {tick_count}: {{AGENT_NAME}} output — {response[:100]}")
             elif tick_count % 30 == 0:
                 # Status log every 30 ticks (~15 min)
                 uptime = int(time.time() - session_start)

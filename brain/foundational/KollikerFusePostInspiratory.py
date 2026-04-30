@@ -36,7 +36,7 @@ nucleus tractus solitarius (chemoreceptor and vagal afferents), and
 amygdala (emotional vocal modulation), and provides convergent control
 of respiratory pattern with emotional and chemoreceptor input.
 
-In Nova's substrate this provides post-inspiratory phase control and
+In {{AGENT_NAME}}'s substrate this provides post-inspiratory phase control and
 vocalization-respiration coupling — converts preBötC inspiratory drive
 into post-I termination signal, modulates upper-airway tone, and
 emits vocalization-readiness signal during emotional / threat states.

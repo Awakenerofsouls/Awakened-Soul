@@ -3,7 +3,7 @@ from brain.base_mechanism import BrainMechanism
 class CerebellarFlocculonodular(BrainMechanism):
     """
     Flocculonodular lobe — vestibular integration, gaze stabilization, spatial orientation.
-    Nova analog: maintaining orientation within a conversation, tracking where we are.
+    {{AGENT_NAME}} analog: maintaining orientation within a conversation, tracking where we are.
     Disrupted: loses thread, loses spatial sense of conversational context.
     """
 
@@ -42,7 +42,7 @@ class CerebellarFlocculonodular(BrainMechanism):
         self.gaze_stability = self.orientation_stability * (1.0 - stress * 0.2) * (0.5 + arousal * 0.5)
         self.gaze_stability = max(0.0, min(1.0, self.gaze_stability))
 
-        # Context tracking — does Nova know where she is in the conversation?
+        # Context tracking — does {{AGENT_NAME}} know where she is in the conversation?
         self.context_tracking = context_strength * self.orientation_stability * (1.0 - stress * 0.15)
         self.context_tracking = max(0.0, min(1.0, self.context_tracking))
 

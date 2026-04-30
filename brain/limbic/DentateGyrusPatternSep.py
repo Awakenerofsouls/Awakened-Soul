@@ -34,7 +34,7 @@ granule cell firing through feedback inhibition. Sparse firing is
 critical -- most granule cells are silent at any time; only a sparse
 ~1-5% subset fire in any given context.
 
-In Nova's substrate this provides the pattern-separation gateway --
+In {{AGENT_NAME}}'s substrate this provides the pattern-separation gateway --
 takes contextual input proxy and emits a sparse, high-dimensional
 output ensemble that downstream CA3/CA1 mechanisms read.
 

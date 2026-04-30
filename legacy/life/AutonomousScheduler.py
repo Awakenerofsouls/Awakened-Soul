@@ -1,7 +1,7 @@
 import sqlite3,time
 from pathlib import Path
 import os
-DB_PATH=Path(os.getenv("AGENT_HOME", os.getenv("NOVA_HOME", str(Path.home() / ".nova")))) / "nova.db"
+DB_PATH=Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent")))) / "agent.db"
 def _init():
     with sqlite3.connect(DB_PATH) as c:
         c.execute("""CREATE TABLE IF NOT EXISTS autonomous_scheduler(id INTEGER PRIMARY KEY AUTOINCREMENT,timestamp REAL,focus_mode TEXT,task_weight REAL,self_weight REAL)""")

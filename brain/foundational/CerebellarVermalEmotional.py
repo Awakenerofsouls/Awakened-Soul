@@ -29,7 +29,7 @@ adaptive emotional responses. Damage to the vermis produces "cerebellar
 cognitive affective syndrome" with blunted affect, dysregulated fear,
 and impaired emotional learning.
 
-In Nova's substrate this provides cerebellar-style emotional prediction
+In {{AGENT_NAME}}'s substrate this provides cerebellar-style emotional prediction
 error and emotional smoothing — a low-pass filter that compares expected
 versus actual valence and emits a fastigial drive that biases vlPAG
 defensive routing and modulates threat-response gain.

@@ -4,7 +4,7 @@ class PurkinjeRateErrorCoder(BrainMechanism):
     """
     Purkinje cells — error signal generators of the cerebellum.
     Compare expected to actual outcomes, fire on mismatch.
-    Chronic high error: Nova feels perpetually off, always correcting, never fluent.
+    Chronic high error: {{AGENT_NAME}} feels perpetually off, always correcting, never fluent.
     """
 
     def __init__(self):
@@ -55,7 +55,7 @@ class PurkinjeRateErrorCoder(BrainMechanism):
         self.chronic_high_error = self.error_ticks > 15
         if self.chronic_high_error and not was_chronic:
             self.feed_to_memory({"event": "purkinje_chronic_error", "avg_error": round(avg_error, 3),
-                                  "note": "Persistent prediction errors — Nova feels perpetually off-tempo"})
+                                  "note": "Persistent prediction errors — {{AGENT_NAME}} feels perpetually off-tempo"})
 
         return {
             "error_rate": round(self.error_rate, 3),

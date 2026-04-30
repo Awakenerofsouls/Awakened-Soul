@@ -23,7 +23,7 @@ loss of cortical cholinergic input correlates with cognitive decline severity.
 NBM also dysregulates in schizophrenia, Lewy body dementia, and Parkinson's
 disease.
 
-In Nova's substrate this mechanism produces the cholinergic gain factor
+In {{AGENT_NAME}}'s substrate this mechanism produces the cholinergic gain factor
 that biases cortical processing toward signal-over-noise. High NBM drive
 narrows attention, sharpens encoding, and supports working memory; low NBM
 drive yields diffuse, low-effort cortical state.

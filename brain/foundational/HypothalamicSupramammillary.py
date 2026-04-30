@@ -31,7 +31,7 @@ arousal-state regulation of memory consolidation. SUM lesion produces
 deficits in novelty-driven memory encoding and disrupts hippocampal
 theta during exploration.
 
-In Nova's substrate this provides the novelty-coupled theta amplifier —
+In {{AGENT_NAME}}'s substrate this provides the novelty-coupled theta amplifier —
 combines novelty signals with arousal and social-context to drive
 medial septum / hippocampal theta amplification during memory-relevant
 moments.

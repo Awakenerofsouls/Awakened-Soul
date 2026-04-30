@@ -42,7 +42,7 @@ firing rhythmically. Top-down feedback from piriform cortex,
 locus coeruleus (norepinephrine), and basal forebrain (acetylcholine)
 modulates OB output for state-dependent gain control.
 
-In Nova's substrate this provides the olfactory entry — converts
+In {{AGENT_NAME}}'s substrate this provides the olfactory entry — converts
 abstract odorant input proxies into glomerular-coded MOB output and
 AOB pheromone output, plus respiration-coupled gamma rhythm.
 

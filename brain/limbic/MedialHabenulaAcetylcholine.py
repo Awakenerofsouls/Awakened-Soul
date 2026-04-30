@@ -30,7 +30,7 @@ the superior subpart of the MHb projects to IPN to suppress anxiety in
 some contexts, indicating bidirectional roles. MHb dysfunction is linked
 to mood-associated disorders and substance dependence.
 
-In Nova's substrate this provides the cholinergic anxiety/withdrawal
+In {{AGENT_NAME}}'s substrate this provides the cholinergic anxiety/withdrawal
 modulator -- a slow tonic ACh drive to IPN/brainstem that scales with
 chronic stress, prior nicotine-like reinforcement loops, and acute
 nAChR engagement.

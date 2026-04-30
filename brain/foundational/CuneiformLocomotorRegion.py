@@ -32,7 +32,7 @@ for gait disorders in Parkinson disease and progressive supranuclear
 palsy. CnF dysfunction may underlie freezing-of-gait and exaggerated
 startle/escape phenotypes.
 
-In Nova's substrate this provides the locomotor command — converts
+In {{AGENT_NAME}}'s substrate this provides the locomotor command — converts
 defensive-routing signals (PAG dlPAG drive, SC escape drive) and
 exploratory-arousal signals into locomotion command output that
 downstream reticulospinal/spinal mechanisms read.

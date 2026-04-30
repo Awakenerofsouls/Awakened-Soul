@@ -33,7 +33,7 @@ Limbic-MD subdivisions integrate amygdala/ventral striatum signals
 with PFC cognitive processing, and may contribute to motivational
 gating of cognitive control.
 
-In Nova's substrate this provides the higher-order thalamic / cognitive
+In {{AGENT_NAME}}'s substrate this provides the higher-order thalamic / cognitive
 gain channel — supports working-memory-like maintenance of recent state
 and supplies a slow context signal that PFC-equivalent integration
 mechanisms can read.

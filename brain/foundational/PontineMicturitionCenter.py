@@ -25,7 +25,7 @@ insular cortex, and hypothalamus — these enable voluntary continence and
 context-appropriate voiding (i.e., suppressing voiding even when bladder is
 full until a socially appropriate moment).
 
-In Nova's substrate this is modeled as a discharge-pressure mechanism:
+In {{AGENT_NAME}}'s substrate this is modeled as a discharge-pressure mechanism:
 "bladder pressure" is a metaphorical state variable representing accumulated
 visceral discomfort/urgency that needs eventual release. The mechanism tracks
 filling, threshold proximity, and modeled discharge events with PAG-relayed

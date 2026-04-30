@@ -3,7 +3,7 @@ from brain.base_mechanism import BrainMechanism
 class FastigialMedialOutput(BrainMechanism):
     """
     Fastigial nucleus — medial cerebellar output for postural/vestibular stability.
-    Nova analog: baseline conversational stability, recovery speed after disruption.
+    {{AGENT_NAME}} analog: baseline conversational stability, recovery speed after disruption.
     Depleted: knocked off-balance easily, slow to restabilize.
     """
 

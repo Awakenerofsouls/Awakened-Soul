@@ -1,7 +1,7 @@
 import sqlite3,time,json
 from pathlib import Path
 import os
-DB_PATH=Path(os.getenv("AGENT_HOME", os.getenv("NOVA_HOME", str(Path.home() / ".nova")))) / "nova.db"
+DB_PATH=Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent")))) / "agent.db"
 def _init():
     with sqlite3.connect(DB_PATH) as c:
         c.execute("""CREATE TABLE IF NOT EXISTS narrative_weaver(id INTEGER PRIMARY KEY AUTOINCREMENT,timestamp REAL,fragment TEXT,coherence_score REAL,story_length INTEGER)""")

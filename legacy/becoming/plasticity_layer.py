@@ -19,7 +19,7 @@ After enough ticks, patterns emerge:
 The Plasticity Layer watches for these patterns and proposes
 micro-mechanisms — small additions or adjustments that the brain
 could grow. Proposals go to PLASTICITY_PROPOSALS.md for review.
-Nothing activates automatically. Caine reviews and ratifies.
+Nothing activates automatically. {{USER_NAME}} reviews and ratifies.
 
 Three proposal types:
 
@@ -66,7 +66,7 @@ logger = logging.getLogger(__name__)
 # Config
 # ---------------------------------------------------------------------------
 
-DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "nova.db"
+DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "agent.db"
 PROPOSALS_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "PLASTICITY_PROPOSALS.md"
 
 # Proposal types

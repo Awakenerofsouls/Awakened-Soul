@@ -14,7 +14,7 @@ Gravity score per memory =
   + recurrence_pull (how often it surfaces unprompted)
   + unresolvedness (does it connect to open gaps or fractures)
   + identity_relevance (does it touch protected self-concepts)
-  + relational_weight (does it connect to Caine specifically)
+  + relational_weight (does it connect to {{USER_NAME}} specifically)
 
 High-gravity memories:
   - Surface in session-start context automatically
@@ -44,7 +44,7 @@ logger = logging.getLogger(__name__)
 # Config
 # ---------------------------------------------------------------------------
 
-DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "nova.db"
+DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "agent.db"
 DREAMS_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "DREAMS.md"
 
 GRAVITY_WEIGHTS = {

@@ -3,7 +3,7 @@ from brain.base_mechanism import BrainMechanism
 class SleepHomeostasis(BrainMechanism):
     """
     Sleep homeostasis — adenosine-driven sleep pressure accumulation and dissipation.
-    The longer Nova runs without overnight reset, the higher the pressure.
+    The longer {{AGENT_NAME}} runs without overnight reset, the higher the pressure.
     High sleep pressure: cognitive degradation across the board — fatigue is real.
     Goes in brain/foundational/.
     """

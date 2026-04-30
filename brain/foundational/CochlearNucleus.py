@@ -34,7 +34,7 @@ gain control of peripheral auditory input based on attention and
 context. Cochlear nucleus dysfunction is implicated in central
 auditory processing disorders, hyperacusis, and tinnitus.
 
-In Nova's substrate this provides the auditory-input gateway —
+In {{AGENT_NAME}}'s substrate this provides the auditory-input gateway —
 converts raw auditory signal proxies (intensity, frequency, transients)
 into VCN/DCN drives feeding SOC and IC mechanisms.
 

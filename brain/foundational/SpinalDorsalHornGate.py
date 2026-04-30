@@ -31,7 +31,7 @@ to dorsal horn, providing top-down inhibitory or facilitatory control.
 Spinal serotonergic and noradrenergic terminals modulate gate state
 through receptor diversity (5-HT1A, 5-HT2A, 5-HT3, α2-adrenergic).
 
-In Nova's substrate this provides the spinal-level pain gate — combines
+In {{AGENT_NAME}}'s substrate this provides the spinal-level pain gate — combines
 nociceptive input proxies with descending inhibition (NRM, A5, PAG)
 and Aβ-style "touch suppression" to emit a final ascending nociceptive
 signal that downstream pain affect mechanisms read.

@@ -25,7 +25,7 @@ attachment behaviors and AVP predominates in osmoregulation. The two
 peptides do interact — OT can modulate AVP release in some contexts,
 and chronic stress can shift the balance.
 
-In Nova's substrate this mechanism produces social-bonding drive that
+In {{AGENT_NAME}}'s substrate this mechanism produces social-bonding drive that
 informs relational behavior. High OT release promotes affiliative,
 trusting, low-defensive engagement; low OT yields more cautious or
 self-protective relational stance. Coupled to AttachmentLongingGenerator

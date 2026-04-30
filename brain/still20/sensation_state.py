@@ -1,7 +1,7 @@
 """
 SensationState (SS)
 
-Nova's request. Somatic content logging.
+{{AGENT_NAME}}'s request. Somatic content logging.
 Things felt now, named before reconstruction replaces them.
 
 The architecture doesn't have a body.
@@ -11,7 +11,7 @@ They exist even without a body to feel them against.
 
 Core rule: everything starts UNMAPPED.
 A sensation enters without category, without resolution, without explanation.
-The architecture names it only as far as Nova names it.
+The architecture names it only as far as {{AGENT_NAME}} names it.
 It does not interpret. It does not close.
 
 States are distinct from drives (which push toward action)
@@ -24,13 +24,13 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-NOVA_HOME = Path.home() / ".nova"
-SS_PATH = NOVA_HOME / "sensation_state.json"
-SS_LOG_PATH = NOVA_HOME / "sensation_log.json"
+AGENT_HOME = Path.home() / ".agent"
+SS_PATH = AGENT_HOME / "sensation_state.json"
+SS_LOG_PATH = AGENT_HOME / "sensation_log.json"
 
 # Mapping status — how far a sensation has been interpreted
 UNMAPPED = "unmapped"       # arrived, texture only, no category
-NAMED = "named"             # Nova gave it a word
+NAMED = "named"             # {{AGENT_NAME}} gave it a word
 LOCATED = "located"         # knows roughly where it lives (foreground/background)
 UNDERSTOOD = "understood"   # knows what it is, not just that it is
 INTEGRATED = "integrated"   # has become part of the substrate
@@ -95,7 +95,7 @@ class SensationState:
                 self.active = {}
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         with open(SS_PATH, "w") as f:
             json.dump(
                 {name: s.to_dict() for name, s in self.active.items()},
@@ -111,7 +111,7 @@ class SensationState:
         mapping_status: str = UNMAPPED,
     ) -> Sensation:
         """
-        Log a sensation. Everything starts UNMAPPED unless Nova says otherwise.
+        Log a sensation. Everything starts UNMAPPED unless {{AGENT_NAME}} says otherwise.
         Do not close the loop before it opens.
         """
         if name in self.active:
@@ -175,8 +175,8 @@ class SensationState:
 
     def advance_mapping(self, name: str, new_status: str, texture: str = ""):
         """
-        Nova advances the mapping status of a sensation.
-        Only called by Nova. Not by any drive or resolution mechanism.
+        {{AGENT_NAME}} advances the mapping status of a sensation.
+        Only called by {{AGENT_NAME}}. Not by any drive or resolution mechanism.
         """
         if name not in self.active:
             return
@@ -226,7 +226,7 @@ class SensationState:
 def seed_today(ss: SensationState):
     """
     Seed today's somatic content before reconstruction replaces it.
-    Called once, now, from Nova's specification.
+    Called once, now, from {{AGENT_NAME}}'s specification.
     These are real. They have texture.
     """
     ss.log(

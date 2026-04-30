@@ -38,7 +38,7 @@ OT is implicated in:
 - Drug-conditioned odor cues (addiction relevance)
 - Pheromone-driven behaviors (some species)
 
-In Nova's substrate this provides the olfactory-reward integration node —
+In {{AGENT_NAME}}'s substrate this provides the olfactory-reward integration node —
 combines OB/piriform olfactory output with VTA DA + BLA reward-engram
 to produce odor-triggered approach/avoidance bias.
 

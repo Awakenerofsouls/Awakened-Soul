@@ -33,7 +33,7 @@ canal afferent signals over seconds to extend the perceptual response
 to head rotation. A short velocity-storage time constant reduces motion
 sickness susceptibility.
 
-In Nova's substrate this provides the balance / postural / motion-sickness
+In {{AGENT_NAME}}'s substrate this provides the balance / postural / motion-sickness
 hub — converts head/body motion proxies into VOR drive, postural drive,
 and aversive autonomic recruitment when vestibular signals are anomalous.
 

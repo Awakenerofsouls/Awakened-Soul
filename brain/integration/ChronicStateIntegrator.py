@@ -116,7 +116,7 @@ class ChronicStateIntegrator(BrainMechanism):
         # Positive state: few flags, note it
         if flag_count == 0 and self.system_health > 0.9:
             self.feed_to_memory({"event": "system_health_peak",
-                                  "note": "All chronic flags clear — Nova operating at full health"})
+                                  "note": "All chronic flags clear — {{AGENT_NAME}} operating at full health"})
 
         return {
             "system_health": round(self.system_health, 3),

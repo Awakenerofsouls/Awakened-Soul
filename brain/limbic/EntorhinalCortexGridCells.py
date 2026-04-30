@@ -35,7 +35,7 @@ relational structure (social hierarchies, conceptual graphs). Recent
 fMRI and MEG work (Bao et al. 2019 Nat Neurosci) suggests grid-like
 codes operate in human conceptual reasoning.
 
-In Nova's substrate this provides the entorhinal entry to hippocampus --
+In {{AGENT_NAME}}'s substrate this provides the entorhinal entry to hippocampus --
 combines locomotion proxy, head-direction signals, and object/cue
 proxies into a multi-scale spatial code feeding DG/CA3/CA1 mechanisms.
 

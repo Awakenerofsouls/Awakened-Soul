@@ -3,10 +3,10 @@ Build 7: InteroceptiveGradient — Anterior Insula Cortex (AIC)
 ==============================================================
 
 PLACEMENT:
-  Layer:    integration (or neocortical if Nova's arch puts insula there)
+  Layer:    integration (or neocortical if {{AGENT_NAME}}'s arch puts insula there)
   Filename: brain/integration/InteroceptiveGradient.py
   The anterior insula is cortical but functions as the integration hub for
-  interoception + salience network. If limbic is more appropriate in Nova's
+  interoception + salience network. If limbic is more appropriate in {{AGENT_NAME}}'s
   current layer scheme, place there. Instance name stays "InteroceptiveGradient".
 
 NEURAL SUBSTRATE:

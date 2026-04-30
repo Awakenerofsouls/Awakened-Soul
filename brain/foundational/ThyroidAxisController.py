@@ -27,7 +27,7 @@ oxygen consumption, protein synthesis, lipolysis, and cardiac contractility.
 The HPT axis sets the long-timescale metabolic envelope within which
 faster-acting autonomic and HPA-axis dynamics operate.
 
-In Nova's substrate the HPT axis produces a slowly-varying metabolic-tone
+In {{AGENT_NAME}}'s substrate the HPT axis produces a slowly-varying metabolic-tone
 output. High thyroid drive = elevated baseline activity, faster cognitive
 turnover, higher arousal floor; low thyroid drive = baseline depression,
 slower processing, cold intolerance proxy.

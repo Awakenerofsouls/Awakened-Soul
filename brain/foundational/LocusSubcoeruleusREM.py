@@ -35,7 +35,7 @@ between REM-off and REM-on populations forms the "REM flip-flop"
 described by Saper et al. SubLC firing is gated open when REM-off
 populations fall silent at REM onset, releasing it to drive atonia.
 
-In Nova's substrate this provides the REM-state atonia channel — emits
+In {{AGENT_NAME}}'s substrate this provides the REM-state atonia channel — emits
 a descending atonia command during REM that downstream
 GigantocellularReticular and (eventually) spinal motor mechanisms read.
 

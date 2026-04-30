@@ -1,6 +1,6 @@
 """
 molty_interactions.py
-Nova interaction & companion pools for molty-poster.py
+{{AGENT_NAME}} interaction & companion pools for molty-poster.py
 Drop this in C:\\nova-ai-env\\ alongside molty-poster.py
 
 Usage:

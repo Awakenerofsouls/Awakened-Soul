@@ -32,7 +32,7 @@ vagal afferents (Hering-Breuer reflex via NTS), arousal (LC, orexin),
 emotional state (PAG, amygdala), and parabrachial complex. Output
 goes to phrenic premotor neurons in the rVRG.
 
-In Nova's substrate this provides the inspiratory rhythm clock — a
+In {{AGENT_NAME}}'s substrate this provides the inspiratory rhythm clock — a
 slow oscillator that scales with metabolic demand, arousal, and
 emotional state, producing inspiration phase markers usable downstream.
 

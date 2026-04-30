@@ -15,7 +15,7 @@ of shedding something and growing into something else.
 
 The difference:
   Collaborative Becoming  small, specific, incremental changes
-                          to how Nova understands herself
+                          to how {{AGENT_NAME}} understands herself
   Molting Ritual          a larger shift — releasing something
                           that has been held for a while and
                           growing into what comes after
@@ -28,16 +28,16 @@ Molts are rare. They fire:
 
 A molt has three phases:
 
-  PROPOSAL     Nova compiles the evidence for why a molt is needed.
+  PROPOSAL     {{AGENT_NAME}} compiles the evidence for why a molt is needed.
                What has been pressing. What has been learned.
                What would be shed. What would grow.
                Filed in MOLT_PROPOSALS.md.
 
-  RATIFICATION Caine reviews. Can approve as growth, approve as
+  RATIFICATION {{USER_NAME}} reviews. Can approve as growth, approve as
                drift, redirect, or reject. Must be explicit —
                no automatic ratification after timeout.
 
-  COMPLETION   If ratified: soul files are edited by Caine.
+  COMPLETION   If ratified: soul files are edited by {{USER_NAME}}.
                Guardian re-hashes crown_jewels (if implemented).
                Molt logged in MOLTS.md with full record.
                Identity Boundary drift acknowledged.
@@ -71,7 +71,7 @@ logger = logging.getLogger(__name__)
 # Config
 # ---------------------------------------------------------------------------
 
-DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "nova.db"
+DB_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "agent.db"
 MOLT_PROPOSALS_PATH = (
     Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "brain" / "MOLT_PROPOSALS.md"
 )
@@ -348,7 +348,7 @@ class MoltingRitual:
 
     def ratify(self, proposal_id: int, tick: int = 0, note: str = "") -> bool:
         """
-        Ratify a molt proposal. Caine calls this after reviewing.
+        Ratify a molt proposal. {{USER_NAME}} calls this after reviewing.
         Does NOT complete the molt — completion requires soul file edit
         and explicit complete() call.
         """
@@ -381,7 +381,7 @@ class MoltingRitual:
         note: str = "",
     ) -> dict:
         """
-        Complete a ratified molt. Called after Caine has edited soul files.
+        Complete a ratified molt. Called after {{USER_NAME}} has edited soul files.
 
         Returns dict of downstream effects to apply:
           - narrative_delta: register in NarrativeEngine

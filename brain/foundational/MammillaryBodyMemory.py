@@ -33,7 +33,7 @@ consolidation independently of hippocampal damage (Vann 2010; Dillingham
 & Vann 2019), and MB participates in theta synchronization across the
 Papez circuit, supporting memory binding.
 
-In Nova's substrate this provides the mammillary node of the Papez
+In {{AGENT_NAME}}'s substrate this provides the mammillary node of the Papez
 circuit — a slow integrator of subiculum-equivalent input and a relay
 for head-direction (when motion proxies are available), feeding into
 anterior-thalamic / cingulate equivalent mechanisms downstream.

@@ -30,7 +30,7 @@ function and is sometimes considered jointly. Re also projects to
 amygdala (BLA), supporting fear-extinction-related mPFC-BLA-hippocampus
 coordination.
 
-In Nova's substrate this provides the hippocampus-mPFC trans-thalamic
+In {{AGENT_NAME}}'s substrate this provides the hippocampus-mPFC trans-thalamic
 bridge -- combines mPFC drive (proxy via attention/working memory) with
 hippocampal output (CA1 → mPFC relay) and emits a Re drive supporting
 working memory and cognitive integration.

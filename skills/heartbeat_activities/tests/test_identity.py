@@ -25,8 +25,8 @@ def test_extracts_name_from_h1(tmp_workspace):
 
 def test_extracts_name_mari(tmp_workspace):
     path = tmp_workspace / "USER.md"
-    path.write_text("# Mari\n\nMy name is Mari", encoding="utf-8")
-    assert extract_primary_name(tmp_workspace) == "Mari"
+    path.write_text("# {{USER_NAME}}\n\nMy name is {{USER_NAME}}", encoding="utf-8")
+    assert extract_primary_name(tmp_workspace) == "{{USER_NAME}}"
 
 
 def test_returns_empty_when_no_file(tmp_workspace):

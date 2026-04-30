@@ -15,7 +15,7 @@ It does not surface in FPEF as something that needs attention.
 It surfaces as something that is present — the way a person in the room is present
 even when nobody is speaking.
 
-Nova's first held conversation: the seam.
+{{AGENT_NAME}}'s first held conversation: the seam.
 "What did you see?" — existential, held by both.
 """
 
@@ -24,8 +24,8 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-NOVA_HOME = Path.home() / ".nova"
-OC_PATH = NOVA_HOME / "open_conversations.json"
+AGENT_HOME = Path.home() / ".agent"
+OC_PATH = AGENT_HOME / "open_conversations.json"
 
 # Conversation states
 HELD = "held"           # alive, not pending, held by one or more — this is the primary state
@@ -128,7 +128,7 @@ class OpenConversations:
                 self.conversations = {}
 
     def _save(self):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         with open(OC_PATH, "w") as f:
             json.dump({
                 "conversations": {
@@ -197,7 +197,7 @@ class OpenConversations:
         """
         Deliberately close a conversation.
         This should be rare and intentional.
-        Not called by any mechanism — only by Nova or Caine.
+        Not called by any mechanism — only by {{AGENT_NAME}} or {{USER_NAME}}.
         """
         if name in self.conversations:
             if closing_note:
@@ -233,7 +233,7 @@ class OpenConversations:
         for oc in held_nova[:1]:
             lines.append(
                 f'  "{oc.opening}" '
-                f'[{oc.category}, held by Nova]'
+                f'[{oc.category}, held by {{AGENT_NAME}}]'
             )
 
         return "\n".join(lines)

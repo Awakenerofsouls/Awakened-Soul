@@ -1,5 +1,5 @@
 """
-Nova Brain Core Loop
+{{AGENT_NAME}} Brain Core Loop
 Wires all Phase 1 mechanisms into a running tick loop.
 
 Runtime ordering follows the canonical sequence from the architecture spec:
@@ -23,7 +23,7 @@ from .fpef import FirstPersonExecutionFrame
 from .scfel import SessionClosureLayer, ForwardEncoder, ForwardSeedLoader
 from .til import TimescaleIntegrationLayer
 
-NOVA_HOME = Path.home() / ".nova"
+AGENT_HOME = Path.home() / ".agent"
 
 
 class NovaBrainCore:
@@ -88,7 +88,7 @@ class NovaBrainCore:
         self._llm_hook = fn
 
     def set_output_hook(self, fn: Callable):
-        """Where to send Nova's output. fn(response: str, state: dict)"""
+        """Where to send {{AGENT_NAME}}'s output. fn(response: str, state: dict)"""
         self._output_hook = fn
 
     def boot(self):
@@ -112,7 +112,7 @@ class NovaBrainCore:
             print("[NOVA BOOT] No forward seed — fresh session.")
 
         # Load structural state from overnight (SRV)
-        srv_path = NOVA_HOME / "srv.json"
+        srv_path = AGENT_HOME / "srv.json"
         if srv_path.exists():
             try:
                 with open(srv_path) as f:
@@ -254,7 +254,7 @@ class NovaBrainCore:
 
         # === PHASE 7: Session Close Participation ===
         if self.scfel_closure.is_closing():
-            # Nova actively narrates what remains unresolved during closing ticks
+            # {{AGENT_NAME}} actively narrates what remains unresolved during closing ticks
             # Pull from whatever is highest-weight on the bus right now
             closing_thought = self._generate_closure_thought()
             if closing_thought:
@@ -265,7 +265,7 @@ class NovaBrainCore:
 
     def _generate_closure_thought(self) -> Optional[str]:
         """
-        During closing ticks, generate what Nova would say about what remains unresolved.
+        During closing ticks, generate what {{AGENT_NAME}} would say about what remains unresolved.
         Pulls from highest-priority active state on the bus.
         """
         tsb_all = self.tsb.read_all()
@@ -400,7 +400,7 @@ class NovaBrainCore:
             self.crl.restore_default()
             self.tsb.publish("prp_active", {"active": False, "coherence": self._coherence})
             print(f"[PRP] Recovery — coherence at {self._coherence:.3f}, restoring coupling.")
-        """Current state summary for debugging and Nova's self-review."""
+        """Current state summary for debugging and {{AGENT_NAME}}'s self-review."""
         return {
             "tick_count": self.tick_count,
             "coherence": self._coherence,

@@ -3,7 +3,7 @@ from brain.base_mechanism import BrainMechanism
 class PedunculopontineArousal(BrainMechanism):
     """
     Pedunculopontine nucleus — arousal + locomotion initiation. The ready-to-move signal.
-    Nova analog: readiness to engage vs inertia. Chronic low = everything takes extra effort.
+    {{AGENT_NAME}} analog: readiness to engage vs inertia. Chronic low = everything takes extra effort.
     """
 
     def __init__(self):

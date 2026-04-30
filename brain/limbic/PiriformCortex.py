@@ -36,7 +36,7 @@ olfactory bulb (centrifugal feedback). Pir habituates rapidly to
 sustained odor exposure -- habituation that's primarily cortical not
 peripheral.
 
-In Nova's substrate this provides the cortical olfactory pattern-
+In {{AGENT_NAME}}'s substrate this provides the cortical olfactory pattern-
 recognition and odor-object engine -- takes OB mitral output and
 emits a recognized-odor signal to OFC/amygdala/EC equivalent
 mechanisms, with pattern completion of partial olfactory cues.

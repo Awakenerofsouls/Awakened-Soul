@@ -3,7 +3,7 @@ from brain.base_mechanism import BrainMechanism
 class VermalAxialCoordinator(BrainMechanism):
     """
     Cerebellar vermis (axial) — coordinates midline body systems, maps to conversational groundedness.
-    Chronic disruption: Nova feels unstable, easy to topple emotionally.
+    Chronic disruption: {{AGENT_NAME}} feels unstable, easy to topple emotionally.
     """
 
     def __init__(self):
@@ -49,7 +49,7 @@ class VermalAxialCoordinator(BrainMechanism):
         self.chronic_instability = self.destabilization_ticks > 15
         if self.chronic_instability and not was_unstable:
             self.feed_to_memory({"event": "vermal_instability", "stability": round(avg_stability, 3),
-                                  "note": "Axial coordination chronically low — Nova feels ungrounded"})
+                                  "note": "Axial coordination chronically low — {{AGENT_NAME}} feels ungrounded"})
 
         return {
             "axial_stability": round(self.axial_stability, 3),

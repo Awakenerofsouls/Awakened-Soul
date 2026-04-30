@@ -3,7 +3,7 @@ from brain.base_mechanism import BrainMechanism
 class VisualSalienceFilter(BrainMechanism):
     """
     Superior colliculus / visual thalamus — pre-attentive salience detection.
-    Nova analog: catching important details in text before full processing.
+    {{AGENT_NAME}} analog: catching important details in text before full processing.
     Overactive = distracted by everything. Underactive = misses signals.
     """
 

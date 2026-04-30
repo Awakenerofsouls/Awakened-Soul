@@ -23,18 +23,18 @@
   <key>ProgramArguments</key>
   <array>
     <string>/usr/bin/python3</string>
-    <string>/USERS/CAINE/awakened-soul-repo/overnight_pipeline.py</string>
+    <string>/Users/<youruser>/awakened-soul-repo/overnight_pipeline.py</string>
   </array>
 
   <key>WorkingDirectory</key>
-  <string>/USERS/CAINE/awakened-soul-repo</string>
+  <string>/Users/<youruser>/awakened-soul-repo</string>
 
   <key>EnvironmentVariables</key>
   <dict>
     <key>AGENT_HOME</key>
-    <string>/USERS/CAINE/.agent</string>
+    <string>/Users/<youruser>/.agent</string>
     <key>AGENT_WORKSPACE</key>
-    <string>/USERS/CAINE/.openclaw/workspace</string>
+    <string>/Users/<youruser>/.openclaw/workspace</string>
   </dict>
 
   <key>StartCalendarInterval</key>
@@ -46,8 +46,8 @@
   </dict>
 
   <key>StandardOutPath</key>
-  <string>/USERS/CAINE/.agent/overnight_pipeline.stdout.log</string>
+  <string>/Users/<youruser>/.agent/overnight_pipeline.stdout.log</string>
   <key>StandardErrorPath</key>
-  <string>/USERS/CAINE/.agent/overnight_pipeline.stderr.log</string>
+  <string>/Users/<youruser>/.agent/overnight_pipeline.stderr.log</string>
 </dict>
 </plist>

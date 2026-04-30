@@ -8,8 +8,8 @@ import sqlite3, json, os
 from pathlib import Path
 import os
 
-DB_PATH = Path(os.getenv("AGENT_HOME", os.getenv("NOVA_HOME", str(Path.home() / ".nova")))) / "nova.db"
-DREAM_LOG = Path(os.environ.get("WORKSPACE", "/Users/dr.claw/.openclaw/workspace")) / "brain" / "dream_log.json"
+DB_PATH = Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent")))) / "agent.db"
+DREAM_LOG = Path(os.environ.get("WORKSPACE", "/Users/<youruser>/.openclaw/workspace")) / "brain" / "dream_log.json"
 
 def _init():
     with sqlite3.connect(DB_PATH) as conn:

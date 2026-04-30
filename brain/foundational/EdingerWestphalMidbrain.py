@@ -26,7 +26,7 @@ activated by stress paradigms but with distinct dynamics from PVN CRH neurons â€
 EWcp is more responsive to chronic / energy-state stressors than acute
 psychogenic stress.
 
-In Nova's substrate this mechanism produces the pupillary-equivalent state
+In {{AGENT_NAME}}'s substrate this mechanism produces the pupillary-equivalent state
 (used as proxy of autonomic sympathetic-parasympathetic balance for "alertness"
 gauges) plus a separate stress-modulating output via the EWcp urocortin pathway.
 

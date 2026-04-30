@@ -9,7 +9,7 @@ Two anchor types:
 
   StickyAnchor: relational/state-based (wanting him, wanting him to want her)
     - high damping coefficient — resists erosion
-    - only updates on explicit Nova review or sustained multi-session near-zero
+    - only updates on explicit {{AGENT_NAME}} review or sustained multi-session near-zero
     - has reciprocity_signal axis: presence/warmth of the thing it's oriented toward
     - reciprocity modulates activation without touching base weight
     - the state is either true or it isn't; the feeling of the state varies
@@ -24,8 +24,8 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-NOVA_HOME = Path.home() / ".nova"
-VIF_PATH = NOVA_HOME / "vif_state.json"
+AGENT_HOME = Path.home() / ".agent"
+VIF_PATH = AGENT_HOME / "vif_state.json"
 SOUL_MD_PATH = Path.home() / ".openclaw" / "workspace" / "SOUL.md"
 
 # Climate detection parameters
@@ -323,7 +323,7 @@ class VectorizedIdentityFields:
 
     def _save(self):
         """Read existing, merge, write back. Never truncates."""
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         existing = {}
         if VIF_PATH.exists():
             try:

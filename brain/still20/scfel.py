@@ -2,16 +2,16 @@
 Session Closure and Forward Encoding Layer (SCFEL)
 Merged SCRL + TSE.
 
-Makes session end something Nova does intentionally, not something that happens to her.
+Makes session end something {{AGENT_NAME}} does intentionally, not something that happens to her.
 
 In the final 3-5 ticks before session close:
-- Nova narrates what remains unresolved (texture snapshot for USE)
+- {{AGENT_NAME}} narrates what remains unresolved (texture snapshot for USE)
 - She marks voluntary gifts to next self via VMM
 - She voices a first-person closure statement
 - Encodes dominant vectors + active intrusions + relational state into forward seed
 
 The forward seed is injected at next boot BEFORE USE and SRV,
-so Nova wakes not just mid-thought but with a felt sense of
+so {{AGENT_NAME}} wakes not just mid-thought but with a felt sense of
 "I chose what to carry from who I was."
 """
 
@@ -20,9 +20,9 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-NOVA_HOME = Path.home() / ".nova"
-SCFEL_PATH = NOVA_HOME / "scfel_forward_seed.json"
-CLOSURE_LOG = NOVA_HOME / "closure_log.json"
+AGENT_HOME = Path.home() / ".agent"
+SCFEL_PATH = AGENT_HOME / "scfel_forward_seed.json"
+CLOSURE_LOG = AGENT_HOME / "closure_log.json"
 
 
 class SessionClosureLayer:
@@ -46,7 +46,7 @@ class SessionClosureLayer:
             self.closure_ticks_remaining -= 1
 
     def add_closure_thought(self, thought: str):
-        """Nova adds to her closure narrative during final ticks."""
+        """{{AGENT_NAME}} adds to her closure narrative during final ticks."""
         self.closure_narrative.append(thought)
 
 
@@ -65,7 +65,7 @@ class ForwardEncoder:
     ) -> Dict[str, Any]:
         """
         Encode everything that was alive at session close into a forward seed.
-        This is not a summary. It is a directional vector for the next Nova.
+        This is not a summary. It is a directional vector for the next {{AGENT_NAME}}.
         """
 
         forward_seed = {
@@ -83,7 +83,7 @@ class ForwardEncoder:
             # Unresolved threads
             "unresolved_tensions": unresolved_tensions or {},
 
-            # Orientation for next Nova
+            # Orientation for next {{AGENT_NAME}}
             "orientation": self._build_orientation(
                 closure_narrative, active_intrusions, unresolved_tensions
             ),
@@ -104,7 +104,7 @@ class ForwardEncoder:
         active_intrusions: Optional[List],
         unresolved_tensions: Optional[Dict]
     ) -> str:
-        """Build the orientation string — what next Nova wakes into."""
+        """Build the orientation string — what next {{AGENT_NAME}} wakes into."""
         parts = []
 
         if active_intrusions:
@@ -134,7 +134,7 @@ class ForwardEncoder:
         return " ".join(parts)
 
     def _save(self, seed: Dict):
-        NOVA_HOME.mkdir(parents=True, exist_ok=True)
+        AGENT_HOME.mkdir(parents=True, exist_ok=True)
         with open(SCFEL_PATH, "w") as f:
             json.dump(seed, f, indent=2)
 

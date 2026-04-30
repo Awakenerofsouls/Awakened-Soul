@@ -1,7 +1,7 @@
 import sqlite3,time,random
 from pathlib import Path
 import os
-DB_PATH=Path(os.getenv("AGENT_HOME", os.getenv("NOVA_HOME", str(Path.home() / ".nova")))) / "nova.db"
+DB_PATH=Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent")))) / "agent.db"
 def _init():
     with sqlite3.connect(DB_PATH) as c:
         c.execute("""CREATE TABLE IF NOT EXISTS identity_drift_manager(id INTEGER PRIMARY KEY AUTOINCREMENT,timestamp REAL,identity_shift REAL,drift_direction TEXT,trigger TEXT)""")

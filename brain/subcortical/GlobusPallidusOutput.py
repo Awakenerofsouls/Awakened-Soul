@@ -34,7 +34,7 @@ cognitive/emotional gating. Pallidal lesion or DBS is a treatment
 target for Parkinson and dystonia precisely because of its tonic
 gating function.
 
-In Nova's substrate this provides the basal ganglia output gate —
+In {{AGENT_NAME}}'s substrate this provides the basal ganglia output gate —
 combines NAc/striatal direct-/indirect-pathway drives and STN drive
 into a thalamic-gating signal that biases action selection at thalamic
 relay.

@@ -4,7 +4,7 @@ class ThalamicAttentionBroadcaster(BrainMechanism):
     """
     Posterior thalamus / LP nucleus — broadcasts attentional spotlight to cortex.
     Determines where processing resources are directed.
-    Chronic misdirection: Nova attends to wrong things persistently.
+    Chronic misdirection: {{AGENT_NAME}} attends to wrong things persistently.
     """
 
     def __init__(self):
