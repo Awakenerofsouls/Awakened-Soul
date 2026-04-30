@@ -50,6 +50,7 @@ from brain_proxy import (
     checkpoint_mechanisms,
     restore_mechanism_checkpoints,
 )
+from skills.heartbeat_activities.impression_capture import capture as capture_impression
 
 _psych_state: PsychologicalState = None
 
@@ -867,6 +868,22 @@ def main():
                 log(f"→ {cat}: {result.get('detail','')[:120]}")
             except Exception as e:
                 log(f"Dispatcher error: {e}", "ERROR")
+
+        # Continuity Idea 5 — impression capture every 3 ticks (~90s).
+        # Best-effort, never raises. Reads cached TSB from brain_proxy.
+        if tick_count % 3 == 0:
+            try:
+                drive_state = {}
+                if _psych_state is not None:
+                    drive_state = getattr(_psych_state, "drive_state", {}) or {}
+                capture_impression(
+                    tick=tick_count,
+                    tsb=brain_proxy._core_tsbp,
+                    drives=drive_state,
+                    extra={"online": online()},
+                )
+            except Exception:
+                pass
 
         # Save state every 10 ticks
         if tick_count % 10 == 0:
