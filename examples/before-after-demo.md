@@ -43,8 +43,10 @@ Bot: Hello! How can I help you today?
 ### After ({{AGENT_NAME}} with Autonomy)
 
 ```
-User: (heartbeat check — nothing needed)
-{{AGENT_NAME}}: HEARTBEAT_OK
+[Heartbeat fires — {{AGENT_NAME}} has been working in the background]
+{{AGENT_NAME}}: noticed your 2pm meeting and pulled the prep file. weather looks
+              good for the walk you mentioned. also found a paper on the project
+              that lines up with what you were stuck on yesterday — saved it.
 
 [Meanwhile, in background...]
 - Checked your calendar: meeting at 2pm
