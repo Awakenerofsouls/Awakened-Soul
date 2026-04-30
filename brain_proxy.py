@@ -95,3 +95,28 @@ def core_tick() -> None:
     proxy = get_integration()
     proxy.core.tick()
     _core_tsbp = proxy.core.tsb  # cache for heartbeat._psych_tick()
+
+
+def checkpoint_mechanisms() -> dict:
+    """
+    Continuity Idea 1 — call persist_state() on every loaded brain
+    mechanism so its self.state survives a process restart.
+    Returns a small report dict for the heartbeat to log.
+    """
+    proxy = get_integration()
+    runner = getattr(proxy, "brain_runner", None)
+    if runner is None:
+        return {"saved": 0, "total": 0, "errors": [], "note": "no brain_runner"}
+    return runner.checkpoint_all()
+
+
+def restore_mechanism_checkpoints() -> dict:
+    """
+    Companion to checkpoint_mechanisms — load_state() across the runner
+    on session open so the heartbeat resumes where it left off.
+    """
+    proxy = get_integration()
+    runner = getattr(proxy, "brain_runner", None)
+    if runner is None:
+        return {"loaded": 0, "total": 0, "errors": [], "note": "no brain_runner"}
+    return runner.checkpoint_load_all()

@@ -509,3 +509,56 @@ class BrainLayerRunner:
         """Run all mechanisms in overnight/consolidation mode."""
         overnight_context = {**pirp_context, "stage": "overnight"}
         return self.run(overnight_context)
+
+    # ── Continuity Idea 1 — checkpoint every mechanism's .state to disk ─────
+    def checkpoint_all(self) -> dict:
+        """
+        Walk every loaded mechanism and call its persist_state() / save_state().
+        Returns a small report dict so the heartbeat can log a one-line summary.
+        Errors on any single mechanism are captured but never raised — partial
+        checkpoints are better than none.
+        """
+        saved = 0
+        no_state = 0
+        errored = []
+        for name, mech in self.mechanisms.items():
+            try:
+                fn = getattr(mech, "persist_state", None) or getattr(mech, "save_state", None)
+                if fn is None:
+                    no_state += 1
+                    continue
+                fn()
+                saved += 1
+            except Exception as exc:
+                errored.append((name, repr(exc)[:120]))
+        return {
+            "saved": saved,
+            "no_state_method": no_state,
+            "errors": errored,
+            "total": len(self.mechanisms),
+        }
+
+    def checkpoint_load_all(self) -> dict:
+        """
+        Walk every loaded mechanism and call load_state() if it exists.
+        Used at session open to restore state from the last checkpoint.
+        """
+        loaded = 0
+        no_load = 0
+        errored = []
+        for name, mech in self.mechanisms.items():
+            try:
+                fn = getattr(mech, "load_state", None)
+                if fn is None:
+                    no_load += 1
+                    continue
+                fn()
+                loaded += 1
+            except Exception as exc:
+                errored.append((name, repr(exc)[:120]))
+        return {
+            "loaded": loaded,
+            "no_load_method": no_load,
+            "errors": errored,
+            "total": len(self.mechanisms),
+        }

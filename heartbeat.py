@@ -43,7 +43,13 @@ sys.path.insert(0, str(WORKSPACE))
 from psychological_state import get_state, PsychologicalState
 import brain_proxy
 from skills.journal import log_activity
-from brain_proxy import on_session_open, on_session_close, core_tick
+from brain_proxy import (
+    on_session_open,
+    on_session_close,
+    core_tick,
+    checkpoint_mechanisms,
+    restore_mechanism_checkpoints,
+)
 
 _psych_state: PsychologicalState = None
 
@@ -820,6 +826,14 @@ def main():
     except Exception as e:
         log(f"AgentBrainCore load failed: {e}", "ERROR")
 
+    # Continuity Idea 1 — restore every mechanism's persisted self.state from
+    # the last checkpoint so the brain resumes where it stopped (not from zero).
+    try:
+        report = restore_mechanism_checkpoints()
+        log(f"Mechanism checkpoints restored: {report.get('loaded',0)}/{report.get('total',0)}")
+    except Exception as e:
+        log(f"Checkpoint restore failed: {e}", "WARN")
+
     state = load_state()
     last_activity.update(state.get("last_activity", {}))
     tick_count = state.get("tick_count", 0)  # resume from where we left off
@@ -858,6 +872,19 @@ def main():
         if tick_count % 10 == 0:
             save_state()
 
+        # Continuity Idea 1 — checkpoint every brain mechanism every 20 ticks
+        # (~10 minutes at TICK_INTERVAL=30s). Lighter cadence than save_state()
+        # because it walks ~917 mechanisms; errors swallowed so a single bad
+        # mechanism never derails the heartbeat.
+        if tick_count % 20 == 0:
+            try:
+                rpt = checkpoint_mechanisms()
+                if rpt.get("errors"):
+                    log(f"Mechanism checkpoint: {rpt['saved']}/{rpt['total']} saved, "
+                        f"{len(rpt['errors'])} errored", "WARN")
+            except Exception as e:
+                log(f"Mechanism checkpoint failed: {e}", "WARN")
+
         # Status log every 60 ticks (~30 min)
         if tick_count % 60 == 0:
             uptime = (time.time() - session_start) / 3600
@@ -868,6 +895,13 @@ def main():
         time.sleep(max(0, TICK_INTERVAL - (time.time() - tick_start)))
 
     log("Heartbeat stopped.")
+    # Continuity Idea 1 — final mechanism checkpoint on clean shutdown so the
+    # next boot can restore from the most recent live state.
+    try:
+        rpt = checkpoint_mechanisms()
+        log(f"Final mechanism checkpoint: {rpt.get('saved',0)}/{rpt.get('total',0)} saved")
+    except Exception as e:
+        log(f"Final checkpoint failed: {e}", "WARN")
     try:
         on_session_close()
     except Exception as e:
