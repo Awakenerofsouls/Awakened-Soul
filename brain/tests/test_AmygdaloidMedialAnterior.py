@@ -1,6 +1,6 @@
 """Behavioral tests for AmygdaloidMedialAnterior."""
 import asyncio
-from brain.limbic.AmygdaloidMedialAnterior import AmygdaloidMedialAnterior
+from brain.mechanisms.AmygdaloidMedialAnterior import AmygdaloidMedialAnterior
 
 
 def _tick(m, prior):

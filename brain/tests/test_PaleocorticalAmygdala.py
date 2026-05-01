@@ -1,6 +1,6 @@
 """Behavioral tests for PaleocorticalAmygdala."""
 import asyncio
-from brain.limbic.PaleocorticalAmygdala import PaleocorticalAmygdala
+from brain.mechanisms.PaleocorticalAmygdala import PaleocorticalAmygdala
 
 
 def _tick(m, prior):

@@ -1,6 +1,6 @@
 """Behavioral tests for ArcuateAgRP."""
 import asyncio
-from brain.subcortical.ArcuateAgRP import ArcuateAgRP
+from brain.mechanisms.ArcuateAgRP import ArcuateAgRP
 
 
 def _tick(m, prior):

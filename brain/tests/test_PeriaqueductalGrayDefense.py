@@ -1,6 +1,6 @@
 """Behavioral tests for PeriaqueductalGrayDefense."""
 import asyncio
-from brain.foundational.PeriaqueductalGrayDefense import PeriaqueductalGrayDefense
+from brain.mechanisms.PeriaqueductalGrayDefense import PeriaqueductalGrayDefense
 
 
 def _tick(m, prior):

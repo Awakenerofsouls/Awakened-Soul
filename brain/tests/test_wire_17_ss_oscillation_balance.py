@@ -20,7 +20,7 @@ Neuroscience grounding:
 import pytest
 import json
 from pathlib import Path
-from brain.sensation_state import SensationState, AGENT_HOME, SS_PATH
+from brain.mechanisms.sensation_state import SensationState, AGENT_HOME, SS_PATH
 
 
 @pytest.fixture
@@ -35,7 +35,7 @@ def clean_ss(tmp_path, monkeypatch):
     test_home.mkdir()
     
     # Monkey-patch the AGENT_HOME constants so SS uses tmp path
-    import brain.sensation_state as ss_module
+    import brain.mechanisms.sensation_state as ss_module
     monkeypatch.setattr(ss_module, "AGENT_HOME", test_home)
     monkeypatch.setattr(ss_module, "SS_PATH", test_home / "sensation_state.json")
     monkeypatch.setattr(ss_module, "SS_LOG_PATH", test_home / "sensation_log.json")

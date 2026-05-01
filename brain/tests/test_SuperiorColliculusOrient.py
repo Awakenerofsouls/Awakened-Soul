@@ -1,6 +1,6 @@
 """Behavioral tests for SuperiorColliculusOrient."""
 import asyncio
-from brain.foundational.SuperiorColliculusOrient import SuperiorColliculusOrient
+from brain.mechanisms.SuperiorColliculusOrient import SuperiorColliculusOrient
 
 
 def _tick(m, prior):

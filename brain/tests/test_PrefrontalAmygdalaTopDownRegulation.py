@@ -1,6 +1,6 @@
 """Behavioral tests for PrefrontalAmygdalaTopDownRegulation."""
 import asyncio
-from brain.integration.PrefrontalAmygdalaTopDownRegulation import PrefrontalAmygdalaTopDownRegulation
+from brain.mechanisms.PrefrontalAmygdalaTopDownRegulation import PrefrontalAmygdalaTopDownRegulation
 
 
 def _tick(m, prior):

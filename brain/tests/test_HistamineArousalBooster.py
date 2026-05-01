@@ -1,6 +1,6 @@
 """Behavioral tests for HistamineArousalBooster."""
 import asyncio
-from brain.foundational.HistamineArousalBooster import HistamineArousalBooster
+from brain.mechanisms.HistamineArousalBooster import HistamineArousalBooster
 
 
 def _tick(m, prior):

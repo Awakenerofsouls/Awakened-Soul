@@ -1,6 +1,6 @@
 """Behavioral tests for RhomboidNucleus."""
 import asyncio
-from brain.limbic.RhomboidNucleus import RhomboidNucleus
+from brain.mechanisms.RhomboidNucleus import RhomboidNucleus
 
 
 def _tick(m, prior):

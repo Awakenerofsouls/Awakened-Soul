@@ -1,6 +1,6 @@
 """Behavioral tests for DorsolateralStriatum."""
 import asyncio
-from brain.subcortical.DorsolateralStriatum import DorsolateralStriatum
+from brain.mechanisms.DorsolateralStriatum import DorsolateralStriatum
 
 
 def _tick(m, prior):

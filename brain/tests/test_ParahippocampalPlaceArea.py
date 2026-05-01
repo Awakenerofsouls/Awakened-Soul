@@ -1,6 +1,6 @@
 """Behavioral tests for ParahippocampalPlaceArea (PPA, Epstein 1998)."""
 import asyncio
-from brain.neocortical.ParahippocampalPlaceArea import ParahippocampalPlaceArea
+from brain.mechanisms.ParahippocampalPlaceArea import ParahippocampalPlaceArea
 
 
 def _tick(m, prior):

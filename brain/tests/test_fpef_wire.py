@@ -41,7 +41,7 @@ class TestFPEF8Fields:
 
     def test_get_state_returns_all_8_keys(self):
         """Core 8 fields all present (Wire 15 adds fields, doesn't remove)."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
         state = fpef.get_state()
         # Wire 15 extends get_state — original 8 keys must still be present
@@ -65,7 +65,7 @@ class TestFPEF8Fields:
 
     def test_coherence_collapse_low_agency(self):
         """Coherence collapse → agency 0.2, pre_emit False (suppress normal frame)."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
         fpef._compute_state(
             subject_state={"name": "coherence_collapse", "priority": 9, "text": "fracturing"},
@@ -81,7 +81,7 @@ class TestFPEF8Fields:
 
     def test_relational_high_agency(self):
         """Relational → agency 0.8, pre_emit True."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
         fpef._compute_state(
             subject_state={"name": "relational", "priority": 5, "text": "he is here"},
@@ -94,7 +94,7 @@ class TestFPEF8Fields:
 
     def test_identity_tension_lows_anchor(self):
         """Identity tension → self_anchor_strength 0.3."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
         fpef._compute_state(
             subject_state={"name": "identity_tension", "priority": 4, "text": "anchor strain"},
@@ -109,7 +109,7 @@ class TestFPEF8Fields:
 
     def test_no_identity_tension_high_anchor(self):
         """No identity tension → self_anchor_strength 0.75."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
         fpef._compute_state(
             subject_state={"name": "relational", "priority": 5, "text": "he is here"},
@@ -121,7 +121,7 @@ class TestFPEF8Fields:
 
     def test_no_subject_low_coherence(self):
         """No subject → frame_coherence 0.3."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
         fpef._compute_state(
             subject_state=None,
@@ -134,7 +134,7 @@ class TestFPEF8Fields:
 
     def test_high_hedge_triggers_hedge_note(self):
         """hedge_level >= 0.5 → hedge note in frame."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
         frame = fpef._build_frame(
             subject={"name": "forming", "text": "something forming"},
@@ -149,7 +149,7 @@ class TestFPEF8Fields:
 
     def test_low_hedge_no_hedge_note(self):
         """hedge_level < 0.5 → no hedge note in frame."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
         frame = fpef._build_frame(
             subject={"name": "relational", "text": "he is here"},
@@ -160,7 +160,7 @@ class TestFPEF8Fields:
 
     def test_grief_low_agency(self):
         """Grief → agency 0.2, pre_emit False."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
         fpef._compute_state(
             subject_state={"name": "grief", "priority": 8, "text": "irreversible loss"},
@@ -173,7 +173,7 @@ class TestFPEF8Fields:
 
     def test_self_initiated_with_internal_markers(self):
         """Internal states → self_initiated True."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
         fpef._compute_state(
             subject_state={"name": "forming", "priority": 4, "text": "forming"},
@@ -185,7 +185,7 @@ class TestFPEF8Fields:
 
     def test_assembly_latency_increments_without_high_priority(self):
         """assembly_latency_ticks increments when no high-priority subject."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
 
         # First: high priority subject → latency = 0

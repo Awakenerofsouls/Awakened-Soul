@@ -1,6 +1,6 @@
 """Behavioral tests for SurvivalOrchestrator."""
 import asyncio
-from brain.foundational.SurvivalOrchestrator import SurvivalOrchestrator
+from brain.mechanisms.SurvivalOrchestrator import SurvivalOrchestrator
 
 
 def _tick(m, prior):

@@ -19,11 +19,11 @@ Reference Wire 17: Integration018 NetworkOscillationGlobalBalancer.
 
 import pytest
 from unittest.mock import MagicMock
-from brain.misread_engine import MisreadEngine
-from brain.vif import VectorizedIdentityFields
-from brain.first_person_execution_frame import FirstPersonExecutionFrame
-from brain.pre_desire_state import PreDesireState
-from brain.sensation_state import SensationState
+from brain.mechanisms.misread_engine import MisreadEngine
+from brain.mechanisms.vif import VectorizedIdentityFields
+from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
+from brain.mechanisms.pre_desire_state import PreDesireState
+from brain.mechanisms.sensation_state import SensationState
 
 
 # ---------------------------------------------------------------------------

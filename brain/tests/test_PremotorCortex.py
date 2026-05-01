@@ -1,6 +1,6 @@
 """Behavioral tests for PremotorCortex."""
 import asyncio
-from brain.neocortical.PremotorCortex import PremotorCortex
+from brain.mechanisms.PremotorCortex import PremotorCortex
 
 
 def _tick(m, prior):

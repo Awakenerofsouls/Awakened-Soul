@@ -1,6 +1,6 @@
 """Behavioral tests for AnteriorCommissureLimbicBridge."""
 import asyncio
-from brain.integration.AnteriorCommissureLimbicBridge import AnteriorCommissureLimbicBridge
+from brain.mechanisms.AnteriorCommissureLimbicBridge import AnteriorCommissureLimbicBridge
 
 
 def _tick(m, prior):

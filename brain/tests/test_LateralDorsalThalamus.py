@@ -1,6 +1,6 @@
 """Behavioral tests for LateralDorsalThalamus."""
 import asyncio
-from brain.subcortical.LateralDorsalThalamus import LateralDorsalThalamus
+from brain.mechanisms.LateralDorsalThalamus import LateralDorsalThalamus
 
 
 def _tick(m, prior):

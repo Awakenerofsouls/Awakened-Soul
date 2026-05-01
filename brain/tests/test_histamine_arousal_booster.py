@@ -8,7 +8,7 @@ Run:
 import asyncio
 import pytest
 
-from brain.foundational.Foundational013HistamineArousalBooster import HistamineArousalBooster
+from brain.mechanisms.Foundational013HistamineArousalBooster import HistamineArousalBooster
 
 
 def _run(coro):

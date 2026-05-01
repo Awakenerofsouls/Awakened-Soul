@@ -34,7 +34,7 @@ def pds_env(monkeypatch):
     test_home = tempfile.mkdtemp()
     monkeypatch.setenv("AGENT_HOME", test_home)
     import importlib
-    import brain.pre_desire_state as pds_mod
+    import brain.mechanisms.pre_desire_state as pds_mod
     importlib.reload(pds_mod)
     return pds_mod
 

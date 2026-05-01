@@ -1,6 +1,6 @@
 """Behavioral tests for AllostaticPredictiveAnticipator."""
 import asyncio
-from brain.integration.AllostaticPredictiveAnticipator import AllostaticPredictiveAnticipator
+from brain.mechanisms.AllostaticPredictiveAnticipator import AllostaticPredictiveAnticipator
 
 
 def _tick(m, prior):

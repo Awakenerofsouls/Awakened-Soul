@@ -8,7 +8,7 @@ Run:
 import asyncio
 import pytest
 
-from brain.foundational.Foundational009CRHStressDispatcher import CRHStressDispatcher
+from brain.mechanisms.Foundational009CRHStressDispatcher import CRHStressDispatcher
 
 
 def _run(coro):

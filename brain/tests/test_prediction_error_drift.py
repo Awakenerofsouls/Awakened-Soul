@@ -10,10 +10,10 @@ import asyncio
 import sys
 from pathlib import Path
 
-WORKSPACE = Path.home() / ".openclaw" / "workspace"
+WORKSPACE = Path.home() / ".agent" / "workspace"
 sys.path.insert(0, str(WORKSPACE))
 
-from brain.subcortical.Subcortical027SubstantiaNigraCompactaCognitive import PredictionErrorDrift
+from brain.mechanisms.Subcortical027SubstantiaNigraCompactaCognitive import PredictionErrorDrift
 
 
 class TestPredictionErrorBasics:

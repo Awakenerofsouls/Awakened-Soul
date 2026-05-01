@@ -8,7 +8,7 @@ Run:
 import asyncio
 import pytest
 
-from brain.foundational.Foundational005DescendingPainGate import (
+from brain.mechanisms.Foundational005DescendingPainGate import (
     DescendingPainGate,
 )
 

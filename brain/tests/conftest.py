@@ -8,7 +8,7 @@ Two responsibilities:
 1. PYTHONPATH — make sure both the repo root AND the repo's `skills/`
    directory are importable. Several tests do `from safeguard import ...`
    (the runtime layout where safeguard.py is the live file at
-   ~/.openclaw/workspace/skills/safeguard.py); in the repo, the file lives
+   ~/.agent/workspace/skills/safeguard.py); in the repo, the file lives
    at `skills/safeguard.py`, so we add `skills/` to sys.path.
 
 2. State isolation — every BrainMechanism's persist_state() writes to

@@ -8,7 +8,7 @@ drift_detected=True → always surfaces (unchanged)
 """
 
 import pytest
-from brain.drift_identity_engine import DriftIdentityQuestionEngine
+from brain.mechanisms.drift_identity_engine import DriftIdentityQuestionEngine
 
 
 def make_diqe_with(questions: int):

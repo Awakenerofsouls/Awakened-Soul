@@ -8,7 +8,7 @@ Run:
 import asyncio
 import pytest
 
-from brain.foundational.Foundational010AppetiteNPYBalancer import AppetiteNPYBalancer
+from brain.mechanisms.Foundational010AppetiteNPYBalancer import AppetiteNPYBalancer
 
 
 def _run(coro):

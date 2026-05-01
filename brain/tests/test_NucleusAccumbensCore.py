@@ -1,6 +1,6 @@
 """Behavioral tests for NucleusAccumbensCore."""
 import asyncio
-from brain.limbic.NucleusAccumbensCore import NucleusAccumbensCore
+from brain.mechanisms.NucleusAccumbensCore import NucleusAccumbensCore
 
 
 def _tick(m, prior):

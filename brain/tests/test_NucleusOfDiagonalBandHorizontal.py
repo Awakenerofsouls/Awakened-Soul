@@ -1,6 +1,6 @@
 """Behavioral tests for NucleusOfDiagonalBandHorizontal."""
 import asyncio
-from brain.limbic.NucleusOfDiagonalBandHorizontal import NucleusOfDiagonalBandHorizontal
+from brain.mechanisms.NucleusOfDiagonalBandHorizontal import NucleusOfDiagonalBandHorizontal
 
 
 def _tick(m, prior):

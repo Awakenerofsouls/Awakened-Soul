@@ -1,6 +1,6 @@
 """Behavioral tests for SalienceDefaultExecutiveToggling."""
 import asyncio
-from brain.integration.SalienceDefaultExecutiveToggling import SalienceDefaultExecutiveToggling
+from brain.mechanisms.SalienceDefaultExecutiveToggling import SalienceDefaultExecutiveToggling
 
 
 def _tick(m, prior):

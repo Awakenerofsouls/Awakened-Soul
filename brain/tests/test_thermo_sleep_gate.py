@@ -8,7 +8,7 @@ Run:
 import asyncio
 import pytest
 
-from brain.foundational.Foundational011ThermoSleepGate import ThermoSleepGate
+from brain.mechanisms.Foundational011ThermoSleepGate import ThermoSleepGate
 
 
 def _run(coro):

@@ -8,7 +8,7 @@ Run:
 import asyncio
 import pytest
 
-from brain.foundational.Foundational004NorepiPhasicTonicSwitcher import (
+from brain.mechanisms.Foundational004NorepiPhasicTonicSwitcher import (
     NorepiPhasicTonicSwitcher,
 )
 

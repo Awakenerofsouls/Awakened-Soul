@@ -1,6 +1,6 @@
 """Behavioral tests for MedialForebrainBundleDopamine."""
 import asyncio
-from brain.integration.MedialForebrainBundleDopamine import MedialForebrainBundleDopamine
+from brain.mechanisms.MedialForebrainBundleDopamine import MedialForebrainBundleDopamine
 
 
 def _tick(m, prior):

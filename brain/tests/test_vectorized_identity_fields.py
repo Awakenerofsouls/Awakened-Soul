@@ -7,7 +7,7 @@ from pathlib import Path
 # Isolate test state from real agent state
 os.environ["AGENT_HOME"] = tempfile.mkdtemp()
 
-from brain.vectorized_identity_fields import (
+from brain.mechanisms.vectorized_identity_fields import (
     DirectionalAnchor, StickyAnchor, VectorizedIdentityFields,
     DRIFT_THRESHOLD, MIN_STABLE_WEIGHT, SUPPRESSION_GAP,
     INHIBIT_STRENGTH, SUPPRESSION_FLOOR

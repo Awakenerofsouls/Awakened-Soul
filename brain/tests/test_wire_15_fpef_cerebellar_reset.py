@@ -42,7 +42,7 @@ class TestWire15PartA_FMConfidence:
 
     def test_neutral_baseline_fm_confidence_05(self):
         """fm_confidence=0.5 → agency_gain=1.0 (neutral, agency unchanged)."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
         brain_layer = {"brain_forward_model_confidence": 0.5}
 
@@ -63,7 +63,7 @@ class TestWire15PartA_FMConfidence:
 
     def test_high_fm_confidence_amplifies_agency(self):
         """fm_confidence=0.9 → agency_gain=1.24, agency_confidence amplified."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
         brain_layer = {"brain_forward_model_confidence": 0.9}
 
@@ -83,7 +83,7 @@ class TestWire15PartA_FMConfidence:
 
     def test_low_fm_confidence_dampens_agency(self):
         """fm_confidence=0.1 → agency_gain=0.76, agency_confidence dampened."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
         brain_layer = {"brain_forward_model_confidence": 0.1}
 
@@ -103,7 +103,7 @@ class TestWire15PartA_FMConfidence:
 
     def test_max_fm_confidence(self):
         """fm_confidence=1.0 → agency_gain=1.3 (max)."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
         brain_layer = {"brain_forward_model_confidence": 1.0}
 
@@ -122,7 +122,7 @@ class TestWire15PartA_FMConfidence:
 
     def test_min_fm_confidence(self):
         """fm_confidence=0.0 → agency_gain=0.7 (min)."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
         brain_layer = {"brain_forward_model_confidence": 0.0}
 
@@ -145,7 +145,7 @@ class TestWire15PartB_AffectiveReset:
 
     def test_no_reset_fired_default(self):
         """affective_reset=0.0 → reset_fired=False, execution_pressure=1.0."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
         brain_layer = {"brain_affective_reset": 0.0}
 
@@ -165,7 +165,7 @@ class TestWire15PartB_AffectiveReset:
 
     def test_subthreshold_no_reset(self):
         """affective_reset=0.2 (below 0.3) → reset_fired=False, unchanged."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
         brain_layer = {"brain_affective_reset": 0.2}
 
@@ -185,7 +185,7 @@ class TestWire15PartB_AffectiveReset:
 
     def test_at_threshold_strict_boundary(self):
         """affective_reset=0.3 (exactly at threshold) → reset_fired=False (strict >)."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
         brain_layer = {"brain_affective_reset": 0.3}
 
@@ -204,7 +204,7 @@ class TestWire15PartB_AffectiveReset:
 
     def test_above_threshold_softens_pressure(self):
         """affective_reset=0.5 → reset_fired=True, pressure_factor ≈ 0.857."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
         brain_layer = {"brain_affective_reset": 0.5}
 
@@ -228,7 +228,7 @@ class TestWire15PartB_AffectiveReset:
 
     def test_max_reset(self):
         """affective_reset=1.0 → reset_fired=True, execution_pressure=0.5 (max softening)."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
         brain_layer = {"brain_affective_reset": 1.0}
 
@@ -252,7 +252,7 @@ class TestWire15Integration:
 
     def test_both_channels_high(self):
         """fm_conf=0.9 + reset=0.8 → agency amplified AND pressure softened."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
         brain_layer = {
             "brain_forward_model_confidence": 0.9,
@@ -280,7 +280,7 @@ class TestWire15Integration:
 
     def test_brain_layer_missing_no_crash(self):
         """brain_layer missing/stale → all defaults, no crash."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
 
         fpef.assemble(
@@ -302,7 +302,7 @@ class TestWire15Integration:
 
     def test_brain_layer_empty_dict(self):
         """brain_layer={} → defaults apply, no crash."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
 
         fpef.assemble(
@@ -321,7 +321,7 @@ class TestWire15Integration:
 
     def test_clamped_values(self):
         """Out-of-range inputs clamped to [0.0, 1.0]."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
         brain_layer = {
             "brain_forward_model_confidence": 1.5,   # over max → clamp to 1.0
@@ -350,7 +350,7 @@ class TestWire15PayloadShape:
 
     def test_all_wire15_diagnostic_fields_present(self):
         """fpef_state payload includes all Wire 15 diagnostic fields."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
         brain_layer = {
             "brain_forward_model_confidence": 0.75,
@@ -382,7 +382,7 @@ class TestWire15PayloadShape:
 
     def test_existing_fields_preserved(self):
         """Existing core 8 fields all present with correct types."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
 
         fpef.assemble(
@@ -421,7 +421,7 @@ class TestWire15PayloadShape:
 
     def test_assembly_log_includes_wire15_fields(self):
         """assembly_log entry includes Wire 15 diagnostic fields."""
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
         fpef = FirstPersonExecutionFrame()
         brain_layer = {
             "brain_forward_model_confidence": 0.8,
@@ -455,7 +455,7 @@ class TestWire13_15_Coexistence:
         Both published by Integration025 simultaneously — no collision.
         Simulate both high to confirm independence.
         """
-        from brain.first_person_execution_frame import FirstPersonExecutionFrame
+        from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
 
         fpef = FirstPersonExecutionFrame()
         # Wire 15 reads confidence side

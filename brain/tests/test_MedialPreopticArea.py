@@ -1,6 +1,6 @@
 """Behavioral tests for MedialPreopticArea."""
 import asyncio
-from brain.subcortical.MedialPreopticArea import MedialPreopticArea
+from brain.mechanisms.MedialPreopticArea import MedialPreopticArea
 
 
 def _tick(m, prior):

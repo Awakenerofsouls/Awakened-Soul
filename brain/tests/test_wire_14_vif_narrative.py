@@ -31,7 +31,7 @@ import tempfile
 
 os.environ["AGENT_HOME"] = tempfile.mkdtemp()
 
-from brain.vectorized_identity_fields import (
+from brain.mechanisms.vectorized_identity_fields import (
     VectorizedIdentityFields,
     DirectionalAnchor,
     StickyAnchor,

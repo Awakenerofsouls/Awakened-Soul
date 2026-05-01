@@ -1,6 +1,6 @@
 """Behavioral tests for PrimaryVisualCortex."""
 import asyncio
-from brain.neocortical.PrimaryVisualCortex import PrimaryVisualCortex
+from brain.mechanisms.PrimaryVisualCortex import PrimaryVisualCortex
 
 
 def _tick(m, prior):

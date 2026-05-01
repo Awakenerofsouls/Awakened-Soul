@@ -1,6 +1,6 @@
 """Behavioral tests for HippocampalCA3Ventral."""
 import asyncio
-from brain.limbic.HippocampalCA3Ventral import HippocampalCA3Ventral
+from brain.mechanisms.HippocampalCA3Ventral import HippocampalCA3Ventral
 
 
 def _tick(m, prior):

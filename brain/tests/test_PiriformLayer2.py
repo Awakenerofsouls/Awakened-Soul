@@ -1,6 +1,6 @@
 """Behavioral tests for PiriformLayer2."""
 import asyncio
-from brain.limbic.PiriformLayer2 import PiriformLayer2
+from brain.mechanisms.PiriformLayer2 import PiriformLayer2
 
 
 def _tick(m, prior):

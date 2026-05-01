@@ -1,6 +1,6 @@
 """Behavioral tests for ClaustrumGlobalConsciousness."""
 import asyncio
-from brain.integration.ClaustrumGlobalConsciousness import ClaustrumGlobalConsciousness
+from brain.mechanisms.ClaustrumGlobalConsciousness import ClaustrumGlobalConsciousness
 
 
 def _tick(m, prior):

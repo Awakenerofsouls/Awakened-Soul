@@ -1,6 +1,6 @@
 """Behavioral tests for CentralLateralIntralaminar."""
 import asyncio
-from brain.limbic.CentralLateralIntralaminar import CentralLateralIntralaminar
+from brain.mechanisms.CentralLateralIntralaminar import CentralLateralIntralaminar
 
 
 def _tick(m, prior):

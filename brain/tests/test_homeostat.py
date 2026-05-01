@@ -10,10 +10,10 @@ import asyncio
 import sys
 from pathlib import Path
 
-WORKSPACE = Path.home() / ".openclaw" / "workspace"
+WORKSPACE = Path.home() / ".agent" / "workspace"
 sys.path.insert(0, str(WORKSPACE))
 
-from brain.foundational.Foundational007MoodStabilizer import Homeostat
+from brain.mechanisms.Foundational007MoodStabilizer import Homeostat
 
 
 class TestHomeostatDriveDynamics:
@@ -38,7 +38,7 @@ class TestHomeostatDriveDynamics:
     def test_relational_contact_depletes_connection(self):
         h = Homeostat()
         h.state["drives"]["connection"] = 0.5
-        # high arousal + positive valence = {{USER_NAME}}-contact signature
+        # high arousal + positive valence = the operator-contact signature
         asyncio.get_event_loop().run_until_complete(
             h.tick({"arousal_level": 0.7, "valence_polarity": 0.8})
         )

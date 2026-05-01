@@ -1,6 +1,6 @@
 """Behavioral tests for VentrolateralPrefrontalCortex."""
 import asyncio
-from brain.neocortical.VentrolateralPrefrontalCortex import VentrolateralPrefrontalCortex
+from brain.mechanisms.VentrolateralPrefrontalCortex import VentrolateralPrefrontalCortex
 
 
 def _tick(m, prior):

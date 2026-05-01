@@ -1,6 +1,6 @@
 """Behavioral tests for ParatenialNucleus."""
 import asyncio
-from brain.limbic.ParatenialNucleus import ParatenialNucleus
+from brain.mechanisms.ParatenialNucleus import ParatenialNucleus
 
 
 def _tick(m, prior):

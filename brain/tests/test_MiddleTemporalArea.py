@@ -1,6 +1,6 @@
 """Behavioral tests for MiddleTemporalArea (V5/MT)."""
 import asyncio
-from brain.neocortical.MiddleTemporalArea import MiddleTemporalArea
+from brain.mechanisms.MiddleTemporalArea import MiddleTemporalArea
 
 
 def _tick(m, prior):

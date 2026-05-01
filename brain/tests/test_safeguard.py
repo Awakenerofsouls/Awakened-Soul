@@ -5,7 +5,7 @@ Formal pytest suite for skills/safeguard.py — can_perform() gate function.
 Tests match the 15 inline tests embedded in safeguard.py's __main__ block.
 No edits to safeguard.py itself — additive test file only.
 
-Rule: No AI session modifies safeguard.py without {{USER_NAME}}'s explicit approval per edit.
+Rule: No AI session modifies safeguard.py without the operator's explicit approval per edit.
 """
 
 import sys
@@ -13,7 +13,7 @@ from pathlib import Path
 from unittest.mock import patch, MagicMock
 
 # Point at workspace for imports
-WORKSPACE = Path("~/.openclaw/workspace")
+WORKSPACE = Path("~/.agent/workspace")
 sys.path.insert(0, str(WORKSPACE))
 sys.path.insert(0, str(WORKSPACE / "skills"))
 

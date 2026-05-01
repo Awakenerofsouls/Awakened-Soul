@@ -1,6 +1,6 @@
 """Behavioral tests for OrexinWakePromoter."""
 import asyncio
-from brain.foundational.OrexinWakePromoter import OrexinWakePromoter
+from brain.mechanisms.OrexinWakePromoter import OrexinWakePromoter
 
 
 def _tick(m, prior):

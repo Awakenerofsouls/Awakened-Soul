@@ -1,6 +1,6 @@
 """Behavioral tests for ZonaIncerta."""
 import asyncio
-from brain.subcortical.ZonaIncerta import ZonaIncerta
+from brain.mechanisms.ZonaIncerta import ZonaIncerta
 
 
 def _tick(m, prior):

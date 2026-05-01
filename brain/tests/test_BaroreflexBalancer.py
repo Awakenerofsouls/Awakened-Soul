@@ -1,6 +1,6 @@
 """Behavioral tests for BaroreflexBalancer."""
 import asyncio
-from brain.foundational.BaroreflexBalancer import BaroreflexBalancer
+from brain.mechanisms.BaroreflexBalancer import BaroreflexBalancer
 
 
 def _tick(m, prior):

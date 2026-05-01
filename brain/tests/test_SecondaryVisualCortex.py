@@ -1,6 +1,6 @@
 """Behavioral tests for SecondaryVisualCortex."""
 import asyncio
-from brain.neocortical.SecondaryVisualCortex import SecondaryVisualCortex
+from brain.mechanisms.SecondaryVisualCortex import SecondaryVisualCortex
 
 
 def _tick(m, prior):

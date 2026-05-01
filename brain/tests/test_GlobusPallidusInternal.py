@@ -1,6 +1,6 @@
 """Behavioral tests for GlobusPallidusInternal."""
 import asyncio
-from brain.subcortical.GlobusPallidusInternal import GlobusPallidusInternal
+from brain.mechanisms.GlobusPallidusInternal import GlobusPallidusInternal
 
 
 def _tick(m, prior):

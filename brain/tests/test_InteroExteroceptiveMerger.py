@@ -1,6 +1,6 @@
 """Behavioral tests for InteroExteroceptiveMerger."""
 import asyncio
-from brain.integration.InteroExteroceptiveMerger import InteroExteroceptiveMerger
+from brain.mechanisms.InteroExteroceptiveMerger import InteroExteroceptiveMerger
 
 
 def _tick(m, prior):

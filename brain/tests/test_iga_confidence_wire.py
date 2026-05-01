@@ -7,7 +7,7 @@ Ownership vs ambient: owned changes accumulate in the gradient, ambient ones don
 """
 
 import pytest
-from brain.iga import IdentityGradientAccumulator
+from brain.mechanisms.iga import IdentityGradientAccumulator
 
 
 def make_iga():

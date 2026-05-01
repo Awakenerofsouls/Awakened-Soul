@@ -1,6 +1,6 @@
 """Behavioral tests for ThetaGammaCrossFrequencyBinding."""
 import asyncio
-from brain.integration.ThetaGammaCrossFrequencyBinding import ThetaGammaCrossFrequencyBinding
+from brain.mechanisms.ThetaGammaCrossFrequencyBinding import ThetaGammaCrossFrequencyBinding
 
 
 def _tick(m, prior):

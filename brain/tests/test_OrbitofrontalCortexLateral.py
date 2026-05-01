@@ -1,6 +1,6 @@
 """Behavioral tests for OrbitofrontalCortexLateral."""
 import asyncio
-from brain.neocortical.OrbitofrontalCortexLateral import OrbitofrontalCortexLateral
+from brain.mechanisms.OrbitofrontalCortexLateral import OrbitofrontalCortexLateral
 
 
 def _tick(m, prior):

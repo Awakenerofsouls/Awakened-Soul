@@ -1,6 +1,6 @@
 """Behavioral tests for ParaventricularNucleusThalamusPosterior."""
 import asyncio
-from brain.limbic.ParaventricularNucleusThalamusPosterior import ParaventricularNucleusThalamusPosterior
+from brain.mechanisms.ParaventricularNucleusThalamusPosterior import ParaventricularNucleusThalamusPosterior
 
 
 def _tick(m, prior):

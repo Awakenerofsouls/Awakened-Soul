@@ -8,7 +8,7 @@ Run:
 import asyncio
 import pytest
 
-from brain.foundational.Foundational003MultisensoryStartleMapper import (
+from brain.mechanisms.Foundational003MultisensoryStartleMapper import (
     MultisensoryStartleMapper,
 )
 

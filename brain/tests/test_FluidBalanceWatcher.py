@@ -1,6 +1,6 @@
 """Behavioral tests for FluidBalanceWatcher."""
 import asyncio
-from brain.foundational.FluidBalanceWatcher import FluidBalanceWatcher
+from brain.mechanisms.FluidBalanceWatcher import FluidBalanceWatcher
 
 
 def _tick(m, prior):

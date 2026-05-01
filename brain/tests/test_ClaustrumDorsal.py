@@ -1,6 +1,6 @@
 """Behavioral tests for ClaustrumDorsal."""
 import asyncio
-from brain.limbic.ClaustrumDorsal import ClaustrumDorsal
+from brain.mechanisms.ClaustrumDorsal import ClaustrumDorsal
 
 
 def _tick(m, prior):

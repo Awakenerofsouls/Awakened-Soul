@@ -8,7 +8,7 @@ Run:
 import asyncio
 import pytest
 
-from brain.foundational.Foundational012FluidBalanceWatcher import FluidBalanceWatcher
+from brain.mechanisms.Foundational012FluidBalanceWatcher import FluidBalanceWatcher
 
 
 def _run(coro):

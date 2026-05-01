@@ -7,7 +7,7 @@ import pytest
 import sys, os, asyncio
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from brain.foundational.Foundational014PassiveQuiescenceMode import PassiveQuiescenceMode
+from brain.mechanisms.Foundational014PassiveQuiescenceMode import PassiveQuiescenceMode
 
 
 def make_mechanism():

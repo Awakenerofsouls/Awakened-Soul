@@ -1,6 +1,6 @@
 """Behavioral tests for IntraparietalSulcus (IPS)."""
 import asyncio
-from brain.neocortical.IntraparietalSulcus import IntraparietalSulcus
+from brain.mechanisms.IntraparietalSulcus import IntraparietalSulcus
 
 
 def _tick(m, prior):

@@ -19,7 +19,7 @@ import os
 from pathlib import Path
 
 # Ensure workspace is on path
-WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", str(Path(__file__).parent.parent.parent)))
+WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.agent/workspace")))
 sys.path.insert(0, str(WORKSPACE))
 
 import pytest
@@ -27,7 +27,7 @@ import pytest
 
 class TestCacheAndPublish:
     def test_tick_publish_populates_cache(self):
-        from brain import constraint_fields
+        from brain.mechanisms import constraint_fields
         constraint_fields._cached_fields = None  # cold start
 
         from brain.tick_state_bus import TickStateBus
@@ -39,7 +39,7 @@ class TestCacheAndPublish:
         assert isinstance(constraint_fields._cached_fields["truth_gravity"], float)
 
     def test_tick_publish_publishes_to_tsb(self):
-        from brain import constraint_fields
+        from brain.mechanisms import constraint_fields
         constraint_fields._cached_fields = None
 
         from brain.tick_state_bus import TickStateBus
@@ -51,7 +51,7 @@ class TestCacheAndPublish:
         assert data["truth_gravity"] == constraint_fields._cached_fields["truth_gravity"]
 
     def test_get_fields_returns_cached_after_publish(self):
-        from brain import constraint_fields
+        from brain.mechanisms import constraint_fields
         constraint_fields._cached_fields = None
 
         from brain.tick_state_bus import TickStateBus
@@ -62,7 +62,7 @@ class TestCacheAndPublish:
         assert fields == constraint_fields._cached_fields
 
     def test_cold_start_get_fields_falls_back_to_db(self):
-        from brain import constraint_fields
+        from brain.mechanisms import constraint_fields
         constraint_fields._cached_fields = None
 
         fields = constraint_fields.get_fields()
@@ -73,7 +73,7 @@ class TestCacheAndPublish:
         assert 0.1 <= fields["truth_gravity"] <= 1.0
 
     def test_update_field_invalidates_cache(self):
-        from brain import constraint_fields
+        from brain.mechanisms import constraint_fields
         constraint_fields._cached_fields = None
 
         # Seed DB with a known truth_gravity value before warming cache
@@ -106,19 +106,19 @@ class TestCacheAndPublish:
 
 class TestInnerKnowingTruthGravity:
     def test_truth_gravity_optional_defaults_to_none(self):
-        from brain.misread_engine import InnerKnowing
+        from brain.mechanisms.misread_engine import InnerKnowing
 
         k = InnerKnowing("test claim", precision=0.8)
         assert k.truth_gravity is None
 
     def test_truth_gravity_stored_when_provided(self):
-        from brain.misread_engine import InnerKnowing
+        from brain.mechanisms.misread_engine import InnerKnowing
 
         k = InnerKnowing("test claim", precision=0.8, truth_gravity=0.95)
         assert k.truth_gravity == 0.95
 
     def test_serialization_round_trip(self):
-        from brain.misread_engine import InnerKnowing
+        from brain.mechanisms.misread_engine import InnerKnowing
 
         k = InnerKnowing("test", precision=0.8, truth_gravity=0.95)
         d = k.to_dict()
@@ -129,7 +129,7 @@ class TestInnerKnowingTruthGravity:
 
     def test_old_json_without_truth_gravity_loads_cleanly(self):
         """Old MRE JSON without truth_gravity field should load with None."""
-        from brain.misread_engine import InnerKnowing
+        from brain.mechanisms.misread_engine import InnerKnowing
 
         old_format = {
             "claim": "old knowing",
@@ -156,7 +156,7 @@ class TestMREGlobalFallback:
 
         With same contradiction_strength=0.9, knowing_b should produce larger magnitude.
         """
-        from brain.misread_engine import MisreadEngine, InnerKnowing
+        from brain.mechanisms.misread_engine import MisreadEngine, InnerKnowing
 
         mre = MisreadEngine()
         mre.inner_knowings = []

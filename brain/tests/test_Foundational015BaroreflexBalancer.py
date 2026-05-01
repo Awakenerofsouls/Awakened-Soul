@@ -7,7 +7,7 @@ import pytest
 import sys, os, asyncio
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from brain.foundational.Foundational015BaroreflexBalancer import BaroreflexBalancer
+from brain.mechanisms.Foundational015BaroreflexBalancer import BaroreflexBalancer
 
 
 def tick_sync(m, inputs):

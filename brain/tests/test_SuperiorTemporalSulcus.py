@@ -1,6 +1,6 @@
 """Behavioral tests for SuperiorTemporalSulcus."""
 import asyncio
-from brain.neocortical.SuperiorTemporalSulcus import SuperiorTemporalSulcus
+from brain.mechanisms.SuperiorTemporalSulcus import SuperiorTemporalSulcus
 
 
 def _tick(m, prior):

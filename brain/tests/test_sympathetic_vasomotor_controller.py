@@ -8,7 +8,7 @@ Run:
 import asyncio
 import pytest
 
-from brain.foundational.Foundational001SympatheticVasomotorController import (
+from brain.mechanisms.Foundational001SympatheticVasomotorController import (
     SympatheticVasomotorController,
 )
 

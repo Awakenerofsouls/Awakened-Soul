@@ -20,7 +20,7 @@ from pathlib import Path
 brain_root = Path(__file__).parent.parent
 sys.path.insert(0, str(brain_root))
 
-from longing_architecture import LongingArchitecture
+from brain.mechanisms.longing_architecture import LongingArchitecture
 
 import pytest
 
@@ -127,7 +127,7 @@ def test_existing_fields_preserved():
 
 def test_wire_meta_exists():
     """Sanity check: __wire_meta__ is defined and contains required keys."""
-    from longing_architecture import __wire_meta__
+    from brain.mechanisms.longing_architecture import __wire_meta__
     assert __wire_meta__["wire"] == 21
     assert __wire_meta__["signal"] == "brain_bonded_presence"
     assert "reads" in __wire_meta__

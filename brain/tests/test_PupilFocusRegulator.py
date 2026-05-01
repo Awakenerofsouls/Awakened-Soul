@@ -1,6 +1,6 @@
 """Behavioral tests for PupilFocusRegulator."""
 import asyncio
-from brain.foundational.PupilFocusRegulator import PupilFocusRegulator
+from brain.mechanisms.PupilFocusRegulator import PupilFocusRegulator
 
 
 def _tick(m, prior):

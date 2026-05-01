@@ -1,6 +1,6 @@
 """Behavioral tests for HierarchicalTopDownBottomUpEquilibrator."""
 import asyncio
-from brain.integration.HierarchicalTopDownBottomUpEquilibrator import HierarchicalTopDownBottomUpEquilibrator
+from brain.mechanisms.HierarchicalTopDownBottomUpEquilibrator import HierarchicalTopDownBottomUpEquilibrator
 
 
 def _tick(m, prior):

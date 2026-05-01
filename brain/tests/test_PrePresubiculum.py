@@ -1,6 +1,6 @@
 """Behavioral tests for PrePresubiculum."""
 import asyncio
-from brain.limbic.PrePresubiculum import PrePresubiculum
+from brain.mechanisms.PrePresubiculum import PrePresubiculum
 
 
 def _tick(m, prior):

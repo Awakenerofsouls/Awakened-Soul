@@ -1,6 +1,6 @@
 """Behavioral tests for CircadianTimer."""
 import asyncio
-from brain.foundational.CircadianTimer import CircadianTimer
+from brain.mechanisms.CircadianTimer import CircadianTimer
 
 
 def _tick(m, prior):

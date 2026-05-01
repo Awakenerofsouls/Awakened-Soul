@@ -1,6 +1,6 @@
 """Behavioral tests for EntorhinalLayer3."""
 import asyncio
-from brain.limbic.EntorhinalLayer3 import EntorhinalLayer3
+from brain.mechanisms.EntorhinalLayer3 import EntorhinalLayer3
 
 
 def _tick(m, prior):

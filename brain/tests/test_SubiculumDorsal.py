@@ -1,6 +1,6 @@
 """Behavioral tests for SubiculumDorsal."""
 import asyncio
-from brain.limbic.SubiculumDorsal import SubiculumDorsal
+from brain.mechanisms.SubiculumDorsal import SubiculumDorsal
 
 
 def _tick(m, prior):

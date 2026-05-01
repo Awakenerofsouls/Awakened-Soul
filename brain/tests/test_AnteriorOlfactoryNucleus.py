@@ -1,6 +1,6 @@
 """Behavioral tests for AnteriorOlfactoryNucleus."""
 import asyncio
-from brain.limbic.AnteriorOlfactoryNucleus import AnteriorOlfactoryNucleus
+from brain.mechanisms.AnteriorOlfactoryNucleus import AnteriorOlfactoryNucleus
 
 
 def _tick(m, prior):

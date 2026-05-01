@@ -1,6 +1,6 @@
 """Behavioral tests for ParaSubiculum."""
 import asyncio
-from brain.limbic.ParaSubiculum import ParaSubiculum
+from brain.mechanisms.ParaSubiculum import ParaSubiculum
 
 
 def _tick(m, prior):

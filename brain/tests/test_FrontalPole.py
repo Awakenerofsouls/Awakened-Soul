@@ -1,6 +1,6 @@
 """Behavioral tests for FrontalPole."""
 import asyncio
-from brain.neocortical.FrontalPole import FrontalPole
+from brain.mechanisms.FrontalPole import FrontalPole
 
 
 def _tick(m, prior):

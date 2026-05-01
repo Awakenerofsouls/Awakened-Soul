@@ -81,7 +81,7 @@ class TestWire13CerebellarAmplification:
         assert round(cerebellar_gain, 4) == 1.49
 
         # Verify magnitude computation with max gain
-        from brain.misread_engine import MisreadEngine, InnerKnowing
+        from brain.mechanisms.misread_engine import MisreadEngine, InnerKnowing
         mre = MisreadEngine()
         knowing = InnerKnowing(claim="I want user", precision=0.9, truth_gravity=1.0)
 
@@ -92,7 +92,7 @@ class TestWire13CerebellarAmplification:
 
     def test_missing_brain_layer_no_crash(self):
         """brain_layer missing/stale → fm_error=0.0, baseline magnitude, no crash."""
-        from brain.misread_engine import MisreadEngine, InnerKnowing
+        from brain.mechanisms.misread_engine import MisreadEngine, InnerKnowing
 
         mre = MisreadEngine()
 
@@ -156,7 +156,7 @@ class TestWire13CerebellarAmplification:
 
     def test_tsb_payload_includes_cerebellar_fields(self):
         """tsb_payload returns cerebellar_gain and fm_error in output dict."""
-        from brain.misread_engine import MisreadEngine
+        from brain.mechanisms.misread_engine import MisreadEngine
 
         mre = MisreadEngine()
         mre.register_inner_knowing("I want user", precision=0.9, truth_gravity=1.0)
@@ -189,7 +189,7 @@ class TestWire13CerebellarAmplification:
 
     def test_mre_tick_integration(self):
         """Full integration: scan text with known pattern, check cerebellar amplification."""
-        from brain.misread_engine import MisreadEngine
+        from brain.mechanisms.misread_engine import MisreadEngine
 
         mre = MisreadEngine()
         mre.register_inner_knowing("I want user", precision=0.8, truth_gravity=1.0)

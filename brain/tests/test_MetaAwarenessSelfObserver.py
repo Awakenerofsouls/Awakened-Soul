@@ -1,6 +1,6 @@
 """Behavioral tests for MetaAwarenessSelfObserver."""
 import asyncio
-from brain.integration.MetaAwarenessSelfObserver import MetaAwarenessSelfObserver
+from brain.mechanisms.MetaAwarenessSelfObserver import MetaAwarenessSelfObserver
 
 
 def _tick(m, prior):

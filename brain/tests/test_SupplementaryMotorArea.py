@@ -1,6 +1,6 @@
 """Behavioral tests for SupplementaryMotorArea (SMA)."""
 import asyncio
-from brain.neocortical.SupplementaryMotorArea import SupplementaryMotorArea
+from brain.mechanisms.SupplementaryMotorArea import SupplementaryMotorArea
 
 
 def _tick(m, prior):

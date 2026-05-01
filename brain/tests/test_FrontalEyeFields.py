@@ -1,6 +1,6 @@
 """Behavioral tests for FrontalEyeFields (FEF)."""
 import asyncio
-from brain.neocortical.FrontalEyeFields import FrontalEyeFields
+from brain.mechanisms.FrontalEyeFields import FrontalEyeFields
 
 
 def _tick(m, prior):

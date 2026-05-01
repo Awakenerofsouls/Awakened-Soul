@@ -1,6 +1,6 @@
 """Behavioral tests for CingulumBundleAssociativeBridge."""
 import asyncio
-from brain.integration.CingulumBundleAssociativeBridge import CingulumBundleAssociativeBridge
+from brain.mechanisms.CingulumBundleAssociativeBridge import CingulumBundleAssociativeBridge
 
 
 def _tick(m, prior):

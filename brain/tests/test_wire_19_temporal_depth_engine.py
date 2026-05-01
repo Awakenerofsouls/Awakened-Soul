@@ -28,10 +28,10 @@ from pathlib import Path
 import tempfile
 import os
 
-WORKSPACE = Path.home() / ".openclaw" / "workspace"
+WORKSPACE = Path.home() / ".agent" / "workspace"
 sys.path.insert(0, str(WORKSPACE))
 
-from brain.temporal_depth_engine import TemporalDepthEngine
+from brain.mechanisms.temporal_depth_engine import TemporalDepthEngine
 
 
 @pytest.fixture

@@ -1,6 +1,6 @@
 """Behavioral tests for EndopiriformNucleus."""
 import asyncio
-from brain.limbic.EndopiriformNucleus import EndopiriformNucleus
+from brain.mechanisms.EndopiriformNucleus import EndopiriformNucleus
 
 
 def _tick(m, prior):

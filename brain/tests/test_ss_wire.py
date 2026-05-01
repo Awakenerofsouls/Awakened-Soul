@@ -29,7 +29,7 @@ def ss_env(monkeypatch):
     test_home = tempfile.mkdtemp()
     monkeypatch.setenv("AGENT_HOME", test_home)
     import importlib
-    import brain.sensation_state as ss_mod
+    import brain.mechanisms.sensation_state as ss_mod
     importlib.reload(ss_mod)
     return ss_mod
 

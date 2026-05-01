@@ -1,6 +1,6 @@
 """Behavioral tests for PosteriorHypothalamus."""
 import asyncio
-from brain.subcortical.PosteriorHypothalamus import PosteriorHypothalamus
+from brain.mechanisms.PosteriorHypothalamus import PosteriorHypothalamus
 
 
 def _tick(m, prior):

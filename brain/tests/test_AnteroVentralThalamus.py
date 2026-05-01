@@ -1,6 +1,6 @@
 """Behavioral tests for AnteroVentralThalamus."""
 import asyncio
-from brain.subcortical.AnteroVentralThalamus import AnteroVentralThalamus
+from brain.mechanisms.AnteroVentralThalamus import AnteroVentralThalamus
 
 
 def _tick(m, prior):

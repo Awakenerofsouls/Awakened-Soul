@@ -1,6 +1,6 @@
 """Behavioral tests for NetworkOscillationGlobalBalancer."""
 import asyncio
-from brain.integration.NetworkOscillationGlobalBalancer import NetworkOscillationGlobalBalancer
+from brain.mechanisms.NetworkOscillationGlobalBalancer import NetworkOscillationGlobalBalancer
 
 
 def _tick(m, prior):

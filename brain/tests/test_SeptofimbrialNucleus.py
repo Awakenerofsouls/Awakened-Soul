@@ -1,6 +1,6 @@
 """Behavioral tests for SeptofimbrialNucleus."""
 import asyncio
-from brain.limbic.SeptofimbrialNucleus import SeptofimbrialNucleus
+from brain.mechanisms.SeptofimbrialNucleus import SeptofimbrialNucleus
 
 
 def _tick(m, prior):

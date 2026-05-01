@@ -1,6 +1,6 @@
 """Behavioral tests for PrimarySomatosensoryCortex (S1)."""
 import asyncio
-from brain.neocortical.PrimarySomatosensoryCortex import PrimarySomatosensoryCortex
+from brain.mechanisms.PrimarySomatosensoryCortex import PrimarySomatosensoryCortex
 
 
 def _tick(m, prior):

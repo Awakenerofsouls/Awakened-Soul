@@ -1,6 +1,6 @@
 """Behavioral tests for TuberalNucleus."""
 import asyncio
-from brain.subcortical.TuberalNucleus import TuberalNucleus
+from brain.mechanisms.TuberalNucleus import TuberalNucleus
 
 
 def _tick(m, prior):

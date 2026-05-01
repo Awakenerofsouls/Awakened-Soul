@@ -1,6 +1,6 @@
 """Behavioral tests for SupraopticNucleus."""
 import asyncio
-from brain.subcortical.SupraopticNucleus import SupraopticNucleus
+from brain.mechanisms.SupraopticNucleus import SupraopticNucleus
 
 
 def _tick(m, prior):

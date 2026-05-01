@@ -1,6 +1,6 @@
 """Behavioral tests for GlobalWorkspaceIntegrator."""
 import asyncio
-from brain.integration.GlobalWorkspaceIntegrator import GlobalWorkspaceIntegrator
+from brain.mechanisms.GlobalWorkspaceIntegrator import GlobalWorkspaceIntegrator
 
 
 def _tick(m, prior):

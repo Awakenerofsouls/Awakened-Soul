@@ -1,6 +1,6 @@
 """Behavioral tests for SubstantiaInnominata."""
 import asyncio
-from brain.limbic.SubstantiaInnominata import SubstantiaInnominata
+from brain.mechanisms.SubstantiaInnominata import SubstantiaInnominata
 
 
 def _tick(m, prior):

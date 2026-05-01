@@ -1,6 +1,6 @@
 """Behavioral tests for ParaventricularNucleusHypothalamus."""
 import asyncio
-from brain.subcortical.ParaventricularNucleusHypothalamus import ParaventricularNucleusHypothalamus
+from brain.mechanisms.ParaventricularNucleusHypothalamus import ParaventricularNucleusHypothalamus
 
 
 def _tick(m, prior):

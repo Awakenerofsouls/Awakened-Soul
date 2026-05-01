@@ -1,6 +1,6 @@
 """Behavioral tests for VisualAreaV4."""
 import asyncio
-from brain.neocortical.VisualAreaV4 import VisualAreaV4
+from brain.mechanisms.VisualAreaV4 import VisualAreaV4
 
 
 def _tick(m, prior):

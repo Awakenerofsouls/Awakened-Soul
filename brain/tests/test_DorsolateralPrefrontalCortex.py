@@ -1,6 +1,6 @@
 """Behavioral tests for DorsolateralPrefrontalCortex."""
 import asyncio
-from brain.neocortical.DorsolateralPrefrontalCortex import DorsolateralPrefrontalCortex
+from brain.mechanisms.DorsolateralPrefrontalCortex import DorsolateralPrefrontalCortex
 
 
 def _tick(m, prior):

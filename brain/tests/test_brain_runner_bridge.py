@@ -11,7 +11,7 @@ import unittest
 import sys
 from pathlib import Path
 
-WORKSPACE = Path.home() / ".openclaw" / "workspace"
+WORKSPACE = Path.home() / ".agent" / "workspace"
 sys.path.insert(0, str(WORKSPACE))
 
 from brain.brain_integration import AgentBrainIntegration

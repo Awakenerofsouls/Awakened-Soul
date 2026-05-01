@@ -1,6 +1,6 @@
 """Behavioral tests for SubstantiaNigraReticulata."""
 import asyncio
-from brain.subcortical.SubstantiaNigraReticulata import SubstantiaNigraReticulata
+from brain.mechanisms.SubstantiaNigraReticulata import SubstantiaNigraReticulata
 
 
 def _tick(m, prior):

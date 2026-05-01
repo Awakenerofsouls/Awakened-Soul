@@ -1,6 +1,6 @@
 """Behavioral tests for VagalRestPromoter."""
 import asyncio
-from brain.foundational.VagalRestPromoter import VagalRestPromoter
+from brain.mechanisms.VagalRestPromoter import VagalRestPromoter
 
 
 def _tick(m, prior):

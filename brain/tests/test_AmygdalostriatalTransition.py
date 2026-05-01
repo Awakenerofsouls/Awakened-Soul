@@ -1,6 +1,6 @@
 """Behavioral tests for AmygdalostriatalTransition."""
 import asyncio
-from brain.limbic.AmygdalostriatalTransition import AmygdalostriatalTransition
+from brain.mechanisms.AmygdalostriatalTransition import AmygdalostriatalTransition
 
 
 def _tick(m, prior):

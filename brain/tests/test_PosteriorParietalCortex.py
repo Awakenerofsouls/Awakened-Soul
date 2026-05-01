@@ -1,6 +1,6 @@
 """Behavioral tests for PosteriorParietalCortex (PPC)."""
 import asyncio
-from brain.neocortical.PosteriorParietalCortex import PosteriorParietalCortex
+from brain.mechanisms.PosteriorParietalCortex import PosteriorParietalCortex
 
 
 def _tick(m, prior):

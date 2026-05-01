@@ -1,6 +1,6 @@
 """Behavioral tests for CorpusCallosumFullBridge."""
 import asyncio
-from brain.integration.CorpusCallosumFullBridge import CorpusCallosumFullBridge
+from brain.mechanisms.CorpusCallosumFullBridge import CorpusCallosumFullBridge
 
 
 def _tick(m, prior):

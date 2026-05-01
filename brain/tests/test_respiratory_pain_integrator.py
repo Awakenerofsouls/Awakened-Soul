@@ -8,7 +8,7 @@ Run:
 import asyncio
 import pytest
 
-from brain.foundational.Foundational002RespiratoryPainIntegrator import (
+from brain.mechanisms.Foundational002RespiratoryPainIntegrator import (
     RespiratoryPainIntegrator,
 )
 

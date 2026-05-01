@@ -1,6 +1,6 @@
 """Behavioral tests for HippocampalCA1Dorsal."""
 import asyncio
-from brain.limbic.HippocampalCA1Dorsal import HippocampalCA1Dorsal
+from brain.mechanisms.HippocampalCA1Dorsal import HippocampalCA1Dorsal
 
 
 def _tick(m, prior):

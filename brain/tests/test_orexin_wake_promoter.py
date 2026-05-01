@@ -8,7 +8,7 @@ Run:
 import asyncio
 import pytest
 
-from brain.foundational.Foundational008OrexinWakePromoter import OrexinWakePromoter
+from brain.mechanisms.Foundational008OrexinWakePromoter import OrexinWakePromoter
 
 
 def _run(coro):

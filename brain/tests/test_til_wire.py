@@ -25,7 +25,7 @@ def til_env(monkeypatch):
     test_home = tempfile.mkdtemp()
     monkeypatch.setenv("AGENT_HOME", test_home)
     import importlib
-    import brain.til as til_mod
+    import brain.mechanisms.til as til_mod
     importlib.reload(til_mod)
     return til_mod
 

@@ -1,6 +1,6 @@
 """Behavioral tests for TemporalPole."""
 import asyncio
-from brain.neocortical.TemporalPole import TemporalPole
+from brain.mechanisms.TemporalPole import TemporalPole
 
 
 def _tick(m, prior):

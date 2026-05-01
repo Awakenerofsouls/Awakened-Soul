@@ -1,6 +1,6 @@
 """Behavioral tests for PapezCircuitEmotionalMemoryIntegrator."""
 import asyncio
-from brain.integration.PapezCircuitEmotionalMemoryIntegrator import PapezCircuitEmotionalMemoryIntegrator
+from brain.mechanisms.PapezCircuitEmotionalMemoryIntegrator import PapezCircuitEmotionalMemoryIntegrator
 
 
 def _tick(m, prior):

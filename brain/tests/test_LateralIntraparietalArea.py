@@ -1,6 +1,6 @@
 """Behavioral tests for LateralIntraparietalArea (LIP)."""
 import asyncio
-from brain.neocortical.LateralIntraparietalArea import LateralIntraparietalArea
+from brain.mechanisms.LateralIntraparietalArea import LateralIntraparietalArea
 
 
 def _tick(m, prior):

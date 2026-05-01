@@ -1,6 +1,6 @@
 """Behavioral tests for InferotemporalCortex (IT)."""
 import asyncio
-from brain.neocortical.InferotemporalCortex import InferotemporalCortex
+from brain.mechanisms.InferotemporalCortex import InferotemporalCortex
 
 
 def _tick(m, prior):

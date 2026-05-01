@@ -1,6 +1,6 @@
 """Behavioral tests for AnteriorHypothalamus."""
 import asyncio
-from brain.subcortical.AnteriorHypothalamus import AnteriorHypothalamus
+from brain.mechanisms.AnteriorHypothalamus import AnteriorHypothalamus
 
 
 def _tick(m, prior):

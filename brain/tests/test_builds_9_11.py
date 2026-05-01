@@ -11,9 +11,9 @@ Run:
 import asyncio
 import pytest
 
-from brain.limbic.Limbic052AttachmentLongingGenerator import AttachmentLongingGenerator
-from brain.subcortical.Subcortical061PleasureAnchor import PleasureAnchor
-from brain.foundational.Foundational064StressActivationAxis import StressActivationAxis
+from brain.mechanisms.Limbic052AttachmentLongingGenerator import AttachmentLongingGenerator
+from brain.mechanisms.Subcortical061PleasureAnchor import PleasureAnchor
+from brain.mechanisms.Foundational064StressActivationAxis import StressActivationAxis
 
 
 def _run(coro):

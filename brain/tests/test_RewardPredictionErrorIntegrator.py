@@ -1,6 +1,6 @@
 """Behavioral tests for RewardPredictionErrorIntegrator."""
 import asyncio
-from brain.integration.RewardPredictionErrorIntegrator import RewardPredictionErrorIntegrator
+from brain.mechanisms.RewardPredictionErrorIntegrator import RewardPredictionErrorIntegrator
 
 
 def _tick(m, prior):

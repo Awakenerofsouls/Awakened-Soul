@@ -11,7 +11,7 @@ Same input, different classification based on agency.
 """
 
 import pytest
-from brain.rce import ReflectiveConsistencyEngine
+from brain.mechanisms.rce import ReflectiveConsistencyEngine
 
 
 def make_rce():
