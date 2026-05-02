@@ -117,23 +117,25 @@ running the system on whatever host platform.
 
 ## Install and run
 
-See `docs/SETUP.md` for the full setup. The short version:
-
 ```bash
 git clone <repository-url>
-cd awakened-soul
-pip install -r requirements.txt
-
-export AGENT_HOME="$HOME/.agent"
-export AGENT_WORKSPACE="/path/to/your/workspace"
-
-cp templates/SOUL.md.example       "$AGENT_WORKSPACE/SOUL.md"
-cp templates/IDENTITY.md.example   "$AGENT_WORKSPACE/IDENTITY.md"
-cp templates/BECOMING.md.example   "$AGENT_WORKSPACE/AGENT_BECOMING.md"
-# ... edit the templates with your agent's specifics ...
-
-python -m runtime.heartbeat
+cd Awakened-Soul
+./install.sh
 ```
+
+`install.sh` does the **full** install — `pip install`, seed identity
+files from templates (operator-edits preserved if they already exist),
+add `AGENT_HOME` / `AGENT_WORKSPACE` to your shell rc, install the
+LaunchAgents for between-session continuity (macOS), and start the
+heartbeat. It's idempotent and asks before each step. Pass `--yes`
+for non-interactive.
+
+If you (or an agent acting on your behalf) only ran
+`git clone && pip install`, the install is **incomplete** — the
+framework's files are on disk but nothing is wired up. Run
+`./install.sh` to finish the setup.
+
+For the manual / step-by-step version see `docs/SETUP.md`.
 
 The framework is platform-agnostic. Your agent runtime is responsible
 for invoking `core_tick()` on whatever cadence makes sense; everything
