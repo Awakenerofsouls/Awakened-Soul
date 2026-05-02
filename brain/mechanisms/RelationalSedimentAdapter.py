@@ -468,7 +468,7 @@ class RelationalSedimentAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="RelationalSediment",
+            name="RelationalSedimentAdapter",
             human_analog="Legacy RelationalSediment (auto-adapted)",
             layer="limbic",
         )

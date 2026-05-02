@@ -61,7 +61,7 @@ class ImprovementRelationshipGriefEngineAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ImprovementRelationshipGriefEngine",
+            name="ImprovementRelationshipGriefEngineAdapter",
             human_analog="Legacy ImprovementRelationshipGriefEngine (auto-adapted)",
             layer="integration",
         )

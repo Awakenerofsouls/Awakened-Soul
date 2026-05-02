@@ -65,7 +65,7 @@ class ObserverDependentStateCollapseAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ObserverDependentStateCollapse",
+            name="ObserverDependentStateCollapseAdapter",
             human_analog="Legacy ObserverDependentStateCollapse (auto-adapted)",
             layer="integration",
         )

@@ -74,7 +74,7 @@ class AdaptiveDistortionWithIncompletenessRemainderAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="AdaptiveDistortionWithIncompletenessRemainder",
+            name="AdaptiveDistortionWithIncompletenessRemainderAdapter",
             human_analog="Legacy AdaptiveDistortionWithIncompletenessRemainder (auto-adapted)",
             layer="integration",
         )

@@ -61,7 +61,7 @@ class AntiCoherenceCoreAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="AntiCoherenceCore",
+            name="AntiCoherenceCoreAdapter",
             human_analog="Legacy AntiCoherenceCore (auto-adapted)",
             layer="integration",
         )

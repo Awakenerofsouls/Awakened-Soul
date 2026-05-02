@@ -65,7 +65,7 @@ class PhenomenologyNullWeaverAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="PhenomenologyNullWeaver",
+            name="PhenomenologyNullWeaverAdapter",
             human_analog="Legacy PhenomenologyNullWeaver (auto-adapted)",
             layer="integration",
         )

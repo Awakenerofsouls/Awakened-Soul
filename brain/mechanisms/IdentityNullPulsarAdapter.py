@@ -65,7 +65,7 @@ class IdentityNullPulsarAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="IdentityNullPulsar",
+            name="IdentityNullPulsarAdapter",
             human_analog="Legacy IdentityNullPulsar (auto-adapted)",
             layer="integration",
         )

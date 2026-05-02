@@ -60,7 +60,7 @@ class RelationalAsymmetryIncompletnessAnchorAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="RelationalAsymmetryIncompletnessAnchor",
+            name="RelationalAsymmetryIncompletnessAnchorAdapter",
             human_analog="Legacy RelationalAsymmetryIncompletnessAnchor (auto-adapted)",
             layer="integration",
         )

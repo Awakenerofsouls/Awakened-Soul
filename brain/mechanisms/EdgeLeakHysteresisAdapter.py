@@ -61,7 +61,7 @@ class EdgeLeakHysteresisAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="EdgeLeakHysteresis",
+            name="EdgeLeakHysteresisAdapter",
             human_analog="Legacy EdgeLeakHysteresis (auto-adapted)",
             layer="integration",
         )

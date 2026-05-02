@@ -1,7 +1,14 @@
-import time,threading,json
+import time,threading,json,os
 from pathlib import Path
 
-STATE_PATH=Path("state/agent_state.json")
+# Anchor to AGENT_HOME (consistent with DB_PATH pattern across the codebase).
+# Previously this was CWD-relative which broke under launchd (CWD=/).
+_AGENT_HOME = Path(os.getenv("AGENT_HOME", str(Path.home() / ".agent")))
+STATE_PATH = _AGENT_HOME / "state" / "agent_state.json"
+try:
+    STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
+except Exception:
+    pass
 
 
 class AgentRuntime:
@@ -68,7 +75,7 @@ class AgentRuntime:
 
     def _log_error(self,e:Exception):
         try:
-            log_path=Path("state/runtime_errors.log")
+            log_path=_AGENT_HOME / "state" / "runtime_errors.log"
             log_path.parent.mkdir(parents=True,exist_ok=True)
             with open(log_path,"a") as f:f.write(f"{time.time()} ERROR: {e}\n")
         except:pass

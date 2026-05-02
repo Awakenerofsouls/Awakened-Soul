@@ -66,7 +66,7 @@ class IdleAnchorMutationObserverAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="IdleAnchorMutationObserver",
+            name="IdleAnchorMutationObserverAdapter",
             human_analog="Legacy IdleAnchorMutationObserver (auto-adapted)",
             layer="integration",
         )

@@ -200,7 +200,7 @@ class ContactSensitivityGradientAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ContactSensitivityGradient",
+            name="ContactSensitivityGradientAdapter",
             human_analog="Legacy ContactSensitivityGradient (auto-adapted)",
             layer="integration",
         )

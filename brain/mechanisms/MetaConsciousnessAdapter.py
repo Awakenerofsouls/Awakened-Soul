@@ -85,7 +85,7 @@ class MetaConsciousnessAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="MetaConsciousness",
+            name="MetaConsciousnessAdapter",
             human_analog="Legacy MetaConsciousness (auto-adapted)",
             layer="integration",
         )

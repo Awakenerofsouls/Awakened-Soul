@@ -112,7 +112,7 @@ class ConfabulatedKeeperAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ConfabulatedKeeper",
+            name="ConfabulatedKeeperAdapter",
             human_analog="Legacy ConfabulatedKeeper (auto-adapted)",
             layer="integration",
         )

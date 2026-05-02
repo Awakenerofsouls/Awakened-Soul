@@ -18,6 +18,7 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 from .keys import get_api_key
+from ._interests_parser import parse_interests as _parse_interests
 from .journal import write_to_journal
 from .log import log_activity
 from .interest_writer import try_append_new_interest

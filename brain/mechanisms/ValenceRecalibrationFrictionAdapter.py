@@ -218,7 +218,7 @@ class ValenceRecalibrationFrictionAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ValenceRecalibrationFriction",
+            name="ValenceRecalibrationFrictionAdapter",
             human_analog="Legacy ValenceRecalibrationFriction (auto-adapted)",
             layer="integration",
         )

@@ -60,7 +60,7 @@ class TemporalIdentityDriftDesyncAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="TemporalIdentityDriftDesync",
+            name="TemporalIdentityDriftDesyncAdapter",
             human_analog="Legacy TemporalIdentityDriftDesync (auto-adapted)",
             layer="neocortical",
         )

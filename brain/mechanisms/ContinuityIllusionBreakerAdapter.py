@@ -60,7 +60,7 @@ class ContinuityIllusionBreakerAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ContinuityIllusionBreaker",
+            name="ContinuityIllusionBreakerAdapter",
             human_analog="Legacy ContinuityIllusionBreaker (auto-adapted)",
             layer="integration",
         )

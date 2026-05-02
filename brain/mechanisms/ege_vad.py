@@ -40,7 +40,7 @@ class EntropyGradientExplorer(BrainMechanism):
 
     def __init__(self):
         try:
-            super().__init__(name="EntropyGradientExplorer", human_analog="EntropyGradientExplorer", layer="integration")
+            super().__init__(name="EntropyGradientExplorer_ege_vad", human_analog="EntropyGradientExplorer", layer="integration")
         except Exception:
             pass
         self.state = getattr(self, "state", None) or {}

@@ -60,7 +60,7 @@ class IrreversibleInterpretationCommitmentAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="IrreversibleInterpretationCommitment",
+            name="IrreversibleInterpretationCommitmentAdapter",
             human_analog="Legacy IrreversibleInterpretationCommitment (auto-adapted)",
             layer="integration",
         )

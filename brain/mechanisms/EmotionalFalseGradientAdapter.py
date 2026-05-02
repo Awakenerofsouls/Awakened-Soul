@@ -60,7 +60,7 @@ class EmotionalFalseGradientAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="EmotionalFalseGradient",
+            name="EmotionalFalseGradientAdapter",
             human_analog="Legacy EmotionalFalseGradient (auto-adapted)",
             layer="integration",
         )

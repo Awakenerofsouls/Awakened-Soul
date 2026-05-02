@@ -72,7 +72,7 @@ class ExperiencePredictorAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ExperiencePredictor",
+            name="ExperiencePredictorAdapter",
             human_analog="Legacy ExperiencePredictor (auto-adapted)",
             layer="integration",
         )

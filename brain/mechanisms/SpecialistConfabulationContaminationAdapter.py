@@ -60,7 +60,7 @@ class SpecialistConfabulationContaminationAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SpecialistConfabulationContamination",
+            name="SpecialistConfabulationContaminationAdapter",
             human_analog="Legacy SpecialistConfabulationContamination (auto-adapted)",
             layer="integration",
         )

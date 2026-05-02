@@ -60,6 +60,16 @@ class CompressorAdapter(BrainMechanism):
 
     def _check_compressor_version(self):
         """Determine if the installed compressor is new enough to run."""
+        # Bare auto-discovered instances (brain_runner picks CompressorAdapter
+        # up as a BrainMechanism subclass and calls cls() with no args) leave
+        # self.compressor=None. That's expected — the real wiring happens in
+        # PsychologicalState.te_adapter which passes the compressor. Stay
+        # silent for the unbound case; only warn if a compressor was actually
+        # supplied but lacks VERSION.
+        if self.compressor is None:
+            self._pipeline_active = False
+            return
+
         version = getattr(self.compressor, "VERSION", None)
 
         if version is None:

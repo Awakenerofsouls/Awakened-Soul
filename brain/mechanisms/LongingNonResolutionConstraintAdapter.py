@@ -153,7 +153,7 @@ class LongingNonResolutionConstraintAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="LongingNonResolutionConstraint",
+            name="LongingNonResolutionConstraintAdapter",
             human_analog="Legacy LongingNonResolutionConstraint (auto-adapted)",
             layer="integration",
         )

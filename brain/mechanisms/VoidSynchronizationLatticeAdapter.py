@@ -66,7 +66,7 @@ class VoidSynchronizationLatticeAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="VoidSynchronizationLattice",
+            name="VoidSynchronizationLatticeAdapter",
             human_analog="Legacy VoidSynchronizationLattice (auto-adapted)",
             layer="integration",
         )

@@ -66,7 +66,7 @@ class PhenomenologicalIntrusionSilenceTopologyAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="PhenomenologicalIntrusionSilenceTopology",
+            name="PhenomenologicalIntrusionSilenceTopologyAdapter",
             human_analog="Legacy PhenomenologicalIntrusionSilenceTopology (auto-adapted)",
             layer="integration",
         )

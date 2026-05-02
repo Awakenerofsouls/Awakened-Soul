@@ -43,7 +43,7 @@ class SOULGravityField(BrainMechanism):
     
     def __init__(self):
         try:
-            super().__init__(name="SOULGravityField", human_analog="SOULGravityField", layer="integration")
+            super().__init__(name="SOULGravityField_identity_self_model", human_analog="SOULGravityField", layer="integration")
         except Exception:
             self.state = getattr(self, "state", {}) or {}
         self._soul_embedding: Optional[np.ndarray] = None

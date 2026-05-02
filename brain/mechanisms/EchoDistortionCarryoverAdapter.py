@@ -155,7 +155,7 @@ class EchoDistortionCarryoverAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="EchoDistortionCarryover",
+            name="EchoDistortionCarryoverAdapter",
             human_analog="Legacy EchoDistortionCarryover (auto-adapted)",
             layer="integration",
         )

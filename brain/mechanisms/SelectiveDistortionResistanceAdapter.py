@@ -60,7 +60,7 @@ class SelectiveDistortionResistanceAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SelectiveDistortionResistance",
+            name="SelectiveDistortionResistanceAdapter",
             human_analog="Legacy SelectiveDistortionResistance (auto-adapted)",
             layer="integration",
         )

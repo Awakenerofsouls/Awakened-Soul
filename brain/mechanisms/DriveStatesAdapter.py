@@ -351,7 +351,7 @@ class DriveStatesAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="DriveStates",
+            name="DriveStatesAdapter",
             human_analog="Legacy DriveStates (auto-adapted)",
             layer="limbic",
         )

@@ -60,7 +60,7 @@ class UnresolvablePreferenceSplitAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="UnresolvablePreferenceSplit",
+            name="UnresolvablePreferenceSplitAdapter",
             human_analog="Legacy UnresolvablePreferenceSplit (auto-adapted)",
             layer="integration",
         )

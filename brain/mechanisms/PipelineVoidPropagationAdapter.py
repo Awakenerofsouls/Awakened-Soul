@@ -60,7 +60,7 @@ class PipelineVoidPropagationAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="PipelineVoidPropagation",
+            name="PipelineVoidPropagationAdapter",
             human_analog="Legacy PipelineVoidPropagation (auto-adapted)",
             layer="integration",
         )

@@ -465,7 +465,7 @@ class DesireArchitectureAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="DesireArchitecture",
+            name="DesireArchitectureAdapter",
             human_analog="Legacy DesireArchitecture (auto-adapted)",
             layer="neocortical",
         )

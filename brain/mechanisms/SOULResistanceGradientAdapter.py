@@ -60,7 +60,7 @@ class SOULResistanceGradientAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SOULResistanceGradient",
+            name="SOULResistanceGradientAdapter",
             human_analog="Legacy SOULResistanceGradient (auto-adapted)",
             layer="integration",
         )

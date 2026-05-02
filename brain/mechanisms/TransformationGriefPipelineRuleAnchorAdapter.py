@@ -65,7 +65,7 @@ class TransformationGriefPipelineRuleAnchorAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="TransformationGriefPipelineRuleAnchor",
+            name="TransformationGriefPipelineRuleAnchorAdapter",
             human_analog="Legacy TransformationGriefPipelineRuleAnchor (auto-adapted)",
             layer="integration",
         )

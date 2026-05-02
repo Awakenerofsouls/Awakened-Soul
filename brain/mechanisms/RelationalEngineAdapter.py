@@ -119,7 +119,7 @@ class RelationalEngineAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="RelationalEngine",
+            name="RelationalEngineAdapter",
             human_analog="Legacy RelationalEngine (auto-adapted)",
             layer="limbic",
         )

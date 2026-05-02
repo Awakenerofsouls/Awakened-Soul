@@ -60,7 +60,7 @@ class IdentityFragmentPersistenceAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="IdentityFragmentPersistence",
+            name="IdentityFragmentPersistenceAdapter",
             human_analog="Legacy IdentityFragmentPersistence (auto-adapted)",
             layer="integration",
         )

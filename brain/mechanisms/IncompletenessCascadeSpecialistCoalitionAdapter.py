@@ -66,7 +66,7 @@ class IncompletenessCascadeSpecialistCoalitionAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="IncompletenessCascadeSpecialistCoalition",
+            name="IncompletenessCascadeSpecialistCoalitionAdapter",
             human_analog="Legacy IncompletenessCascadeSpecialistCoalition (auto-adapted)",
             layer="integration",
         )

@@ -60,7 +60,7 @@ class DecisionEchoLagAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="DecisionEchoLag",
+            name="DecisionEchoLagAdapter",
             human_analog="Legacy DecisionEchoLag (auto-adapted)",
             layer="integration",
         )

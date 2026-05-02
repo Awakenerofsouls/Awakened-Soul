@@ -40,7 +40,7 @@ class UnifiedSelfModificationSystem(BrainMechanism):
 
     def __init__(self):
         try:
-            super().__init__(name="UnifiedSelfModificationSystem", human_analog="UnifiedSelfModificationSystem", layer="integration")
+            super().__init__(name="UnifiedSelfModificationSystem_unified_self_modification_dissent_channel", human_analog="UnifiedSelfModificationSystem", layer="integration")
         except Exception:
             pass
         self.state = getattr(self, "state", None) or {}

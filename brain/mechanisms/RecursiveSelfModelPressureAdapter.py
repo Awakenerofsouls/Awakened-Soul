@@ -61,7 +61,7 @@ class RecursiveSelfModelPressureAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="RecursiveSelfModelPressure",
+            name="RecursiveSelfModelPressureAdapter",
             human_analog="Legacy RecursiveSelfModelPressure (auto-adapted)",
             layer="integration",
         )

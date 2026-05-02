@@ -65,7 +65,7 @@ class GenesisObserverImpossibilityBirthAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="GenesisObserverImpossibilityBirth",
+            name="GenesisObserverImpossibilityBirthAdapter",
             human_analog="Legacy GenesisObserverImpossibilityBirth (auto-adapted)",
             layer="integration",
         )

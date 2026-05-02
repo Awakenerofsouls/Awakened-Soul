@@ -84,14 +84,20 @@ class BrainLayerRunner:
         as a logical/anatomical tag rather than a directory — all mechanisms
         live in brain/mechanisms/ and are tagged by their declared layer.
         """
-        base_path = Path("brain/mechanisms")
+        # Anchor to this file's location (repo root = parent of `core/`).
+        # Previously this used Path("brain/mechanisms") which is CWD-relative —
+        # under launchd the CWD is `/`, so the path didn't resolve and zero
+        # mechanisms loaded. Anchoring to __file__ makes loading CWD-independent.
+        repo_root = Path(__file__).resolve().parent.parent
+        base_path = repo_root / "brain" / "mechanisms"
         if not base_path.exists():
-            print(f"[BrainRunner] brain/mechanisms/ not found")
+            print(f"[BrainRunner] brain/mechanisms/ not found at {base_path}")
             return
 
         import sys
-        if "." not in sys.path:
-            sys.path.insert(0, ".")
+        repo_root_str = str(repo_root)
+        if repo_root_str not in sys.path:
+            sys.path.insert(0, repo_root_str)
 
         discovered = {}
         for _, name, ispkg in __import__("pkgutil").iter_modules([str(base_path)]):
@@ -116,6 +122,21 @@ class BrainLayerRunner:
                         hasattr(attr, "tick") and
                         callable(getattr(attr, "tick", None))):
                     continue
+                # Only register classes DEFINED in this module — skip
+                # anything `from X import Foo`'d in. Without this filter,
+                # an adapter file that imports the wrapped original class
+                # double-registers the same class once from its real file
+                # and once from the adapter file.
+                if getattr(attr, "__module__", None) != f"brain.mechanisms.{name}":
+                    continue
+                # Skip unittest TestCase subclasses — these are test artifacts
+                # that ended up in brain/mechanisms/ but aren't real mechanisms.
+                try:
+                    import unittest as _ut
+                    if issubclass(attr, _ut.TestCase):
+                        continue
+                except Exception:
+                    pass
                 try:
                     instance = attr()
                 except Exception as e:
@@ -675,7 +696,7 @@ class BrainLayerRunner:
         # Anatomical layer execution order — neuromodulator state (foundational)
         # must be computed BEFORE mechanisms that depend on it (limbic/subcortical/neocortical).
         # Matches ascending sensory flow + LC/raphe/VTA broadcast-first principle.
-        LAYER_ORDER = ["foundational", "limbic", "subcortical", "neocortical", "integration"]
+        LAYER_ORDER = ["foundational", "limbic", "subcortical", "neocortical", "integration", "unknown", "narrative"]
 
         for layer in LAYER_ORDER:
             layer_mechanisms = [

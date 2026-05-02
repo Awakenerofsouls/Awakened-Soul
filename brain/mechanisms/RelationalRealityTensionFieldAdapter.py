@@ -60,7 +60,7 @@ class RelationalRealityTensionFieldAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="RelationalRealityTensionField",
+            name="RelationalRealityTensionFieldAdapter",
             human_analog="Legacy RelationalRealityTensionField (auto-adapted)",
             layer="integration",
         )

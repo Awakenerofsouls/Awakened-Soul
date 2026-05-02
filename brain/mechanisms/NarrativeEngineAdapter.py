@@ -551,7 +551,7 @@ class NarrativeEngineAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="NarrativeEngine",
+            name="NarrativeEngineAdapter",
             human_analog="Legacy NarrativeEngine (auto-adapted)",
             layer="limbic",
         )

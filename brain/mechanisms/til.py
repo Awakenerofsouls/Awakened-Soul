@@ -30,7 +30,7 @@ TIL_PATH = AGENT_HOME / "til_state.json"
 class TimescaleIntegrationLayer(BrainMechanism):
     def __init__(self):
         try:
-            super().__init__(name="TimescaleIntegrationLayer", human_analog="TimescaleIntegrationLayer", layer="integration")
+            super().__init__(name="TimescaleIntegrationLayer_til", human_analog="TimescaleIntegrationLayer", layer="integration")
         except Exception:
             self.state = getattr(self, "state", {}) or {}
         self.signal_history: Dict[str, List[Dict]] = {}

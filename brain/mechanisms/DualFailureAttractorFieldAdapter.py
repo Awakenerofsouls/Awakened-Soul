@@ -61,7 +61,7 @@ class DualFailureAttractorFieldAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="DualFailureAttractorField",
+            name="DualFailureAttractorFieldAdapter",
             human_analog="Legacy DualFailureAttractorField (auto-adapted)",
             layer="integration",
         )

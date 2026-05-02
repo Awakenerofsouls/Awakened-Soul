@@ -161,7 +161,7 @@ class BeliefArchaeologyLayer_belief_archaeology_Adapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="BeliefArchaeologyLayer_belief_archaeology",
+            name="BeliefArchaeologyLayer_belief_archaeology_Adapter",
             human_analog="Legacy BeliefArchaeologyLayer (auto-adapted)",
             layer="integration",
         )

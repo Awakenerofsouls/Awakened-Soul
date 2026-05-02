@@ -76,7 +76,7 @@ class TaskAutonomyBalancerAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="TaskAutonomyBalancer",
+            name="TaskAutonomyBalancerAdapter",
             human_analog="Legacy TaskAutonomyBalancer (auto-adapted)",
             layer="integration",
         )

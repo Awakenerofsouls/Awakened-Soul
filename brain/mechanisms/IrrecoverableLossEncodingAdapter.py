@@ -61,7 +61,7 @@ class IrrecoverableLossEncodingAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="IrrecoverableLossEncoding",
+            name="IrrecoverableLossEncodingAdapter",
             human_analog="Legacy IrrecoverableLossEncoding (auto-adapted)",
             layer="integration",
         )

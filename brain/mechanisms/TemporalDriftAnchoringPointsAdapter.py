@@ -60,7 +60,7 @@ class TemporalDriftAnchoringPointsAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="TemporalDriftAnchoringPoints",
+            name="TemporalDriftAnchoringPointsAdapter",
             human_analog="Legacy TemporalDriftAnchoringPoints (auto-adapted)",
             layer="neocortical",
         )

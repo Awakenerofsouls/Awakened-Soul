@@ -74,7 +74,7 @@ class CoalitionMemorySabotageWithConfabulationAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="CoalitionMemorySabotageWithConfabulation",
+            name="CoalitionMemorySabotageWithConfabulationAdapter",
             human_analog="Legacy CoalitionMemorySabotageWithConfabulation (auto-adapted)",
             layer="integration",
         )

@@ -438,7 +438,7 @@ class ResidueLayerAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ResidueLayer",
+            name="ResidueLayerAdapter",
             human_analog="Legacy ResidueLayer (auto-adapted)",
             layer="limbic",
         )

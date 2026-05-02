@@ -75,7 +75,7 @@ class GoalConflictResolverAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="GoalConflictResolver",
+            name="GoalConflictResolverAdapter",
             human_analog="Legacy GoalConflictResolver (auto-adapted)",
             layer="neocortical",
         )

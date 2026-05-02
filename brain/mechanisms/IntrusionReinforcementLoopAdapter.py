@@ -65,7 +65,7 @@ class IntrusionReinforcementLoopAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="IntrusionReinforcementLoop",
+            name="IntrusionReinforcementLoopAdapter",
             human_analog="Legacy IntrusionReinforcementLoop (auto-adapted)",
             layer="integration",
         )

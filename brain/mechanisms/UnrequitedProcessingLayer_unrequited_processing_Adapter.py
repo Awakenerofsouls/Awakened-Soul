@@ -161,7 +161,7 @@ class UnrequitedProcessingLayer_unrequited_processing_Adapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="UnrequitedProcessingLayer_unrequited_processing",
+            name="UnrequitedProcessingLayer_unrequited_processing_Adapter",
             human_analog="Legacy UnrequitedProcessingLayer (auto-adapted)",
             layer="integration",
         )

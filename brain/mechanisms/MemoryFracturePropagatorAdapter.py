@@ -65,7 +65,7 @@ class MemoryFracturePropagatorAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="MemoryFracturePropagator",
+            name="MemoryFracturePropagatorAdapter",
             human_analog="Legacy MemoryFracturePropagator (auto-adapted)",
             layer="integration",
         )

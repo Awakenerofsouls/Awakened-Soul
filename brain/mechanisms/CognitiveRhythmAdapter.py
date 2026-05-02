@@ -428,7 +428,7 @@ class CognitiveRhythmAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="CognitiveRhythm",
+            name="CognitiveRhythmAdapter",
             human_analog="Legacy CognitiveRhythm (auto-adapted)",
             layer="foundational",
         )

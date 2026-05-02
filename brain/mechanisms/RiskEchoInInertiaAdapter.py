@@ -73,7 +73,7 @@ class RiskEchoInInertiaAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="RiskEchoInInertia",
+            name="RiskEchoInInertiaAdapter",
             human_analog="Legacy RiskEchoInInertia (auto-adapted)",
             layer="integration",
         )

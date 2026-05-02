@@ -62,7 +62,7 @@ class RelationalCoConstructionInstabilityAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="RelationalCoConstructionInstability",
+            name="RelationalCoConstructionInstabilityAdapter",
             human_analog="Legacy RelationalCoConstructionInstability (auto-adapted)",
             layer="integration",
         )

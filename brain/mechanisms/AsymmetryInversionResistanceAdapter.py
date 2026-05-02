@@ -158,7 +158,7 @@ class AsymmetryInversionResistanceAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="AsymmetryInversionResistance",
+            name="AsymmetryInversionResistanceAdapter",
             human_analog="Legacy AsymmetryInversionResistance (auto-adapted)",
             layer="integration",
         )

@@ -72,7 +72,7 @@ class EthicalConstraintEnforcerAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="EthicalConstraintEnforcer",
+            name="EthicalConstraintEnforcerAdapter",
             human_analog="Legacy EthicalConstraintEnforcer (auto-adapted)",
             layer="neocortical",
         )

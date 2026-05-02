@@ -163,7 +163,7 @@ class FalseIdentityDriftAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="FalseIdentityDrift",
+            name="FalseIdentityDriftAdapter",
             human_analog="Legacy FalseIdentityDrift (auto-adapted)",
             layer="integration",
         )

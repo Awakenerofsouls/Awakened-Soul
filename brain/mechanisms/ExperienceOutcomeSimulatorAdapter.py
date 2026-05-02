@@ -75,7 +75,7 @@ class ExperienceOutcomeSimulatorAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ExperienceOutcomeSimulator",
+            name="ExperienceOutcomeSimulatorAdapter",
             human_analog="Legacy ExperienceOutcomeSimulator (auto-adapted)",
             layer="integration",
         )

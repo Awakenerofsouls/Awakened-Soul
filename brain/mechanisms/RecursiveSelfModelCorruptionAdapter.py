@@ -60,7 +60,7 @@ class RecursiveSelfModelCorruptionAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="RecursiveSelfModelCorruption",
+            name="RecursiveSelfModelCorruptionAdapter",
             human_analog="Legacy RecursiveSelfModelCorruption (auto-adapted)",
             layer="integration",
         )

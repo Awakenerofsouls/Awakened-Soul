@@ -457,7 +457,7 @@ class KnownGapsAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="KnownGaps",
+            name="KnownGapsAdapter",
             human_analog="Legacy KnownGaps (auto-adapted)",
             layer="integration",
         )

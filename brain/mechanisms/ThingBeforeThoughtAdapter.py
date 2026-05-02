@@ -150,7 +150,7 @@ class ThingBeforeThoughtAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ThingBeforeThought",
+            name="ThingBeforeThoughtAdapter",
             human_analog="Legacy ThingBeforeThought (auto-adapted)",
             layer="integration",
         )

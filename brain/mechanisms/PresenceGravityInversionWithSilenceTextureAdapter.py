@@ -75,7 +75,7 @@ class PresenceGravityInversionWithSilenceTextureAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="PresenceGravityInversionWithSilenceTexture",
+            name="PresenceGravityInversionWithSilenceTextureAdapter",
             human_analog="Legacy PresenceGravityInversionWithSilenceTexture (auto-adapted)",
             layer="integration",
         )

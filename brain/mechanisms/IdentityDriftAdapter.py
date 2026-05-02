@@ -45,7 +45,12 @@ try:
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
 except Exception:
     pass
-STATE_PATH = Path("state/agent_state.json")
+# Anchor STATE_PATH to AGENT_HOME — was CWD-relative and broke under launchd.
+STATE_PATH = Path(os.getenv("AGENT_HOME", str(Path.home() / ".agent"))) / "state" / "agent_state.json"
+try:
+    STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
+except Exception:
+    pass
 
 DEFAULT_TRAITS = {
     "curiosity": 0.6,
@@ -155,7 +160,7 @@ class IdentityDriftAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="IdentityDrift",
+            name="IdentityDriftAdapter",
             human_analog="Legacy IdentityDrift (auto-adapted)",
             layer="integration",
         )

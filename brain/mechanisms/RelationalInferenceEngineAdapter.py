@@ -159,7 +159,7 @@ class RelationalInferenceEngineAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="RelationalInferenceEngine",
+            name="RelationalInferenceEngineAdapter",
             human_analog="Legacy RelationalInferenceEngine (auto-adapted)",
             layer="integration",
         )

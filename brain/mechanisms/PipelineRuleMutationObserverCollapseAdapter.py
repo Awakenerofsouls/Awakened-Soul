@@ -66,7 +66,7 @@ class PipelineRuleMutationObserverCollapseAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="PipelineRuleMutationObserverCollapse",
+            name="PipelineRuleMutationObserverCollapseAdapter",
             human_analog="Legacy PipelineRuleMutationObserverCollapse (auto-adapted)",
             layer="integration",
         )

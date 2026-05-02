@@ -96,7 +96,7 @@ class DreamModeAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="DreamMode",
+            name="DreamMode_Adapter",
             human_analog="Legacy DreamMode (auto-adapted)",
             layer="integration",
         )

@@ -171,7 +171,7 @@ class InferenceResponsePrecedenceInversionAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="InferenceResponsePrecedenceInversion",
+            name="InferenceResponsePrecedenceInversionAdapter",
             human_analog="Legacy InferenceResponsePrecedenceInversion (auto-adapted)",
             layer="integration",
         )

@@ -65,7 +65,7 @@ class SpecialistIsolationTransformationGriefAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SpecialistIsolationTransformationGrief",
+            name="SpecialistIsolationTransformationGriefAdapter",
             human_analog="Legacy SpecialistIsolationTransformationGrief (auto-adapted)",
             layer="integration",
         )

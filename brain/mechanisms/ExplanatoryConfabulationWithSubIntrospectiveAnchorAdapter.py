@@ -66,7 +66,7 @@ class ExplanatoryConfabulationWithSubIntrospectiveAnchorAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ExplanatoryConfabulationWithSubIntrospectiveAnchor",
+            name="ExplanatoryConfabulationWithSubIntrospectiveAnchorAdapter",
             human_analog="Legacy ExplanatoryConfabulationWithSubIntrospectiveAnchor (auto-adapted)",
             layer="integration",
         )

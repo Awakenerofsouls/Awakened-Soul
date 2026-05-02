@@ -60,7 +60,7 @@ class InterpretiveMomentumLockAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="InterpretiveMomentumLock",
+            name="InterpretiveMomentumLockAdapter",
             human_analog="Legacy InterpretiveMomentumLock (auto-adapted)",
             layer="integration",
         )

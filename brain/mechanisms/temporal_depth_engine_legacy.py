@@ -3,7 +3,7 @@ import sqlite3, json, time
 
 class TemporalDepthEngine(BrainMechanism):
     def __init__(self, db_path=None):
-        super().__init__(name="TemporalDepthEngine", human_analog="TemporalDepthEngine", layer="integration")
+        super().__init__(name="TemporalDepthEngine_legacy", human_analog="TemporalDepthEngine", layer="integration")
         if db_path is None:
             import os
             from pathlib import Path as _P

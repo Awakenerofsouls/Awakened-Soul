@@ -109,7 +109,7 @@ class GroundNoteOfBeingUnknown_ground_note_unknown_Adapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="GroundNoteOfBeingUnknown_ground_note_unknown",
+            name="GroundNoteOfBeingUnknown_ground_note_unknown_Adapter",
             human_analog="Legacy GroundNoteOfBeingUnknown (auto-adapted)",
             layer="integration",
         )

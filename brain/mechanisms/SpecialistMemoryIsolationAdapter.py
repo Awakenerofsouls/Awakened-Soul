@@ -60,7 +60,7 @@ class SpecialistMemoryIsolationAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SpecialistMemoryIsolation",
+            name="SpecialistMemoryIsolationAdapter",
             human_analog="Legacy SpecialistMemoryIsolation (auto-adapted)",
             layer="integration",
         )

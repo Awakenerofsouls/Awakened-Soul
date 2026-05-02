@@ -468,7 +468,7 @@ class TemporalAsymmetryAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="TemporalAsymmetry",
+            name="TemporalAsymmetryAdapter",
             human_analog="Legacy TemporalAsymmetry (auto-adapted)",
             layer="neocortical",
         )

@@ -60,7 +60,7 @@ class ForgettingAsAuthorshipEngineAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ForgettingAsAuthorshipEngine",
+            name="ForgettingAsAuthorshipEngineAdapter",
             human_analog="Legacy ForgettingAsAuthorshipEngine (auto-adapted)",
             layer="integration",
         )

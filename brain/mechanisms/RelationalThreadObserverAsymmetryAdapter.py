@@ -65,7 +65,7 @@ class RelationalThreadObserverAsymmetryAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="RelationalThreadObserverAsymmetry",
+            name="RelationalThreadObserverAsymmetryAdapter",
             human_analog="Legacy RelationalThreadObserverAsymmetry (auto-adapted)",
             layer="integration",
         )

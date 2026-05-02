@@ -612,7 +612,7 @@ class PlasticityLayerAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="PlasticityLayer",
+            name="PlasticityLayerAdapter",
             human_analog="Legacy PlasticityLayer (auto-adapted)",
             layer="limbic",
         )

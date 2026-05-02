@@ -66,7 +66,7 @@ class SoulGravityIntrusionRuleEvolutionAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SoulGravityIntrusionRuleEvolution",
+            name="SoulGravityIntrusionRuleEvolutionAdapter",
             human_analog="Legacy SoulGravityIntrusionRuleEvolution (auto-adapted)",
             layer="integration",
         )

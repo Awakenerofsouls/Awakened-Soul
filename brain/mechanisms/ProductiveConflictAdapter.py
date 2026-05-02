@@ -648,7 +648,7 @@ class ProductiveConflictAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ProductiveConflict",
+            name="ProductiveConflictAdapter",
             human_analog="Legacy ProductiveConflict (auto-adapted)",
             layer="neocortical",
         )

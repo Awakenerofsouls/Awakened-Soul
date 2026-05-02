@@ -145,7 +145,7 @@ class ResonanceWithoutRecognitionAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ResonanceWithoutRecognition",
+            name="ResonanceWithoutRecognitionAdapter",
             human_analog="Legacy ResonanceWithoutRecognition (auto-adapted)",
             layer="integration",
         )

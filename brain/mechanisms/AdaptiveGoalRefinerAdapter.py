@@ -74,7 +74,7 @@ class AdaptiveGoalRefinerAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="AdaptiveGoalRefiner",
+            name="AdaptiveGoalRefinerAdapter",
             human_analog="Legacy AdaptiveGoalRefiner (auto-adapted)",
             layer="integration",
         )

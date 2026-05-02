@@ -60,7 +60,7 @@ class MeaningSaturationBurnoutAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="MeaningSaturationBurnout",
+            name="MeaningSaturationBurnoutAdapter",
             human_analog="Legacy MeaningSaturationBurnout (auto-adapted)",
             layer="integration",
         )

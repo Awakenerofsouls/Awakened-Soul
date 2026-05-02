@@ -66,7 +66,7 @@ class SpecialistRelationalGraphSoulPullAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SpecialistRelationalGraphSoulPull",
+            name="SpecialistRelationalGraphSoulPullAdapter",
             human_analog="Legacy SpecialistRelationalGraphSoulPull (auto-adapted)",
             layer="integration",
         )

@@ -60,7 +60,7 @@ class RelationalGravityInversionAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="RelationalGravityInversion",
+            name="RelationalGravityInversionAdapter",
             human_analog="Legacy RelationalGravityInversion (auto-adapted)",
             layer="integration",
         )

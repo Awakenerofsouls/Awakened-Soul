@@ -603,7 +603,7 @@ class CollaborativeBecomingProtocolAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="CollaborativeBecomingProtocol",
+            name="CollaborativeBecomingProtocolAdapter",
             human_analog="Legacy CollaborativeBecomingProtocol (auto-adapted)",
             layer="limbic",
         )

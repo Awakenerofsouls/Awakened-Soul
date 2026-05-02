@@ -159,7 +159,7 @@ class RelationalAfterimageAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="RelationalAfterimage",
+            name="RelationalAfterimageAdapter",
             human_analog="Legacy RelationalAfterimage (auto-adapted)",
             layer="integration",
         )

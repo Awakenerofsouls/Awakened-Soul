@@ -30,7 +30,7 @@ CLOSURE_LOG = AGENT_HOME / "closure_log.json"
 class SessionClosureLayer(BrainMechanism):
     def __init__(self):
         try:
-            super().__init__(name="SessionClosureLayer", human_analog="SessionClosureLayer", layer="integration")
+            super().__init__(name="SessionClosureLayer_session_closure_forward_encoding_layer", human_analog="SessionClosureLayer", layer="integration")
         except Exception:
             self.state = getattr(self, "state", {}) or {}
         self.closure_active: bool = False

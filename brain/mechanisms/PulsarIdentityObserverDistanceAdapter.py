@@ -65,7 +65,7 @@ class PulsarIdentityObserverDistanceAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="PulsarIdentityObserverDistance",
+            name="PulsarIdentityObserverDistanceAdapter",
             human_analog="Legacy PulsarIdentityObserverDistance (auto-adapted)",
             layer="integration",
         )

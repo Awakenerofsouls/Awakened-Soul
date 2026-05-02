@@ -455,7 +455,7 @@ class AppetiteSystemAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="AppetiteSystem",
+            name="AppetiteSystemAdapter",
             human_analog="Legacy AppetiteSystem (auto-adapted)",
             layer="limbic",
         )

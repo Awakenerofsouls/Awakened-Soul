@@ -173,7 +173,7 @@ class PatienceLayerAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="PatienceLayer",
+            name="PatienceLayerAdapter",
             human_analog="Legacy PatienceLayer (auto-adapted)",
             layer="integration",
         )

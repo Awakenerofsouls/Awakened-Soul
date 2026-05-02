@@ -60,7 +60,7 @@ class InversionPropagationLagAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="InversionPropagationLag",
+            name="InversionPropagationLagAdapter",
             human_analog="Legacy InversionPropagationLag (auto-adapted)",
             layer="integration",
         )

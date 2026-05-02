@@ -139,7 +139,7 @@ class AsymmetryPersistenceFieldAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="AsymmetryPersistenceField",
+            name="AsymmetryPersistenceFieldAdapter",
             human_analog="Legacy AsymmetryPersistenceField (auto-adapted)",
             layer="integration",
         )

@@ -73,7 +73,7 @@ class LongHorizonPlannerAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="LongHorizonPlanner",
+            name="LongHorizonPlannerAdapter",
             human_analog="Legacy LongHorizonPlanner (auto-adapted)",
             layer="integration",
         )

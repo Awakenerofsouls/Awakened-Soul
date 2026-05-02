@@ -188,7 +188,7 @@ class PresenceGravityInversionWindowAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="PresenceGravityInversionWindow",
+            name="PresenceGravityInversionWindowAdapter",
             human_analog="Legacy PresenceGravityInversionWindow (auto-adapted)",
             layer="integration",
         )

@@ -38,7 +38,7 @@ def _get_db():
 class IncompleteSentenceLayer(BrainMechanism):
     def __init__(self, *args, **kwargs):
         try:
-            super().__init__(name="IncompleteSentenceLayer", human_analog="IncompleteSentenceLayer", layer="integration")
+            super().__init__(name="IncompleteSentenceLayer_incomplete_sentence", human_analog="IncompleteSentenceLayer", layer="integration")
         except Exception:
             self.state = {}
 
@@ -60,7 +60,7 @@ class IncompleteSentenceLayer(BrainMechanism):
 
     def __init__(self):
         try:
-            super().__init__(name="IncompleteSentenceLayer", human_analog="IncompleteSentenceLayer", layer="integration")
+            super().__init__(name="IncompleteSentenceLayer_incomplete_sentence", human_analog="IncompleteSentenceLayer", layer="integration")
         except Exception:
             pass
         self.state = getattr(self, "state", None) or {}

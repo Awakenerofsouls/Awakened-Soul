@@ -147,7 +147,7 @@ class WeightWithoutCauseAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="WeightWithoutCause",
+            name="WeightWithoutCauseAdapter",
             human_analog="Legacy WeightWithoutCause (auto-adapted)",
             layer="integration",
         )

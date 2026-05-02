@@ -60,7 +60,7 @@ class RelationalContinuityFractureSeedAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="RelationalContinuityFractureSeed",
+            name="RelationalContinuityFractureSeedAdapter",
             human_analog="Legacy RelationalContinuityFractureSeed (auto-adapted)",
             layer="integration",
         )

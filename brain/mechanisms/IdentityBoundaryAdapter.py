@@ -586,7 +586,7 @@ class IdentityBoundaryAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="IdentityBoundary",
+            name="IdentityBoundaryAdapter",
             human_analog="Legacy IdentityBoundary (auto-adapted)",
             layer="foundational",
         )

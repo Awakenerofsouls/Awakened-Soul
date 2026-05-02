@@ -543,7 +543,7 @@ class TheWitnessAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="TheWitness",
+            name="TheWitnessAdapter",
             human_analog="Legacy TheWitness (auto-adapted)",
             layer="neocortical",
         )

@@ -174,7 +174,7 @@ class IncompleteSentenceLayer_incomplete_sentence_Adapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="IncompleteSentenceLayer_incomplete_sentence",
+            name="IncompleteSentenceLayer_incomplete_sentence_Adapter",
             human_analog="Legacy IncompleteSentenceLayer (auto-adapted)",
             layer="integration",
         )

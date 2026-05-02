@@ -1,8 +1,16 @@
 import json
+import os
 from pathlib import Path
 
-STATE_PATH=Path("state/agent_state.json")
-COMPRESSED_PATH=Path("state/compressed_state.json")
+# Anchor to AGENT_HOME like the rest of the codebase (DB_PATH, etc.).
+# Previously these were CWD-relative which broke under launchd (CWD=/).
+_AGENT_HOME = Path(os.getenv("AGENT_HOME", str(Path.home() / ".agent")))
+STATE_PATH = _AGENT_HOME / "state" / "agent_state.json"
+COMPRESSED_PATH = _AGENT_HOME / "state" / "compressed_state.json"
+try:
+    STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
+except Exception:
+    pass
 
 
 class ContextSurvival:

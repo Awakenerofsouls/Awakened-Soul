@@ -42,7 +42,7 @@ def _init_table():
 class CuriosityEngine(BrainMechanism):
     def __init__(self, *args, **kwargs):
         try:
-            super().__init__(name="CuriosityEngine", human_analog="CuriosityEngine", layer="integration")
+            super().__init__(name="CuriosityEngine_legacy", human_analog="CuriosityEngine", layer="integration")
         except Exception:
             self.state = {}
 
@@ -50,7 +50,7 @@ class CuriosityEngine(BrainMechanism):
 
     def __init__(self):
         try:
-            super().__init__(name="CuriosityEngine", human_analog="CuriosityEngine", layer="integration")
+            super().__init__(name="CuriosityEngine_legacy", human_analog="CuriosityEngine", layer="integration")
         except Exception:
             pass
         self.state = getattr(self, "state", None) or {}

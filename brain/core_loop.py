@@ -324,7 +324,28 @@ class AgentBrainCore:
                 "recovery_state": frame_recovery_state,
             }
             STATE_DIR.mkdir(parents=True, exist_ok=True)
-            STATE_PATH.write_text(json.dumps(state_out, default=str))
+            # Cycle-tolerant encoder: state_out can include nested objects
+            # that reference each other (e.g. components holding back-refs to
+            # the core). default=str handles non-serializable leaves but not
+            # cycles. Walk the structure, swap any object we've already seen
+            # with the marker "<circular>", and emit string fallbacks for
+            # anything else json can't serialize.
+            def _safe(obj, _seen=None):
+                if _seen is None:
+                    _seen = set()
+                oid = id(obj)
+                if oid in _seen:
+                    return "<circular>"
+                if isinstance(obj, dict):
+                    _seen.add(oid)
+                    return {k: _safe(v, _seen) for k, v in obj.items()}
+                if isinstance(obj, (list, tuple)):
+                    _seen.add(oid)
+                    return [_safe(v, _seen) for v in obj]
+                if isinstance(obj, (str, int, float, bool)) or obj is None:
+                    return obj
+                return str(obj)[:240]
+            STATE_PATH.write_text(json.dumps(_safe(state_out)))
         except Exception as e:
             print(f"[STATE WRITE ERROR] {e}")
 

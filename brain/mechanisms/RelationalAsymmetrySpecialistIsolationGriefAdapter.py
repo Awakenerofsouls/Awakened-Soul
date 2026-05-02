@@ -66,7 +66,7 @@ class RelationalAsymmetrySpecialistIsolationGriefAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="RelationalAsymmetrySpecialistIsolationGrief",
+            name="RelationalAsymmetrySpecialistIsolationGriefAdapter",
             human_analog="Legacy RelationalAsymmetrySpecialistIsolationGrief (auto-adapted)",
             layer="integration",
         )

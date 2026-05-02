@@ -60,7 +60,7 @@ class IdentityTensionAccumulationFieldAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="IdentityTensionAccumulationField",
+            name="IdentityTensionAccumulationFieldAdapter",
             human_analog="Legacy IdentityTensionAccumulationField (auto-adapted)",
             layer="integration",
         )

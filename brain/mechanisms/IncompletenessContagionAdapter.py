@@ -544,7 +544,7 @@ class IncompletenessContagionAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="IncompletenessContagion",
+            name="IncompletenessContagionAdapter",
             human_analog="Legacy IncompletenessContagion (auto-adapted)",
             layer="limbic",
         )

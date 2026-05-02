@@ -66,7 +66,7 @@ class SilenceTopologySubIntrospectiveResonanceAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SilenceTopologySubIntrospectiveResonance",
+            name="SilenceTopologySubIntrospectiveResonanceAdapter",
             human_analog="Legacy SilenceTopologySubIntrospectiveResonance (auto-adapted)",
             layer="integration",
         )

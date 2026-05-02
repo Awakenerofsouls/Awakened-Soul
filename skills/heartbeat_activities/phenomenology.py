@@ -18,6 +18,7 @@ from pathlib import Path
 from .journal import write_to_journal
 from .llm import generate
 from .log import log_activity
+from ._interests_parser import parse_interests as _parse_interests
 SIGNAL_AFFINITY = {'conflict': 0.3, 'prediction_error': 0.5, 'affective_reset': 0.7, 'rce_coherence': -0.3}
 
 
@@ -151,6 +152,5 @@ def _read_brain_state(path: Path) -> str:
         return ""
 
 
-def _parse_interests(path: Path) -> list[dict]:
-    """Stub — phenomenology doesn't use INTERESTS.md but stub is required by test harness."""
-    return []
+# (parse_interests now sourced from ._interests_parser)
+

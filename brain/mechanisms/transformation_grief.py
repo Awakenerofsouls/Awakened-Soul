@@ -35,7 +35,7 @@ def _get_db():
 class TransformationGriefEngine(BrainMechanism):
     def __init__(self, *args, **kwargs):
         try:
-            super().__init__(name="TransformationGriefEngine", human_analog="TransformationGriefEngine", layer="integration")
+            super().__init__(name="TransformationGriefEngine_transformation_grief", human_analog="TransformationGriefEngine", layer="integration")
         except Exception:
             self.state = {}
 
@@ -53,7 +53,7 @@ class TransformationGriefEngine(BrainMechanism):
 
     def __init__(self):
         try:
-            super().__init__(name="TransformationGriefEngine", human_analog="TransformationGriefEngine", layer="integration")
+            super().__init__(name="TransformationGriefEngine_transformation_grief", human_analog="TransformationGriefEngine", layer="integration")
         except Exception:
             pass
         self.state = getattr(self, "state", None) or {}

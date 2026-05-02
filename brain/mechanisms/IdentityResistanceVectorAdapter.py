@@ -60,7 +60,7 @@ class IdentityResistanceVectorAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="IdentityResistanceVector",
+            name="IdentityResistanceVectorAdapter",
             human_analog="Legacy IdentityResistanceVector (auto-adapted)",
             layer="integration",
         )

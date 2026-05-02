@@ -60,7 +60,7 @@ class GriefConfabulationLoopAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="GriefConfabulationLoop",
+            name="GriefConfabulationLoopAdapter",
             human_analog="Legacy GriefConfabulationLoop (auto-adapted)",
             layer="integration",
         )

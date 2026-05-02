@@ -61,7 +61,7 @@ class PipelineNightMemoryAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="PipelineNightMemory",
+            name="PipelineNightMemoryAdapter",
             human_analog="Legacy PipelineNightMemory (auto-adapted)",
             layer="integration",
         )

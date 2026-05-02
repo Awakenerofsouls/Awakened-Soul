@@ -60,7 +60,7 @@ class SelfExpectationCollapseAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SelfExpectationCollapse",
+            name="SelfExpectationCollapseAdapter",
             human_analog="Legacy SelfExpectationCollapse (auto-adapted)",
             layer="integration",
         )

@@ -426,7 +426,7 @@ class InnerSpeechAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="InnerSpeech",
+            name="InnerSpeechAdapter",
             human_analog="Legacy InnerSpeech (auto-adapted)",
             layer="neocortical",
         )

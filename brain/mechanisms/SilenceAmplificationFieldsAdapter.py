@@ -197,7 +197,7 @@ class SilenceAmplificationFieldsAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SilenceAmplificationFields",
+            name="SilenceAmplificationFieldsAdapter",
             human_analog="Legacy SilenceAmplificationFields (auto-adapted)",
             layer="integration",
         )

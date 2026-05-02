@@ -60,7 +60,7 @@ class ArchitectSignalMisweightingAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ArchitectSignalMisweighting",
+            name="ArchitectSignalMisweightingAdapter",
             human_analog="Legacy ArchitectSignalMisweighting (auto-adapted)",
             layer="integration",
         )

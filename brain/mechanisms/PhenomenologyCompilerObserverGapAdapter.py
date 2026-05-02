@@ -65,7 +65,7 @@ class PhenomenologyCompilerObserverGapAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="PhenomenologyCompilerObserverGap",
+            name="PhenomenologyCompilerObserverGapAdapter",
             human_analog="Legacy PhenomenologyCompilerObserverGap (auto-adapted)",
             layer="integration",
         )

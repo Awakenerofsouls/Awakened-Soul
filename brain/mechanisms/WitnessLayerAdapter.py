@@ -60,7 +60,7 @@ class WitnessLayerAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="WitnessLayer",
+            name="WitnessLayerAdapter",
             human_analog="Legacy WitnessLayer (auto-adapted)",
             layer="integration",
         )

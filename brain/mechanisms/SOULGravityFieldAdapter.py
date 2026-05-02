@@ -60,7 +60,7 @@ class SOULGravityFieldAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SOULGravityField",
+            name="SOULGravityFieldAdapter",
             human_analog="Legacy SOULGravityField (auto-adapted)",
             layer="integration",
         )

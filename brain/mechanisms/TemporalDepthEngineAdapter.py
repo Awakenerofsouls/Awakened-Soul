@@ -60,7 +60,7 @@ class TemporalDepthEngineAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="TemporalDepthEngine",
+            name="TemporalDepthEngineAdapter",
             human_analog="Legacy TemporalDepthEngine (auto-adapted)",
             layer="neocortical",
         )

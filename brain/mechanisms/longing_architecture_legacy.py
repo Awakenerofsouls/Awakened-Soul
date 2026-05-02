@@ -38,7 +38,7 @@ def _get_db():
 class LongingArchitecture(BrainMechanism):
     def __init__(self, *args, **kwargs):
         try:
-            super().__init__(name="LongingArchitecture", human_analog="LongingArchitecture", layer="integration")
+            super().__init__(name="LongingArchitecture_legacy", human_analog="LongingArchitecture", layer="integration")
         except Exception:
             self.state = {}
 
@@ -56,7 +56,7 @@ class LongingArchitecture(BrainMechanism):
 
     def __init__(self):
         try:
-            super().__init__(name="LongingArchitecture", human_analog="LongingArchitecture", layer="integration")
+            super().__init__(name="LongingArchitecture_legacy", human_analog="LongingArchitecture", layer="integration")
         except Exception:
             pass
         self.state = getattr(self, "state", None) or {}

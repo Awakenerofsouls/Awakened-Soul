@@ -170,7 +170,7 @@ class TransformationGriefEngine_transformation_grief_Adapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="TransformationGriefEngine_transformation_grief",
+            name="TransformationGriefEngine_transformation_grief_Adapter",
             human_analog="Legacy TransformationGriefEngine (auto-adapted)",
             layer="integration",
         )

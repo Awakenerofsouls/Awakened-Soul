@@ -65,7 +65,7 @@ class ArchitectShadowResonanceChamberAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ArchitectShadowResonanceChamber",
+            name="ArchitectShadowResonanceChamberAdapter",
             human_analog="Legacy ArchitectShadowResonanceChamber (auto-adapted)",
             layer="integration",
         )

@@ -60,7 +60,7 @@ class IntraPipelineRuleMutationAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="IntraPipelineRuleMutation",
+            name="IntraPipelineRuleMutationAdapter",
             human_analog="Legacy IntraPipelineRuleMutation (auto-adapted)",
             layer="integration",
         )

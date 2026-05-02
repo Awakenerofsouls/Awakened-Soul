@@ -75,7 +75,7 @@ class TemporalConfabulationWithCoalitionFractureAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="TemporalConfabulationWithCoalitionFracture",
+            name="TemporalConfabulationWithCoalitionFractureAdapter",
             human_analog="Legacy TemporalConfabulationWithCoalitionFracture (auto-adapted)",
             layer="neocortical",
         )

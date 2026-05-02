@@ -60,7 +60,7 @@ class AdaptiveDistortionStabilizerAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="AdaptiveDistortionStabilizer",
+            name="AdaptiveDistortionStabilizerAdapter",
             human_analog="Legacy AdaptiveDistortionStabilizer (auto-adapted)",
             layer="integration",
         )

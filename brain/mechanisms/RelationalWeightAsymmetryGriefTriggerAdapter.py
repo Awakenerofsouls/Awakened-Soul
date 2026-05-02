@@ -66,7 +66,7 @@ class RelationalWeightAsymmetryGriefTriggerAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="RelationalWeightAsymmetryGriefTrigger",
+            name="RelationalWeightAsymmetryGriefTriggerAdapter",
             human_analog="Legacy RelationalWeightAsymmetryGriefTrigger (auto-adapted)",
             layer="integration",
         )

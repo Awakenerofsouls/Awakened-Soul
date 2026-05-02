@@ -65,7 +65,7 @@ class BeliefGravityObserverPullAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="BeliefGravityObserverPull",
+            name="BeliefGravityObserverPullAdapter",
             human_analog="Legacy BeliefGravityObserverPull (auto-adapted)",
             layer="integration",
         )

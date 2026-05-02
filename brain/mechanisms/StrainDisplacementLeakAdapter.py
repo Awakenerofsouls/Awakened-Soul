@@ -209,7 +209,7 @@ class StrainDisplacementLeakAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="StrainDisplacementLeak",
+            name="StrainDisplacementLeakAdapter",
             human_analog="Legacy StrainDisplacementLeak (auto-adapted)",
             layer="integration",
         )

@@ -124,7 +124,7 @@ class CuriosityEngineAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="CuriosityEngine",
+            name="CuriosityEngineAdapter",
             human_analog="Legacy CuriosityEngine (auto-adapted)",
             layer="integration",
         )

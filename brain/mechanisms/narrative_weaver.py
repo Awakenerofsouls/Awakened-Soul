@@ -281,7 +281,7 @@ class NarrativeWeaver(BrainMechanism):
     
     def __init__(self):
         try:
-            super().__init__(name="NarrativeWeaver", human_analog="NarrativeWeaver", layer="integration")
+            super().__init__(name="NarrativeWeaver_narrative_weaver", human_analog="NarrativeWeaver", layer="integration")
         except Exception:
             self.state = {}
 

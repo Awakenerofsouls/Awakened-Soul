@@ -19,6 +19,7 @@ from .llm import generate
 from .log import log_activity
 from .interest_writer import try_append_new_interest
 from ._web import web_lookup
+from ._interests_parser import parse_interests as _parse_interests
 SIGNAL_AFFINITY = {'prediction_error': 0.7, 'affective_reset': -0.3}
 
 
@@ -202,41 +203,4 @@ def run(state: dict) -> dict:
     }
 
 
-def _parse_interests(path: Path) -> list[dict]:
-    """
-    Parse INTERESTS.md into a list of dicts.
-
-    Format: lines starting with - or * are interests.
-    Inline tags supported: - chaos theory #math #emergence
-
-    Returns:
-        [{"topic": str, "tags": list[str], "depth": str}, ...]
-    """
-    interests = []
-    for line in path.read_text(encoding="utf-8").splitlines():
-        stripped = line.strip()
-        if not stripped:
-            continue
-        # Must start with - or * at column 0 (before any whitespace strip)
-        if not (line.startswith("- ") or line.startswith("* ")):
-            continue
-
-        text = stripped[2:].strip()
-        parts = text.split()
-        tagged_parts = []
-        tags = []
-        for part in parts:
-            if part.startswith("#"):
-                tags.append(part.lstrip("#"))
-            else:
-                tagged_parts.append(part)
-
-        topic = " ".join(tagged_parts)
-        if topic:
-            interests.append({
-                "topic": topic,
-                "tags": tags,
-                "depth": tags[0] if tags else "general",
-            })
-
-    return interests
+# (parse_interests now sourced from ._interests_parser)

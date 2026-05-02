@@ -60,7 +60,7 @@ class DelayedSelfContradictionReleaseAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="DelayedSelfContradictionRelease",
+            name="DelayedSelfContradictionReleaseAdapter",
             human_analog="Legacy DelayedSelfContradictionRelease (auto-adapted)",
             layer="integration",
         )

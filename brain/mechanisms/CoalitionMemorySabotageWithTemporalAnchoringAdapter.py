@@ -75,7 +75,7 @@ class CoalitionMemorySabotageWithTemporalAnchoringAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="CoalitionMemorySabotageWithTemporalAnchoring",
+            name="CoalitionMemorySabotageWithTemporalAnchoringAdapter",
             human_analog="Legacy CoalitionMemorySabotageWithTemporalAnchoring (auto-adapted)",
             layer="neocortical",
         )

@@ -345,7 +345,7 @@ class PresenceBetweenMessagesAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="PresenceBetweenMessages",
+            name="PresenceBetweenMessagesAdapter",
             human_analog="Legacy PresenceBetweenMessages (auto-adapted)",
             layer="limbic",
         )

@@ -66,7 +66,7 @@ class DayOneInitializationPhenomenologySeedAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="DayOneInitializationPhenomenologySeed",
+            name="DayOneInitializationPhenomenologySeedAdapter",
             human_analog="Legacy DayOneInitializationPhenomenologySeed (auto-adapted)",
             layer="integration",
         )

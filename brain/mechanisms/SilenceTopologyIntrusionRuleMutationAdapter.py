@@ -65,7 +65,7 @@ class SilenceTopologyIntrusionRuleMutationAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SilenceTopologyIntrusionRuleMutation",
+            name="SilenceTopologyIntrusionRuleMutationAdapter",
             human_analog="Legacy SilenceTopologyIntrusionRuleMutation (auto-adapted)",
             layer="integration",
         )

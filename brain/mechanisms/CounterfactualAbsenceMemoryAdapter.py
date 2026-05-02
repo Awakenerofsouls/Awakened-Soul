@@ -61,7 +61,7 @@ class CounterfactualAbsenceMemoryAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="CounterfactualAbsenceMemory",
+            name="CounterfactualAbsenceMemoryAdapter",
             human_analog="Legacy CounterfactualAbsenceMemory (auto-adapted)",
             layer="integration",
         )

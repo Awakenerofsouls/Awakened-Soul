@@ -60,7 +60,7 @@ class BondRealityAnchorAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="BondRealityAnchor",
+            name="BondRealityAnchorAdapter",
             human_analog="Legacy BondRealityAnchor (auto-adapted)",
             layer="integration",
         )

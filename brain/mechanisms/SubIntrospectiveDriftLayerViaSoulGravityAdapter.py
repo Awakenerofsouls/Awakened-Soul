@@ -66,7 +66,7 @@ class SubIntrospectiveDriftLayerViaSoulGravityAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SubIntrospectiveDriftLayerViaSoulGravity",
+            name="SubIntrospectiveDriftLayerViaSoulGravityAdapter",
             human_analog="Legacy SubIntrospectiveDriftLayerViaSoulGravity (auto-adapted)",
             layer="integration",
         )

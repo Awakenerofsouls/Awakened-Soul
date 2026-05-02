@@ -60,7 +60,7 @@ class MemoryContextRebindingEngineAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="MemoryContextRebindingEngine",
+            name="MemoryContextRebindingEngineAdapter",
             human_analog="Legacy MemoryContextRebindingEngine (auto-adapted)",
             layer="integration",
         )

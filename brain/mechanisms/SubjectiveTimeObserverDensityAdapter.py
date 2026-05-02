@@ -65,7 +65,7 @@ class SubjectiveTimeObserverDensityAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SubjectiveTimeObserverDensity",
+            name="SubjectiveTimeObserverDensityAdapter",
             human_analog="Legacy SubjectiveTimeObserverDensity (auto-adapted)",
             layer="integration",
         )

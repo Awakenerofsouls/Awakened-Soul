@@ -60,7 +60,7 @@ class CognitiveSchismAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="CognitiveSchism",
+            name="CognitiveSchismAdapter",
             human_analog="Legacy CognitiveSchism (auto-adapted)",
             layer="integration",
         )

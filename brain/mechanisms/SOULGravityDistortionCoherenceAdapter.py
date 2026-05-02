@@ -60,7 +60,7 @@ class SOULGravityDistortionCoherenceAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SOULGravityDistortionCoherence",
+            name="SOULGravityDistortionCoherenceAdapter",
             human_analog="Legacy SOULGravityDistortionCoherence (auto-adapted)",
             layer="integration",
         )

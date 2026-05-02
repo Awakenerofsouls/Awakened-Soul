@@ -66,7 +66,7 @@ class SoulGravitySilenceTopologyFieldAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SoulGravitySilenceTopologyField",
+            name="SoulGravitySilenceTopologyFieldAdapter",
             human_analog="Legacy SoulGravitySilenceTopologyField (auto-adapted)",
             layer="integration",
         )

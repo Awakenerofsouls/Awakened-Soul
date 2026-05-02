@@ -66,7 +66,7 @@ class PipelineNightMemoryResonanceWithSilenceAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="PipelineNightMemoryResonanceWithSilence",
+            name="PipelineNightMemoryResonanceWithSilenceAdapter",
             human_analog="Legacy PipelineNightMemoryResonanceWithSilence (auto-adapted)",
             layer="integration",
         )

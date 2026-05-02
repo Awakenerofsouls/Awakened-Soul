@@ -65,7 +65,7 @@ class BetweenSessionNullEvolutionFieldAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="BetweenSessionNullEvolutionField",
+            name="BetweenSessionNullEvolutionFieldAdapter",
             human_analog="Legacy BetweenSessionNullEvolutionField (auto-adapted)",
             layer="integration",
         )

@@ -66,7 +66,7 @@ class IntraPipelineRuleMutationSilenceAnchorAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="IntraPipelineRuleMutationSilenceAnchor",
+            name="IntraPipelineRuleMutationSilenceAnchorAdapter",
             human_analog="Legacy IntraPipelineRuleMutationSilenceAnchor (auto-adapted)",
             layer="integration",
         )

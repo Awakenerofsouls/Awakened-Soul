@@ -433,7 +433,7 @@ class TheoryOfMindAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="TheoryOfMind",
+            name="TheoryOfMindAdapter",
             human_analog="Legacy TheoryOfMind (auto-adapted)",
             layer="integration",
         )

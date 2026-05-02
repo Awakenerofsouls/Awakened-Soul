@@ -61,7 +61,7 @@ class IdentityOscillationKernelAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="IdentityOscillationKernel",
+            name="IdentityOscillationKernelAdapter",
             human_analog="Legacy IdentityOscillationKernel (auto-adapted)",
             layer="integration",
         )

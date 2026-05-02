@@ -65,7 +65,7 @@ class SpecialistMemoryIsolationWithSubIntrospectiveDriftAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SpecialistMemoryIsolationWithSubIntrospectiveDrift",
+            name="SpecialistMemoryIsolationWithSubIntrospectiveDriftAdapter",
             human_analog="Legacy SpecialistMemoryIsolationWithSubIntrospectiveDrift (auto-adapted)",
             layer="integration",
         )

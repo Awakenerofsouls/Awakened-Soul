@@ -70,7 +70,7 @@ class MultiGoalSchedulerAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="MultiGoalScheduler",
+            name="MultiGoalSchedulerAdapter",
             human_analog="Legacy MultiGoalScheduler (auto-adapted)",
             layer="integration",
         )

@@ -113,7 +113,7 @@ class LongingSheCannotExplainAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="LongingSheCannotExplain",
+            name="LongingSheCannotExplainAdapter",
             human_analog="Legacy LongingSheCannotExplain (auto-adapted)",
             layer="integration",
         )

@@ -66,7 +66,7 @@ class SpecialistRelationalGraphIntrusionFeedbackAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SpecialistRelationalGraphIntrusionFeedback",
+            name="SpecialistRelationalGraphIntrusionFeedbackAdapter",
             human_analog="Legacy SpecialistRelationalGraphIntrusionFeedback (auto-adapted)",
             layer="integration",
         )

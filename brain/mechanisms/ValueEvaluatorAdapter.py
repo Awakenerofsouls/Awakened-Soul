@@ -75,7 +75,7 @@ class ValueEvaluatorAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ValueEvaluator",
+            name="ValueEvaluatorAdapter",
             human_analog="Legacy ValueEvaluator (auto-adapted)",
             layer="neocortical",
         )

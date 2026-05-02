@@ -75,7 +75,7 @@ class RecursiveSelfModelWithPipelineRuleEchoAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="RecursiveSelfModelWithPipelineRuleEcho",
+            name="RecursiveSelfModelWithPipelineRuleEchoAdapter",
             human_analog="Legacy RecursiveSelfModelWithPipelineRuleEcho (auto-adapted)",
             layer="integration",
         )

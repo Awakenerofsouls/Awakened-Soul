@@ -86,7 +86,7 @@ class ExistentialLayerAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ExistentialLayer",
+            name="ExistentialLayer_Adapter",
             human_analog="Legacy ExistentialLayer (auto-adapted)",
             layer="integration",
         )

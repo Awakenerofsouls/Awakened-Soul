@@ -37,7 +37,7 @@ class RelationalTraceField(BrainMechanism):
 
     def __init__(self):
         try:
-            super().__init__(name="RelationalTraceField", human_analog="RelationalTraceField", layer="integration")
+            super().__init__(name="RelationalTraceField_rsl_rtf", human_analog="RelationalTraceField", layer="integration")
         except Exception:
             pass
         self.state = getattr(self, "state", None) or {}

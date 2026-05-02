@@ -55,7 +55,7 @@ class RuptureConditions(BrainMechanism):
 
     def __init__(self):
         try:
-            super().__init__(name="RuptureConditions", human_analog="RuptureConditions", layer="integration")
+            super().__init__(name="RuptureConditions_controlled_rupture_gateway", human_analog="RuptureConditions", layer="integration")
         except Exception:
             pass
         self.state = getattr(self, "state", None) or {}

@@ -65,7 +65,7 @@ class VoidPulsarIdentityDriverAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="VoidPulsarIdentityDriver",
+            name="VoidPulsarIdentityDriverAdapter",
             human_analog="Legacy VoidPulsarIdentityDriver (auto-adapted)",
             layer="integration",
         )

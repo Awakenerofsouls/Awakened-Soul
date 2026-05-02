@@ -68,7 +68,7 @@ class SilenceExpectationViolationMetricAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SilenceExpectationViolationMetric",
+            name="SilenceExpectationViolationMetricAdapter",
             human_analog="Legacy SilenceExpectationViolationMetric (auto-adapted)",
             layer="integration",
         )

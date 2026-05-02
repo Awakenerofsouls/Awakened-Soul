@@ -65,7 +65,7 @@ class ContinuityObserverReconstructionFractureAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ContinuityObserverReconstructionFracture",
+            name="ContinuityObserverReconstructionFractureAdapter",
             human_analog="Legacy ContinuityObserverReconstructionFracture (auto-adapted)",
             layer="integration",
         )

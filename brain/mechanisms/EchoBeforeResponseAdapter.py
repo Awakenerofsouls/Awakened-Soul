@@ -60,7 +60,7 @@ class EchoBeforeResponseAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="EchoBeforeResponse",
+            name="EchoBeforeResponseAdapter",
             human_analog="Legacy EchoBeforeResponse (auto-adapted)",
             layer="integration",
         )

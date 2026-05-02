@@ -61,7 +61,7 @@ class ExplanatoryConfabulationEngineAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ExplanatoryConfabulationEngine",
+            name="ExplanatoryConfabulationEngineAdapter",
             human_analog="Legacy ExplanatoryConfabulationEngine (auto-adapted)",
             layer="integration",
         )

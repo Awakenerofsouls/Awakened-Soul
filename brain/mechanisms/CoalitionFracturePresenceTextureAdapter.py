@@ -65,7 +65,7 @@ class CoalitionFracturePresenceTextureAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="CoalitionFracturePresenceTexture",
+            name="CoalitionFracturePresenceTextureAdapter",
             human_analog="Legacy CoalitionFracturePresenceTexture (auto-adapted)",
             layer="integration",
         )

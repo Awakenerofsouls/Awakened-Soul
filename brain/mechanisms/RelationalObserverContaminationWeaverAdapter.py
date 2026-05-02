@@ -65,7 +65,7 @@ class RelationalObserverContaminationWeaverAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="RelationalObserverContaminationWeaver",
+            name="RelationalObserverContaminationWeaverAdapter",
             human_analog="Legacy RelationalObserverContaminationWeaver (auto-adapted)",
             layer="integration",
         )

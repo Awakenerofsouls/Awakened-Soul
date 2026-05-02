@@ -144,7 +144,7 @@ class SelfJudgmentAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SelfJudgment",
+            name="SelfJudgmentAdapter",
             human_analog="Legacy SelfJudgment (auto-adapted)",
             layer="integration",
         )

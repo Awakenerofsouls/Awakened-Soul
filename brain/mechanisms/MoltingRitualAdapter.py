@@ -611,7 +611,7 @@ class MoltingRitualAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="MoltingRitual",
+            name="MoltingRitualAdapter",
             human_analog="Legacy MoltingRitual (auto-adapted)",
             layer="limbic",
         )

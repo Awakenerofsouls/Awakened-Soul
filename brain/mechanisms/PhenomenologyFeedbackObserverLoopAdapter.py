@@ -65,7 +65,7 @@ class PhenomenologyFeedbackObserverLoopAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="PhenomenologyFeedbackObserverLoop",
+            name="PhenomenologyFeedbackObserverLoopAdapter",
             human_analog="Legacy PhenomenologyFeedbackObserverLoop (auto-adapted)",
             layer="integration",
         )

@@ -60,7 +60,7 @@ class AmbivalenceStableStateAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="AmbivalenceStableState",
+            name="AmbivalenceStableStateAdapter",
             human_analog="Legacy AmbivalenceStableState (auto-adapted)",
             layer="integration",
         )

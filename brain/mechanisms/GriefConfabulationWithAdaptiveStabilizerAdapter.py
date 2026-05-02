@@ -76,7 +76,7 @@ class GriefConfabulationWithAdaptiveStabilizerAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="GriefConfabulationWithAdaptiveStabilizer",
+            name="GriefConfabulationWithAdaptiveStabilizerAdapter",
             human_analog="Legacy GriefConfabulationWithAdaptiveStabilizer (auto-adapted)",
             layer="integration",
         )

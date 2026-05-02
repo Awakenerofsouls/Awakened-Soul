@@ -65,7 +65,7 @@ class ApertureObserverMatteringLockAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ApertureObserverMatteringLock",
+            name="ApertureObserverMatteringLockAdapter",
             human_analog="Legacy ApertureObserverMatteringLock (auto-adapted)",
             layer="integration",
         )

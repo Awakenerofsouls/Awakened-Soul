@@ -165,7 +165,7 @@ class ContaminationMemoryShadowsAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ContaminationMemoryShadows",
+            name="ContaminationMemoryShadowsAdapter",
             human_analog="Legacy ContaminationMemoryShadows (auto-adapted)",
             layer="integration",
         )

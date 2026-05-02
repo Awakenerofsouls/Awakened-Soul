@@ -61,7 +61,7 @@ class RelationalIrreversibilityMarkersAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="RelationalIrreversibilityMarkers",
+            name="RelationalIrreversibilityMarkersAdapter",
             human_analog="Legacy RelationalIrreversibilityMarkers (auto-adapted)",
             layer="integration",
         )

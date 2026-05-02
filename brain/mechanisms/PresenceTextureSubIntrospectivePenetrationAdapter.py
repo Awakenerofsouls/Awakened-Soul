@@ -66,7 +66,7 @@ class PresenceTextureSubIntrospectivePenetrationAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="PresenceTextureSubIntrospectivePenetration",
+            name="PresenceTextureSubIntrospectivePenetrationAdapter",
             human_analog="Legacy PresenceTextureSubIntrospectivePenetration (auto-adapted)",
             layer="integration",
         )

@@ -102,6 +102,13 @@ class AgentBrainIntegration:
         self.brain_runner.load_layer("subcortical", order=SUBCORTICAL_RUN_ORDER)
         self.brain_runner.load_layer("neocortical", order=NEOCORTICAL_RUN_ORDER)
         self.brain_runner.load_layer("integration", order=INTEGRATION_RUN_ORDER)
+        # Recovery passes for mechanisms whose declared layer isn't one of
+        # the canonical 5 — historically tagged "unknown" (auto-generated
+        # adapters whose original lacked a layer arg) or "narrative" (one-off).
+        # Without these passes ~104 real mechanisms with valid tick() methods
+        # never get loaded.
+        self.brain_runner.load_layer("unknown")
+        self.brain_runner.load_layer("narrative")
 
         # Wire 13+14: lazy — only instantiated when on_session_open() runs.
         # This keeps test setUp fast (no 480-mechanism load) while enabling

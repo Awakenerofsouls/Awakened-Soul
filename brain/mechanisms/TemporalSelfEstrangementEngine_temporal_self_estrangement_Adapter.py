@@ -164,7 +164,7 @@ class TemporalSelfEstrangementEngine_temporal_self_estrangement_Adapter(BrainMec
 
     def __init__(self):
         super().__init__(
-            name="TemporalSelfEstrangementEngine_temporal_self_estrangement",
+            name="TemporalSelfEstrangementEngine_temporal_self_estrangement_Adapter",
             human_analog="Legacy TemporalSelfEstrangementEngine (auto-adapted)",
             layer="neocortical",
         )

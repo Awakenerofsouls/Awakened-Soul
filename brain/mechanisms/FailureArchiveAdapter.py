@@ -168,7 +168,7 @@ class FailureArchiveAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="FailureArchive",
+            name="FailureArchiveAdapter",
             human_analog="Legacy FailureArchive (auto-adapted)",
             layer="integration",
         )

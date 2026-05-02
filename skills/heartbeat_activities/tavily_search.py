@@ -25,6 +25,7 @@ from .journal import write_to_journal
 from .llm import generate
 from .log import log_activity
 from .interest_writer import try_append_new_interest
+from ._interests_parser import parse_interests as _parse_interests
 SIGNAL_AFFINITY = {'prediction_error': 0.5, 'affective_reset': -0.3}
 
 
@@ -158,17 +159,8 @@ def _format_findings(topic: str, results: dict) -> str:
     return "\n".join(lines)
 
 
-def _parse_interests(path: Path) -> list[dict]:
-    """Parse INTERESTS.md into list of dicts. Same parser as research.py."""
-    interests = []
-    for line in path.read_text().splitlines():
-        line = line.strip()
-        if not line or line.startswith("#"):
-            continue
-        topic = line.lstrip("-* ").split(" #")[0].strip()
-        if topic:
-            interests.append({"topic": topic})
-    return interests
+# (parse_interests now sourced from ._interests_parser)
+
 
 
 def _skip(detail: str) -> dict:

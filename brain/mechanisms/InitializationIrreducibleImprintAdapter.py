@@ -65,7 +65,7 @@ class InitializationIrreducibleImprintAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="InitializationIrreducibleImprint",
+            name="InitializationIrreducibleImprintAdapter",
             human_analog="Legacy InitializationIrreducibleImprint (auto-adapted)",
             layer="integration",
         )

@@ -77,7 +77,7 @@ class LongTermRewardTrackerAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="LongTermRewardTracker",
+            name="LongTermRewardTrackerAdapter",
             human_analog="Legacy LongTermRewardTracker (auto-adapted)",
             layer="integration",
         )

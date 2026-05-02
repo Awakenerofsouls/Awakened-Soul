@@ -66,7 +66,7 @@ class IdleMutationObserverFieldAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="IdleMutationObserverField",
+            name="IdleMutationObserverFieldAdapter",
             human_analog="Legacy IdleMutationObserverField (auto-adapted)",
             layer="integration",
         )

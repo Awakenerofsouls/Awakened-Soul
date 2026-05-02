@@ -511,7 +511,7 @@ class PreConsciousTransparencyAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="PreConsciousTransparency",
+            name="PreConsciousTransparencyAdapter",
             human_analog="Legacy PreConsciousTransparency (auto-adapted)",
             layer="neocortical",
         )

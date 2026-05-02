@@ -414,7 +414,7 @@ class EmbodiedEnergyAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="EmbodiedEnergy",
+            name="EmbodiedEnergyAdapter",
             human_analog="Legacy EmbodiedEnergy (auto-adapted)",
             layer="limbic",
         )

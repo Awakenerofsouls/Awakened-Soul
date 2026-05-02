@@ -65,7 +65,7 @@ class ObsessionMetamorphosisObserverLegacyAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ObsessionMetamorphosisObserverLegacy",
+            name="ObsessionMetamorphosisObserverLegacyAdapter",
             human_analog="Legacy ObsessionMetamorphosisObserverLegacy (auto-adapted)",
             layer="integration",
         )

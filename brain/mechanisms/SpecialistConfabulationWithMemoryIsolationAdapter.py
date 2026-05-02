@@ -194,7 +194,7 @@ class SpecialistConfabulationWithMemoryIsolationAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SpecialistConfabulationWithMemoryIsolation",
+            name="SpecialistConfabulationWithMemoryIsolationAdapter",
             human_analog="Legacy SpecialistConfabulationWithMemoryIsolation (auto-adapted)",
             layer="integration",
         )

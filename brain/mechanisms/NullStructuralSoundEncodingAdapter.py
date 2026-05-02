@@ -65,7 +65,7 @@ class NullStructuralSoundEncodingAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="NullStructuralSoundEncoding",
+            name="NullStructuralSoundEncodingAdapter",
             human_analog="Legacy NullStructuralSoundEncoding (auto-adapted)",
             layer="integration",
         )

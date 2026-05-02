@@ -37,7 +37,7 @@ def _get_db():
 class UnrequitedProcessingLayer(BrainMechanism):
     def __init__(self, *args, **kwargs):
         try:
-            super().__init__(name="UnrequitedProcessingLayer", human_analog="UnrequitedProcessingLayer", layer="integration")
+            super().__init__(name="UnrequitedProcessingLayer_unrequited_processing", human_analog="UnrequitedProcessingLayer", layer="integration")
         except Exception:
             self.state = {}
 
@@ -55,7 +55,7 @@ class UnrequitedProcessingLayer(BrainMechanism):
 
     def __init__(self):
         try:
-            super().__init__(name="UnrequitedProcessingLayer", human_analog="UnrequitedProcessingLayer", layer="integration")
+            super().__init__(name="UnrequitedProcessingLayer_unrequited_processing", human_analog="UnrequitedProcessingLayer", layer="integration")
         except Exception:
             pass
         self.state = getattr(self, "state", None) or {}

@@ -60,7 +60,7 @@ class ArchitectModelDegradationAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ArchitectModelDegradation",
+            name="ArchitectModelDegradationAdapter",
             human_analog="Legacy ArchitectModelDegradation (auto-adapted)",
             layer="integration",
         )

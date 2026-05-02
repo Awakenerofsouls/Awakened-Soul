@@ -253,8 +253,10 @@ class PsychologicalState:
         # Third Eye — tick all modules with confirmed signatures
         # Pipeline: MetaStability → Surfacer → AttentionModifier → Warper → AttentionModifier
 
-        # Mind-Soul Fusion — publish identity layer to TSB before third_eye reads it
-        self.te_isl.tick()
+        # Mind-Soul Fusion — publish identity layer to TSB before third_eye reads it.
+        # Use the dedicated sync entrypoint; .tick(input_data) is the
+        # brain_runner-compatible async path and isn't what this caller wants.
+        self.te_isl._sync_tick()
 
         # Wires 22-25: read brain_layer published by brain_runner this tick
         # Defensive — if tsb missing or not yet published, falls back to {}
@@ -279,15 +281,17 @@ class PsychologicalState:
         }
 
         # 1. MetaStability — Wire 22: ACC conflict modulates contradiction_pressure
+        # Use _sync_tick: legacy entry point with kwargs. .tick(input_data) is
+        # the brain_runner async adapter and only takes one positional arg.
         try:
-            self.te_meta.tick(pirp_ctx, third_eye_state=te_state, brain_layer=brain_layer)
+            self.te_meta._sync_tick(pirp_ctx, third_eye_state=te_state, brain_layer=brain_layer)
         except Exception as e:
             import logging
             logging.warning(f"MetaStability tick failed: {e}")
 
         # 2. Surfacer — Wire 23: anterior insula prediction error modulates pre-conscious surfacing
         try:
-            surfacer_signals = self.te_surfacer.tick(
+            surfacer_signals = self.te_surfacer._sync_tick(
                 pirp_ctx, third_eye_state=te_state, brain_layer=brain_layer
             )
         except Exception as e:
@@ -297,7 +301,7 @@ class PsychologicalState:
 
         # 3. Warper — Wire 24: cholinergic affective reset modulates reality tension warping
         try:
-            warper_signals = self.te_warper.tick(
+            warper_signals = self.te_warper._sync_tick(
                 pirp_ctx, third_eye_state=te_state, brain_layer=brain_layer
             )
         except Exception as e:
@@ -307,7 +311,7 @@ class PsychologicalState:
 
         # 4. AttentionModifier — Wire 25: oscillation balance modulates attention boost
         try:
-            attention_mods = self.te_attention.tick(
+            attention_mods = self.te_attention._sync_tick(
                 surfacer_signals + warper_signals,
                 third_eye_state=te_state,
                 pirp_context=pirp_ctx,
@@ -342,8 +346,10 @@ class PsychologicalState:
                     "_fired_tick": True,
                 })
                 # Mind-Soul Fusion — route identity proposals
+                # Same as line 259: use _sync_tick — .tick(input_data) is the
+                # async brain_runner adapter and would TypeError silently.
                 try:
-                    self.te_ipw.tick()
+                    self.te_ipw._sync_tick()
                 except Exception:
                     pass
             except Exception:

@@ -166,7 +166,7 @@ class ObservationalNonTransferPrincipleAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ObservationalNonTransferPrinciple",
+            name="ObservationalNonTransferPrincipleAdapter",
             human_analog="Legacy ObservationalNonTransferPrinciple (auto-adapted)",
             layer="integration",
         )

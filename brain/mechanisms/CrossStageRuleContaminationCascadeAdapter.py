@@ -65,7 +65,7 @@ class CrossStageRuleContaminationCascadeAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="CrossStageRuleContaminationCascade",
+            name="CrossStageRuleContaminationCascadeAdapter",
             human_analog="Legacy CrossStageRuleContaminationCascade (auto-adapted)",
             layer="integration",
         )

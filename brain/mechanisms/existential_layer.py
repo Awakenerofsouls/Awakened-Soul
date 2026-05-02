@@ -15,6 +15,10 @@ def _init():
         c.commit()
 class ExistentialLayer(BrainMechanism):
     def __init__(self):
+        try:
+            super().__init__(name="ExistentialLayer", human_analog="ExistentialLayer", layer="integration")
+        except Exception:
+            pass
         self.state = getattr(self, "state", None) or {}
         _init()
     def process(self,pirp_context:dict)->dict:

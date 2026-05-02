@@ -62,7 +62,7 @@ class MisrememberedSignificanceAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="MisrememberedSignificance",
+            name="MisrememberedSignificanceAdapter",
             human_analog="Legacy MisrememberedSignificance (auto-adapted)",
             layer="integration",
         )

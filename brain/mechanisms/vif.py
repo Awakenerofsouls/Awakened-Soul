@@ -312,7 +312,7 @@ class StickyAnchor:
 class VectorizedIdentityFields(BrainMechanism):
     def __init__(self):
         try:
-            super().__init__(name="VectorizedIdentityFields", human_analog="VectorizedIdentityFields", layer="integration")
+            super().__init__(name="VectorizedIdentityFields_vif", human_analog="VectorizedIdentityFields", layer="integration")
         except Exception:
             pass
         self.state = getattr(self, "state", None) or {}

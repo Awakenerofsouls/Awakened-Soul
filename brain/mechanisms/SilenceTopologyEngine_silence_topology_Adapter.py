@@ -194,7 +194,7 @@ class SilenceTopologyEngine_silence_topology_Adapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SilenceTopologyEngine_silence_topology",
+            name="SilenceTopologyEngine_silence_topology_Adapter",
             human_analog="Legacy SilenceTopologyEngine (auto-adapted)",
             layer="integration",
         )

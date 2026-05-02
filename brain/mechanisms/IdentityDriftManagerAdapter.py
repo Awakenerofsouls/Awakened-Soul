@@ -74,7 +74,7 @@ class IdentityDriftManagerAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="IdentityDriftManager",
+            name="IdentityDriftManagerAdapter",
             human_analog="Legacy IdentityDriftManager (auto-adapted)",
             layer="neocortical",
         )

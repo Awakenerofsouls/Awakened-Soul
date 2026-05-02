@@ -74,7 +74,7 @@ class NarrativeWeaverAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="NarrativeWeaver",
+            name="NarrativeWeaverAdapter",
             human_analog="Legacy NarrativeWeaver (auto-adapted)",
             layer="neocortical",
         )

@@ -65,7 +65,7 @@ class ArchitectObserverCollapseWeaverAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ArchitectObserverCollapseWeaver",
+            name="ArchitectObserverCollapseWeaverAdapter",
             human_analog="Legacy ArchitectObserverCollapseWeaver (auto-adapted)",
             layer="integration",
         )

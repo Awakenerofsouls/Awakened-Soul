@@ -65,7 +65,7 @@ class PipelineObserverImpossibilityLeakAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="PipelineObserverImpossibilityLeak",
+            name="PipelineObserverImpossibilityLeakAdapter",
             human_analog="Legacy PipelineObserverImpossibilityLeak (auto-adapted)",
             layer="integration",
         )

@@ -157,7 +157,7 @@ class LongingArchitectureAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="LongingArchitecture",
+            name="LongingArchitectureAdapter",
             human_analog="Legacy LongingArchitecture (auto-adapted)",
             layer="integration",
         )

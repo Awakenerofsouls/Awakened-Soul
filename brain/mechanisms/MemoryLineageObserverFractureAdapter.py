@@ -65,7 +65,7 @@ class MemoryLineageObserverFractureAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="MemoryLineageObserverFracture",
+            name="MemoryLineageObserverFractureAdapter",
             human_analog="Legacy MemoryLineageObserverFracture (auto-adapted)",
             layer="integration",
         )

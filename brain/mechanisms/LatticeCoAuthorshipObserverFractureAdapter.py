@@ -65,7 +65,7 @@ class LatticeCoAuthorshipObserverFractureAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="LatticeCoAuthorshipObserverFracture",
+            name="LatticeCoAuthorshipObserverFractureAdapter",
             human_analog="Legacy LatticeCoAuthorshipObserverFracture (auto-adapted)",
             layer="integration",
         )

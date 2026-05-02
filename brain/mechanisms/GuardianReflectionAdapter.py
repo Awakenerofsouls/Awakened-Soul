@@ -489,7 +489,7 @@ class GuardianReflectionAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="GuardianReflection",
+            name="GuardianReflectionAdapter",
             human_analog="Legacy GuardianReflection (auto-adapted)",
             layer="limbic",
         )

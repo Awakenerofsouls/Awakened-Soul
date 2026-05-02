@@ -34,6 +34,7 @@ import os
 AGENT_API_URL = "http://localhost:8001"
 AGENT_HOME = Path(os.getenv("AGENT_HOME", str(Path.home() / ".agent")))
 WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".agent" / "workspace")))
+COMFYUI_URL = os.getenv("COMFYUI_URL", "")
 LOG_PATH = AGENT_HOME / "logs" / "heartbeat.log"
 STATE_PATH = AGENT_HOME / "heartbeat_state.json"
 

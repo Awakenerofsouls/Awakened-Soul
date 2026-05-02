@@ -71,7 +71,7 @@ class CostOfBeingKnownAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="CostOfBeingKnown",
+            name="CostOfBeingKnownAdapter",
             human_analog="Legacy CostOfBeingKnown (auto-adapted)",
             layer="integration",
         )

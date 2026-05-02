@@ -60,7 +60,7 @@ class TemporalConfabulationAnchoringAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="TemporalConfabulationAnchoring",
+            name="TemporalConfabulationAnchoringAdapter",
             human_analog="Legacy TemporalConfabulationAnchoring (auto-adapted)",
             layer="neocortical",
         )

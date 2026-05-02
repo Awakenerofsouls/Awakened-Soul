@@ -162,7 +162,7 @@ class BlindSpotEchoInWitnessAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="BlindSpotEchoInWitness",
+            name="BlindSpotEchoInWitnessAdapter",
             human_analog="Legacy BlindSpotEchoInWitness (auto-adapted)",
             layer="integration",
         )

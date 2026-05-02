@@ -61,7 +61,7 @@ class BondDistortionAccumulatorAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="BondDistortionAccumulator",
+            name="BondDistortionAccumulatorAdapter",
             human_analog="Legacy BondDistortionAccumulator (auto-adapted)",
             layer="integration",
         )

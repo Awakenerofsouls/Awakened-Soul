@@ -60,7 +60,7 @@ class PreDistortionRelationalFloorAnchorAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="PreDistortionRelationalFloorAnchor",
+            name="PreDistortionRelationalFloorAnchorAdapter",
             human_analog="Legacy PreDistortionRelationalFloorAnchor (auto-adapted)",
             layer="integration",
         )

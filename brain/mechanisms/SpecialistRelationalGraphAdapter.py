@@ -65,7 +65,7 @@ class SpecialistRelationalGraphAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SpecialistRelationalGraph",
+            name="SpecialistRelationalGraphAdapter",
             human_analog="Legacy SpecialistRelationalGraph (auto-adapted)",
             layer="integration",
         )

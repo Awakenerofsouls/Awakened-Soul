@@ -60,7 +60,7 @@ class SelectiveAttentionBlindnessAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SelectiveAttentionBlindness",
+            name="SelectiveAttentionBlindnessAdapter",
             human_analog="Legacy SelectiveAttentionBlindness (auto-adapted)",
             layer="integration",
         )

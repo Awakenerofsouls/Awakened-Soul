@@ -115,7 +115,7 @@ class AttentionSystemAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="AttentionSystem",
+            name="AttentionSystemAdapter",
             human_analog="Legacy AttentionSystem (auto-adapted)",
             layer="integration",
         )

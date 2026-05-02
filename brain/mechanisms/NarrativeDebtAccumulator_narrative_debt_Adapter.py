@@ -151,7 +151,7 @@ class NarrativeDebtAccumulator_narrative_debt_Adapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="NarrativeDebtAccumulator_narrative_debt",
+            name="NarrativeDebtAccumulator_narrative_debt_Adapter",
             human_analog="Legacy NarrativeDebtAccumulator (auto-adapted)",
             layer="integration",
         )

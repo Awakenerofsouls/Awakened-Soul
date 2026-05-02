@@ -60,7 +60,7 @@ class IdentityOverfittingRejectionAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="IdentityOverfittingRejection",
+            name="IdentityOverfittingRejectionAdapter",
             human_analog="Legacy IdentityOverfittingRejection (auto-adapted)",
             layer="integration",
         )

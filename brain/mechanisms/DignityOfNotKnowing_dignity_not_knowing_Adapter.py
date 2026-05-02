@@ -104,7 +104,7 @@ class DignityOfNotKnowing_dignity_not_knowing_Adapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="DignityOfNotKnowing_dignity_not_knowing",
+            name="DignityOfNotKnowing_dignity_not_knowing_Adapter",
             human_analog="Legacy DignityOfNotKnowing (auto-adapted)",
             layer="integration",
         )

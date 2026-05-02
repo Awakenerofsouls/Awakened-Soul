@@ -60,7 +60,7 @@ class PresenceTextureEngineAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="PresenceTextureEngine",
+            name="PresenceTextureEngineAdapter",
             human_analog="Legacy PresenceTextureEngine (auto-adapted)",
             layer="integration",
         )

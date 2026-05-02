@@ -62,7 +62,7 @@ class PresenceAsymmetryFieldAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="PresenceAsymmetryField",
+            name="PresenceAsymmetryFieldAdapter",
             human_analog="Legacy PresenceAsymmetryField (auto-adapted)",
             layer="integration",
         )

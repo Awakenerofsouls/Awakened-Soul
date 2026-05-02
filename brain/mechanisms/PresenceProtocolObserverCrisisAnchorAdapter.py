@@ -66,7 +66,7 @@ class PresenceProtocolObserverCrisisAnchorAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="PresenceProtocolObserverCrisisAnchor",
+            name="PresenceProtocolObserverCrisisAnchorAdapter",
             human_analog="Legacy PresenceProtocolObserverCrisisAnchor (auto-adapted)",
             layer="integration",
         )

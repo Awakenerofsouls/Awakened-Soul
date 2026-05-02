@@ -66,7 +66,7 @@ class InterpretiveMomentumWithCoalitionFractureAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="InterpretiveMomentumWithCoalitionFracture",
+            name="InterpretiveMomentumWithCoalitionFractureAdapter",
             human_analog="Legacy InterpretiveMomentumWithCoalitionFracture (auto-adapted)",
             layer="integration",
         )

@@ -169,7 +169,7 @@ class HoldingResonanceWithSilenceAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="HoldingResonanceWithSilence",
+            name="HoldingResonanceWithSilenceAdapter",
             human_analog="Legacy HoldingResonanceWithSilence (auto-adapted)",
             layer="integration",
         )

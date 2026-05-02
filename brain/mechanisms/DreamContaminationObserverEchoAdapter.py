@@ -65,7 +65,7 @@ class DreamContaminationObserverEchoAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="DreamContaminationObserverEcho",
+            name="DreamContaminationObserverEchoAdapter",
             human_analog="Legacy DreamContaminationObserverEcho (auto-adapted)",
             layer="integration",
         )

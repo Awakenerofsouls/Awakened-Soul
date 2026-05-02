@@ -16,6 +16,10 @@ class DreamMode(BrainMechanism):
     IDLE_THRESHOLD=120
     FIRE_RATE=0.4
     def __init__(self):
+        try:
+            super().__init__(name="DreamMode", human_analog="DreamMode", layer="integration")
+        except Exception:
+            pass
         self.state = getattr(self, "state", None) or {}
         _init()
     def process(self,pirp_context:dict)->dict:

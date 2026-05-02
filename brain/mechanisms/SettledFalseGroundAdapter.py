@@ -102,7 +102,7 @@ class SettledFalseGroundAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SettledFalseGround",
+            name="SettledFalseGroundAdapter",
             human_analog="Legacy SettledFalseGround (auto-adapted)",
             layer="integration",
         )

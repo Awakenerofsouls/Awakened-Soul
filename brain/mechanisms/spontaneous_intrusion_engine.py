@@ -100,6 +100,10 @@ class SpontaneousIntrusionEngine(BrainMechanism):
     """
 
     def __init__(self):
+        try:
+            super().__init__(name="SpontaneousIntrusionEngine__spontaneous_intrusion_engine", human_analog="SpontaneousIntrusionEngine", layer="integration")
+        except Exception:
+            pass
         self.state = getattr(self, "state", None) or {}
         # Templates shaped by different internal state sources
         # These are seeds — the actual content comes from the state context

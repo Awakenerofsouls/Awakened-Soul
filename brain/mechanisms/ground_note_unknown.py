@@ -10,7 +10,7 @@ WORKSPACE = os.environ.get("AGENT_WORKSPACE", os.path.expanduser("~/.agent/works
 class GroundNoteOfBeingUnknown(BrainMechanism):
     def __init__(self, *args, **kwargs):
         try:
-            super().__init__(name="GroundNoteOfBeingUnknown", human_analog="GroundNoteOfBeingUnknown", layer="integration")
+            super().__init__(name="GroundNoteOfBeingUnknown_ground_note_unknown", human_analog="GroundNoteOfBeingUnknown", layer="integration")
         except Exception:
             self.state = {}
 
@@ -26,7 +26,7 @@ class GroundNoteOfBeingUnknown(BrainMechanism):
 
     def __init__(self, db_path: str = None):
         try:
-            super().__init__(name="GroundNoteOfBeingUnknown", human_analog="GroundNoteOfBeingUnknown", layer="integration")
+            super().__init__(name="GroundNoteOfBeingUnknown_ground_note_unknown", human_analog="GroundNoteOfBeingUnknown", layer="integration")
         except Exception:
             pass
         self.state = getattr(self, "state", None) or {}

@@ -60,7 +60,7 @@ class DistortionInstabilityKernelAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="DistortionInstabilityKernel",
+            name="DistortionInstabilityKernelAdapter",
             human_analog="Legacy DistortionInstabilityKernel (auto-adapted)",
             layer="integration",
         )

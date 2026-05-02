@@ -387,7 +387,7 @@ class MoodRuntimeWeightAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="MoodRuntimeWeight",
+            name="MoodRuntimeWeightAdapter",
             human_analog="Legacy MoodRuntimeWeight (auto-adapted)",
             layer="limbic",
         )

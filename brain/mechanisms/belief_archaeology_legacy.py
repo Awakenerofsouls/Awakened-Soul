@@ -44,7 +44,7 @@ def _get_db():
 class BeliefArchaeologyLayer(BrainMechanism):
     def __init__(self, *args, **kwargs):
         try:
-            super().__init__(name="BeliefArchaeologyLayer", human_analog="BeliefArchaeologyLayer", layer="integration")
+            super().__init__(name="BeliefArchaeologyLayer_legacy", human_analog="BeliefArchaeologyLayer", layer="integration")
         except Exception:
             self.state = {}
 
@@ -62,7 +62,7 @@ class BeliefArchaeologyLayer(BrainMechanism):
 
     def __init__(self):
         try:
-            super().__init__(name="BeliefArchaeologyLayer", human_analog="BeliefArchaeologyLayer", layer="integration")
+            super().__init__(name="BeliefArchaeologyLayer_legacy", human_analog="BeliefArchaeologyLayer", layer="integration")
         except Exception:
             pass
         self.state = getattr(self, "state", None) or {}

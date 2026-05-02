@@ -33,7 +33,11 @@ import sqlite3
 from pathlib import Path
 from typing import Dict, Any, Optional, List
 
+# AGENT_WORKSPACE is for runtime data (DB), not the source tree. The brain/
+# scan must anchor to THIS file's location so it finds the rsync'd source
+# regardless of where the daemon was started or what AGENT_WORKSPACE is.
 WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.agent/workspace")))
+BRAIN_ROOT = Path(__file__).resolve().parent  # this file lives in brain/
 DB_PATH = WORKSPACE / os.getenv("AGENT_DB_NAME", "agent.db")
 
 
@@ -48,7 +52,7 @@ def _discover_root_mechanisms() -> Dict[str, dict]:
     Scan brain/ root for .py files with a class containing a process() method.
     Returns {filename: {class_name, init_args, module_path, has_wire_meta}}.
     """
-    root = WORKSPACE / "brain"
+    root = BRAIN_ROOT  # anchored to this file's dir, not env-var WORKSPACE
     results = {}
 
     skip = {
@@ -65,43 +69,80 @@ def _discover_root_mechanisms() -> Dict[str, dict]:
         "tick_state_bus.py", "til.py", "drift_identity_engine.py",
     }
 
-    for fname in sorted(os.listdir(root)):
-        if not fname.endswith(".py") or fname in skip:
+    # Scan BOTH brain/ root (for legacy files still there) AND brain/mechanisms/
+    # (where the architecture migration moved most named mechanism files).
+    # Without scanning mechanisms/, the BATCH_MEMBERS lookup finds 0 files
+    # because the named ones (belief_archaeology.py, etc.) all migrated.
+    scan_locations = [
+        (root, "brain"),
+        (root / "mechanisms", "brain.mechanisms"),
+    ]
+
+    for scan_root, module_prefix in scan_locations:
+        if not scan_root.exists():
             continue
-        path = root / fname
-        try:
-            with open(path) as f:
-                src = f.read()
-            tree = ast.parse(src)
+        for fname in sorted(os.listdir(scan_root)):
+            if not fname.endswith(".py") or fname in skip:
+                continue
+            if fname in results:
+                # Already discovered at brain/ root — don't overwrite with
+                # the mechanisms/ copy (some legacy files exist in both).
+                continue
+            path = scan_root / fname
+            try:
+                with open(path) as f:
+                    src = f.read()
+                tree = ast.parse(src)
 
-            class_name = None
-            init_args = []
-            has_wire_meta = False
+                class_name = None
+                init_args = []
+                has_wire_meta = False
 
-            for node in ast.walk(tree):
-                if isinstance(node, ast.ClassDef):
-                    for item in node.body:
-                        if isinstance(item, ast.FunctionDef):
-                            if item.name == "__init__":
-                                init_args = [a.arg for a in item.args.args if a.arg != "self"]
-                            elif item.name == "process":
-                                class_name = node.name
-                    # Check for __wire_meta__ class attribute
-                    for item in node.body:
-                        if isinstance(item, ast.Assign):
-                            for t in item.targets:
-                                if isinstance(t, ast.Name) and t.id == "__wire_meta__":
-                                    has_wire_meta = True
+                for node in ast.walk(tree):
+                    if isinstance(node, ast.ClassDef):
+                        # Per-class scoped values — adapter files contain BOTH
+                        # the legacy class (with process()) and the new wrapping
+                        # adapter class. We only want the init_args of the class
+                        # we're actually going to instantiate (the one with
+                        # process()/_sync_tick()). Without this scoping, the
+                        # adapter's empty init_args overwrite the legacy's
+                        # ["db_path"] and the router calls cls() with no args
+                        # → NoneType path explosion.
+                        local_class = None
+                        local_init = []
+                        local_wire_meta = False
+                        for item in node.body:
+                            if isinstance(item, ast.FunctionDef):
+                                if item.name == "__init__":
+                                    local_init = [a.arg for a in item.args.args if a.arg != "self"]
+                                # Accept process() (legacy), or _sync_tick() — the
+                                # post-migration sync entrypoint used by Third Eye
+                                # mechanisms (meta_stability, preconscious_surfacer,
+                                # reality_tension_warper, attention_modifier, plus
+                                # identity_state_layer / identity_proposal_writer).
+                                elif item.name in ("process", "_sync_tick"):
+                                    local_class = node.name
+                            elif isinstance(item, ast.Assign):
+                                for t in item.targets:
+                                    if isinstance(t, ast.Name) and t.id == "__wire_meta__":
+                                        local_wire_meta = True
 
-            if class_name:
-                results[fname] = {
-                    "class_name": class_name,
-                    "init_args": init_args,
-                    "module_path": f"brain.{fname.replace('.py', '')}",
-                    "has_wire_meta": has_wire_meta,
-                }
-        except Exception as e:
-            print(f"[RootMechRouter] Parse error {fname}: {e}")
+                        # Only adopt this class's metadata if it has the trigger
+                        # method. Skip helper/adapter classes that have neither.
+                        if local_class:
+                            class_name = local_class
+                            init_args = local_init
+                            has_wire_meta = local_wire_meta
+
+                if class_name:
+                    results[fname] = {
+                        "class_name": class_name,
+                        "init_args": init_args,
+                        "module_path": f"{module_prefix}.{fname.replace('.py', '')}",
+                        "has_wire_meta": has_wire_meta,
+                    }
+            except Exception as e:
+                print(f"[RootMechRouter] Parse error {fname}: {e}")
 
 
     # also scan brain/third_eye/ for mechanisms with process()/tick()
@@ -149,7 +190,7 @@ def _discover_root_mechanisms() -> Dict[str, dict]:
 
 def _discover_becoming_mechanisms() -> Dict[str, dict]:
     """Scan brain/becoming/ for BrainMechanism subclasses with process()."""
-    root = WORKSPACE / "brain" / "becoming"
+    root = BRAIN_ROOT / "becoming"
     results = {}
 
     for fname in sorted(os.listdir(root)):
@@ -223,11 +264,12 @@ BATCH_MEMBERS = {
         "grief_confabulation_with_adaptive_stabilizer.py",
     ],
     "maintenance": [],  # filled from discovery — all remaining process() files
+    # Files migrated from brain/third_eye/ to brain/mechanisms/ — drop prefix.
     "third_eye": [
-        "third_eye/attention_modifier.py",
-        "third_eye/meta_stability.py",
-        "third_eye/preconscious_surfacer.py",
-        "third_eye/reality_tension_warper.py",
+        "attention_modifier.py",
+        "meta_stability.py",
+        "preconscious_surfacer.py",
+        "reality_tension_warper.py",
     ],
 }
 

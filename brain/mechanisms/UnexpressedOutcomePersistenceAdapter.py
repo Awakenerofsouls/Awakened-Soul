@@ -171,7 +171,7 @@ class UnexpressedOutcomePersistenceAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="UnexpressedOutcomePersistence",
+            name="UnexpressedOutcomePersistenceAdapter",
             human_analog="Legacy UnexpressedOutcomePersistence (auto-adapted)",
             layer="integration",
         )

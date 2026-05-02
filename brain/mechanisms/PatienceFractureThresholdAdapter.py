@@ -168,7 +168,7 @@ class PatienceFractureThresholdAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="PatienceFractureThreshold",
+            name="PatienceFractureThresholdAdapter",
             human_analog="Legacy PatienceFractureThreshold (auto-adapted)",
             layer="integration",
         )

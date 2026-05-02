@@ -74,7 +74,7 @@ class AutonomousSchedulerAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="AutonomousScheduler",
+            name="AutonomousSchedulerAdapter",
             human_analog="Legacy AutonomousScheduler (auto-adapted)",
             layer="integration",
         )

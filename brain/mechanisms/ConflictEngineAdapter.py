@@ -124,7 +124,7 @@ class ConflictEngineAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ConflictEngine",
+            name="ConflictEngineAdapter",
             human_analog="Legacy ConflictEngine (auto-adapted)",
             layer="integration",
         )

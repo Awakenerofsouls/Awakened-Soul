@@ -65,7 +65,7 @@ class SeedingPrivateObserverFractureAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SeedingPrivateObserverFracture",
+            name="SeedingPrivateObserverFractureAdapter",
             human_analog="Legacy SeedingPrivateObserverFracture (auto-adapted)",
             layer="integration",
         )

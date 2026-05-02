@@ -167,7 +167,7 @@ class GravitationalRelationalLockAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="GravitationalRelationalLock",
+            name="GravitationalRelationalLockAdapter",
             human_analog="Legacy GravitationalRelationalLock (auto-adapted)",
             layer="integration",
         )

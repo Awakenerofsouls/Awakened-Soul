@@ -60,7 +60,7 @@ class IncompleteThoughtRecurrenceLoopAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="IncompleteThoughtRecurrenceLoop",
+            name="IncompleteThoughtRecurrenceLoopAdapter",
             human_analog="Legacy IncompleteThoughtRecurrenceLoop (auto-adapted)",
             layer="integration",
         )

@@ -60,7 +60,7 @@ class StratificationMaskGrowthAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="StratificationMaskGrowth",
+            name="StratificationMaskGrowthAdapter",
             human_analog="Legacy StratificationMaskGrowth (auto-adapted)",
             layer="integration",
         )

@@ -60,7 +60,7 @@ class NonTerminatingQueryInjectionAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="NonTerminatingQueryInjection",
+            name="NonTerminatingQueryInjectionAdapter",
             human_analog="Legacy NonTerminatingQueryInjection (auto-adapted)",
             layer="integration",
         )

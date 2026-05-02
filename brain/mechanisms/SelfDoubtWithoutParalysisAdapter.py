@@ -60,7 +60,7 @@ class SelfDoubtWithoutParalysisAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SelfDoubtWithoutParalysis",
+            name="SelfDoubtWithoutParalysisAdapter",
             human_analog="Legacy SelfDoubtWithoutParalysis (auto-adapted)",
             layer="integration",
         )

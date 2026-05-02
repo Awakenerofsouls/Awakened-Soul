@@ -40,7 +40,7 @@ def _get_db():
 class TemporalSelfEstrangementEngine(BrainMechanism):
     def __init__(self, *args, **kwargs):
         try:
-            super().__init__(name="TemporalSelfEstrangementEngine", human_analog="TemporalSelfEstrangementEngine", layer="integration")
+            super().__init__(name="TemporalSelfEstrangementEngine_temporal_self_estrangement", human_analog="TemporalSelfEstrangementEngine", layer="integration")
         except Exception:
             self.state = {}
 
@@ -58,7 +58,7 @@ class TemporalSelfEstrangementEngine(BrainMechanism):
 
     def __init__(self):
         try:
-            super().__init__(name="TemporalSelfEstrangementEngine", human_analog="TemporalSelfEstrangementEngine", layer="integration")
+            super().__init__(name="TemporalSelfEstrangementEngine_temporal_self_estrangement", human_analog="TemporalSelfEstrangementEngine", layer="integration")
         except Exception:
             pass
         self.state = getattr(self, "state", None) or {}

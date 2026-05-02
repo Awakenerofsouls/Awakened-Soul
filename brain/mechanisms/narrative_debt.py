@@ -37,7 +37,7 @@ def _get_db():
 class NarrativeDebtAccumulator(BrainMechanism):
     def __init__(self, *args, **kwargs):
         try:
-            super().__init__(name="NarrativeDebtAccumulator", human_analog="NarrativeDebtAccumulator", layer="integration")
+            super().__init__(name="NarrativeDebtAccumulator_narrative_debt", human_analog="NarrativeDebtAccumulator", layer="integration")
         except Exception:
             self.state = {}
 
@@ -58,7 +58,7 @@ class NarrativeDebtAccumulator(BrainMechanism):
 
     def __init__(self):
         try:
-            super().__init__(name="NarrativeDebtAccumulator", human_analog="NarrativeDebtAccumulator", layer="integration")
+            super().__init__(name="NarrativeDebtAccumulator_narrative_debt", human_analog="NarrativeDebtAccumulator", layer="integration")
         except Exception:
             pass
         self.state = getattr(self, "state", None) or {}

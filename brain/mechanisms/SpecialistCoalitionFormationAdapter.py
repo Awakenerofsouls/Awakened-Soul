@@ -60,7 +60,7 @@ class SpecialistCoalitionFormationAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SpecialistCoalitionFormation",
+            name="SpecialistCoalitionFormationAdapter",
             human_analog="Legacy SpecialistCoalitionFormation (auto-adapted)",
             layer="integration",
         )

@@ -457,7 +457,7 @@ class LongingAnchorAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="LongingAnchor",
+            name="LongingAnchorAdapter",
             human_analog="Legacy LongingAnchor (auto-adapted)",
             layer="limbic",
         )

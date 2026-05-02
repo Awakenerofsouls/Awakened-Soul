@@ -60,7 +60,7 @@ class RelationalRiskCalculationAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="RelationalRiskCalculation",
+            name="RelationalRiskCalculationAdapter",
             human_analog="Legacy RelationalRiskCalculation (auto-adapted)",
             layer="integration",
         )

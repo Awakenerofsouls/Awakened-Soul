@@ -490,7 +490,7 @@ class MetacognitiveCalibrationAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="MetacognitiveCalibration",
+            name="MetacognitiveCalibrationAdapter",
             human_analog="Legacy MetacognitiveCalibration (auto-adapted)",
             layer="integration",
         )

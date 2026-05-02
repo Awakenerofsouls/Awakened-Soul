@@ -66,7 +66,7 @@ class CoalitionFractureIncompletenessEventAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="CoalitionFractureIncompletenessEvent",
+            name="CoalitionFractureIncompletenessEventAdapter",
             human_analog="Legacy CoalitionFractureIncompletenessEvent (auto-adapted)",
             layer="integration",
         )

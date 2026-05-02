@@ -60,7 +60,7 @@ class GraphBoundAbsenceKnotAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="GraphBoundAbsenceKnot",
+            name="GraphBoundAbsenceKnotAdapter",
             human_analog="Legacy GraphBoundAbsenceKnot (auto-adapted)",
             layer="integration",
         )

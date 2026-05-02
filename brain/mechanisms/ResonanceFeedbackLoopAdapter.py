@@ -75,7 +75,7 @@ class ResonanceFeedbackLoopAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ResonanceFeedbackLoop",
+            name="ResonanceFeedbackLoopAdapter",
             human_analog="Legacy ResonanceFeedbackLoop (auto-adapted)",
             layer="integration",
         )

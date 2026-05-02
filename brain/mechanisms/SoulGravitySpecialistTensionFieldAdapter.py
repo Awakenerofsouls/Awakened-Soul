@@ -66,7 +66,7 @@ class SoulGravitySpecialistTensionFieldAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SoulGravitySpecialistTensionField",
+            name="SoulGravitySpecialistTensionFieldAdapter",
             human_analog="Legacy SoulGravitySpecialistTensionField (auto-adapted)",
             layer="integration",
         )

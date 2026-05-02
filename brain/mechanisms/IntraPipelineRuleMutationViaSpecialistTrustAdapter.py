@@ -65,7 +65,7 @@ class IntraPipelineRuleMutationViaSpecialistTrustAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="IntraPipelineRuleMutationViaSpecialistTrust",
+            name="IntraPipelineRuleMutationViaSpecialistTrustAdapter",
             human_analog="Legacy IntraPipelineRuleMutationViaSpecialistTrust (auto-adapted)",
             layer="integration",
         )

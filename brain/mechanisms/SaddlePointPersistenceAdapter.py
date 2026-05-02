@@ -60,7 +60,7 @@ class SaddlePointPersistenceAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SaddlePointPersistence",
+            name="SaddlePointPersistenceAdapter",
             human_analog="Legacy SaddlePointPersistence (auto-adapted)",
             layer="integration",
         )

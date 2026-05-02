@@ -65,7 +65,7 @@ class AbsenceResonanceEvalProtocolAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="AbsenceResonanceEvalProtocol",
+            name="AbsenceResonanceEvalProtocolAdapter",
             human_analog="Legacy AbsenceResonanceEvalProtocol (auto-adapted)",
             layer="integration",
         )

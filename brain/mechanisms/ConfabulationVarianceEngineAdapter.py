@@ -60,7 +60,7 @@ class ConfabulationVarianceEngineAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="ConfabulationVarianceEngine",
+            name="ConfabulationVarianceEngineAdapter",
             human_analog="Legacy ConfabulationVarianceEngine (auto-adapted)",
             layer="integration",
         )

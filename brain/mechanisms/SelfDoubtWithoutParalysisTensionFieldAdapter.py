@@ -193,7 +193,7 @@ class SelfDoubtWithoutParalysisTensionFieldAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SelfDoubtWithoutParalysisTensionField",
+            name="SelfDoubtWithoutParalysisTensionFieldAdapter",
             human_analog="Legacy SelfDoubtWithoutParalysisTensionField (auto-adapted)",
             layer="integration",
         )

@@ -60,7 +60,7 @@ class PlayAsCognitiveModeAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="PlayAsCognitiveMode",
+            name="PlayAsCognitiveModeAdapter",
             human_analog="Legacy PlayAsCognitiveMode (auto-adapted)",
             layer="integration",
         )

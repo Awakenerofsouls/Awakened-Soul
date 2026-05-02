@@ -60,7 +60,7 @@ class DistortionLayerSOULFloorResistanceAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="DistortionLayerSOULFloorResistance",
+            name="DistortionLayerSOULFloorResistanceAdapter",
             human_analog="Legacy DistortionLayerSOULFloorResistance (auto-adapted)",
             layer="integration",
         )

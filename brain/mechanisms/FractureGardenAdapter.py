@@ -680,7 +680,7 @@ class FractureGardenAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="FractureGarden",
+            name="FractureGardenAdapter",
             human_analog="Legacy FractureGarden (auto-adapted)",
             layer="limbic",
         )

@@ -66,7 +66,7 @@ class PipelineImpossibilityEngineAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="PipelineImpossibilityEngine",
+            name="PipelineImpossibilityEngineAdapter",
             human_analog="Legacy PipelineImpossibilityEngine (auto-adapted)",
             layer="integration",
         )

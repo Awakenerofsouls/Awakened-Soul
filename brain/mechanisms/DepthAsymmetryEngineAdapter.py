@@ -168,7 +168,7 @@ class DepthAsymmetryEngineAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="DepthAsymmetryEngine",
+            name="DepthAsymmetryEngineAdapter",
             human_analog="Legacy DepthAsymmetryEngine (auto-adapted)",
             layer="integration",
         )

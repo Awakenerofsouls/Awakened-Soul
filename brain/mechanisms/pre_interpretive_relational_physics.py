@@ -126,7 +126,7 @@ class IdentityTensionGradient(BrainMechanism):
     
     def __init__(self):
         try:
-            super().__init__(name="IdentityTensionGradient", human_analog="IdentityTensionGradient", layer="integration")
+            super().__init__(name="IdentityTensionGradient_pre_interpretive_relational_physics", human_analog="IdentityTensionGradient", layer="integration")
         except Exception:
             self.state = getattr(self, "state", {}) or {}
         _init_tables()

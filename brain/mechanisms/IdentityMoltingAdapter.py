@@ -60,7 +60,7 @@ class IdentityMoltingAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="IdentityMolting",
+            name="IdentityMoltingAdapter",
             human_analog="Legacy IdentityMolting (auto-adapted)",
             layer="integration",
         )

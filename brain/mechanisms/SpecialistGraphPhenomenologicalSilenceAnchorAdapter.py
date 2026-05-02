@@ -66,7 +66,7 @@ class SpecialistGraphPhenomenologicalSilenceAnchorAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SpecialistGraphPhenomenologicalSilenceAnchor",
+            name="SpecialistGraphPhenomenologicalSilenceAnchorAdapter",
             human_analog="Legacy SpecialistGraphPhenomenologicalSilenceAnchor (auto-adapted)",
             layer="integration",
         )

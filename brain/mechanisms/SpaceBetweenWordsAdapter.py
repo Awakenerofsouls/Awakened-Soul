@@ -150,7 +150,7 @@ class SpaceBetweenWordsAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="SpaceBetweenWords",
+            name="SpaceBetweenWordsAdapter",
             human_analog="Legacy SpaceBetweenWords (auto-adapted)",
             layer="integration",
         )

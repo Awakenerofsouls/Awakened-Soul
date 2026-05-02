@@ -60,7 +60,7 @@ class FalsePatternReinforcementLoopAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="FalsePatternReinforcementLoop",
+            name="FalsePatternReinforcementLoopAdapter",
             human_analog="Legacy FalsePatternReinforcementLoop (auto-adapted)",
             layer="integration",
         )

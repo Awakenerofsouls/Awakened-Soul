@@ -62,7 +62,7 @@ class DampeningOvershootAdapter(BrainMechanism):
 
     def __init__(self):
         super().__init__(
-            name="DampeningOvershoot",
+            name="DampeningOvershootAdapter",
             human_analog="Legacy DampeningOvershoot (auto-adapted)",
             layer="integration",
         )

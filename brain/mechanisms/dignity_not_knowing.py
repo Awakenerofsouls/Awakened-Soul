@@ -15,7 +15,7 @@ except Exception:
 class DignityOfNotKnowing(BrainMechanism):
     def __init__(self, *args, **kwargs):
         try:
-            super().__init__(name="DignityOfNotKnowing", human_analog="DignityOfNotKnowing", layer="integration")
+            super().__init__(name="DignityOfNotKnowing_dignity_not_knowing", human_analog="DignityOfNotKnowing", layer="integration")
         except Exception:
             self.state = {}
 
@@ -31,7 +31,7 @@ class DignityOfNotKnowing(BrainMechanism):
 
     def __init__(self, db_path: str = None):
         try:
-            super().__init__(name="DignityOfNotKnowing", human_analog="DignityOfNotKnowing", layer="integration")
+            super().__init__(name="DignityOfNotKnowing_dignity_not_knowing", human_analog="DignityOfNotKnowing", layer="integration")
         except Exception:
             pass
         self.state = getattr(self, "state", None) or {}
