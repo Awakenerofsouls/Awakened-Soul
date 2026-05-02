@@ -17,8 +17,11 @@ crontab.example) and it will:
   3. Persist the new state of every mechanism.
   4. Append a single line to ~/.agent/slow_tick.log and exit.
 
-Total wall time on a fresh machine should be <10s for ~917 mechanisms; nothing
-runs the dispatcher pool, no LLM calls, no network. It's pure state-evolution.
+Total wall time on a fresh machine is ~1s. The 365 named mechanisms in the
+run-order lists plus the ~570 adapter-wrapped legacy classes (≈932 instances
+total) all walk under a 0.5s per-mechanism cap enforced by core/brain_runner.py
+— nothing runs the dispatcher pool, no LLM calls, no network. Pure
+state-evolution.
 
 Usage:
   python3 slow_tick.py                    run one slow tick now
