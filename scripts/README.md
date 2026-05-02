@@ -65,15 +65,3 @@ print(total, 'modules importable')
 ```
 
 A working state is **0 import fails, 0 init fails, 0 collisions**.
-
----
-
-## Migration / one-shots
-
-### `migrate_outputs.py` (at repo root)
-One-shot mover from the Cowork `outputs/` scratchpad into the repo. Reads
-the `layer="..."` keyword in each module's `__init__` to decide which
-`brain/{layer}/` subfolder to drop it into. Test files always go to
-`brain/tests/`. Auto-collapses multi-line citations into single lines so
-the verify_build regex matches. `--dry-run` to preview, `--force` to
-overwrite.

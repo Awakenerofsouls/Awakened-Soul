@@ -24,7 +24,7 @@ def state(tmp_path):
 @pytest.fixture
 def user_file(tmp_path):
     path = tmp_path / "USER.md"
-    path.write_text("# {{USER_NAME}}\n", encoding="utf-8")
+    path.write_text("# the operator\n", encoding="utf-8")
     return path
 
 
@@ -67,7 +67,7 @@ def test_relationship_check_writes_to_relationships(user_file, relationships_fil
 
 
 def test_relationship_check_primary_name_in_prompt(user_file, relationships_file, state, monkeypatch):
-    """Prompt includes the extracted primary name '{{USER_NAME}}'."""
+    """Prompt includes the extracted primary name 'the operator'."""
     import heartbeat_activities.relationship_check as m
     captured = []
     def fake_gen(prompt, **kw):
@@ -77,7 +77,9 @@ def test_relationship_check_primary_name_in_prompt(user_file, relationships_file
     monkeypatch.setattr("heartbeat_activities.log.log_activity", noop_log)
     monkeypatch.setattr(random, "random", lambda: 0.9)
     run(state)
-    assert "user" in captured[0].lower()
+    # USER.md fixture sets the primary name to "the operator". The
+    # framework's sanitized default is what runs in the public release.
+    assert "the operator" in captured[0].lower()
 
 
 def test_relationship_check_no_user_file(tmp_path, state, monkeypatch):
@@ -128,11 +130,12 @@ def test_relationship_check_proactive_fires_on_signal_words(user_file, relations
 
 
 def test_relationship_check_proactive_fires_on_primary_name_mention(user_file, relationships_file, state, monkeypatch):
-    """Content that contains the primary name 'user' fires proactive."""
+    """Content that mentions the primary name fires proactive."""
     import heartbeat_activities.relationship_check as m
     monkeypatch.setattr(random, "random", lambda: 0.95)  # baseline won't fire
 
-    content = "I keep thinking about user and what he said last week."
+    # Primary name is "the operator" per USER.md fixture.
+    content = "I keep thinking about the operator and what he said last week."
     monkeypatch.setattr(m, "generate", lambda *a, **kw: content)
     monkeypatch.setattr("heartbeat_activities.log.log_activity", noop_log)
     result = run(state)
@@ -197,9 +200,13 @@ def test_compute_proactive_signal_words():
         "Something I haven't said yet",
         "I should say something",
     ]:
-        assert _compute_proactive(phrase, "{{USER_NAME}}") is True
+        assert _compute_proactive(phrase, "the operator") is True
 
 
-def test_compute_proactive_primary_name():
+def test_compute_proactive_primary_name(monkeypatch):
+    # _compute_proactive's first branch is `random.random() < PROACTIVE_BASE_RATE`
+    # (0.15). Pin random above the threshold so the test is deterministic —
+    # otherwise it's flaky ~15% of the time on the no-signal-words case.
+    monkeypatch.setattr(random, "random", lambda: 0.99)
     assert _compute_proactive("thinking about user and his way", "user") is True
     assert _compute_proactive("nothing particular to say", "") is False

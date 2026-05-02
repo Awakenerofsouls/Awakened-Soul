@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Nexus {{AGENT_NAME}} — BrainRegistry
+The agent — BrainRegistry
 Discovers and loads all BrainMechanism subclasses from brain/<layer>/ directories.
 Call BrainRegistry.load_all() once at startup to populate the mechanism catalog.
 """
@@ -14,15 +14,11 @@ from typing import Dict, List, Optional, Type
 import os
 
 # ── Config ──────────────────────────────────────────────────────────
-WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", str(Path(__file__).parent.parent.resolve())))
+WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.agent/workspace")))
 BRAIN_DIR = WORKSPACE / "brain"
 
 LAYER_SUBDIRS = [
-    "foundational",
-    "limbic",
-    "subcortical",
-    "neocortical",
-    "integration",
+    "mechanisms",
 ]
 
 # Files that exist in brain/ but are not generated layer mechanisms
@@ -97,7 +93,7 @@ class BrainRegistry:
                 if py_file.name.startswith("_"):
                     continue
 
-                module_name = f"brain.{layer}.{py_file.stem}"
+                module_name = f"brain.mechanisms.{py_file.stem}"
                 if module_name in modules_seen:
                     continue
 

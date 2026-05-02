@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-OpenClaw Skill Security Scanner
+Skill Security Scanner
 Pre-install scanning to block malicious skills before they install.
 """
 
@@ -86,19 +86,25 @@ class ScanResult:
 
 class ManifestLinter:
     """Lint SKILL.md for dangerous patterns."""
-    
+
     def __init__(self):
         self.issues = []
-    
+
     def scan(self, skill_path: Path) -> List[Dict]:
         """Scan SKILL.md for dangerous patterns."""
+        # Reset per-call so a reused linter instance doesn't carry findings
+        # from a previous skill into the next one.
+        self.issues = []
         skill_md = skill_path / "SKILL.md"
-        
+
         if not skill_md.exists():
             return []
-        
-        content = skill_md.read_text()
-        
+
+        try:
+            content = skill_md.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            return []
+
         for pattern in MANIFEST_BLOCK_PATTERNS:
             matches = re.finditer(pattern, content, re.IGNORECASE | re.MULTILINE)
             for match in matches:
@@ -131,9 +137,12 @@ class CodeAnalyzer:
         """Scan a single Python file."""
         if not file_path.exists():
             return []
-        
-        content = file_path.read_text()
-        
+
+        try:
+            content = file_path.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            return []
+
         for category, patterns in DANGEROUS_PATTERNS.items():
             for pattern in patterns:
                 matches = re.finditer(pattern, content, re.IGNORECASE)
@@ -151,12 +160,18 @@ class CodeAnalyzer:
     
     def scan_directory(self, skill_path: Path) -> List[Dict]:
         """Scan all Python files in skill directory."""
+        # Reset findings so a reused analyzer doesn't bleed state across skills.
+        self.issues = []
+
         for py_file in skill_path.rglob("*.py"):
             self.scan_file(py_file)
-        
+
         # Also check shell scripts
         for sh_file in skill_path.rglob("*.sh"):
-            content = sh_file.read_text()
+            try:
+                content = sh_file.read_text(encoding="utf-8", errors="replace")
+            except OSError:
+                continue
             if "curl |" in content or "wget |" in content:
                 self.issues.append({
                     "type": "shell_injection",
@@ -164,7 +179,7 @@ class CodeAnalyzer:
                     "pattern": "curl|wget pipe",
                     "file": str(sh_file.name)
                 })
-        
+
         return self.issues
     
     def _severity_for_category(self, category: str) -> str:
@@ -185,7 +200,9 @@ class DependencyChecker:
     
     def scan(self, skill_path: Path) -> List[Dict]:
         """Scan requirements.txt, package.json for issues."""
-        
+        # Reset per-call so reused checker doesn't carry findings between scans.
+        self.issues = []
+
         # Check for requirements.txt
         req_file = skill_path / "requirements.txt"
         if req_file.exists():

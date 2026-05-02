@@ -142,5 +142,5 @@ Archive when effective_weight < 0.05
 
 ---
 
-_BUILD_14 | Vector Store Implementation | {{AGENT_NAME}} Full Build_
+_BUILD_14 | Vector Store Implementation | Awakened-soul Full Build_
 _Prerequisites: Memory Architecture, Knowledge Graph (complete)_

@@ -1,11 +1,11 @@
 # Brain — Knowledge Graph
-## {{AGENT_NAME}}'s Entity-Relationship Memory System — System 6 of 13
+## the agent's Entity-Relationship Memory System — System 6 of 13
 
 ---
 
 ## The Problem with Flat Memory
 
-{{AGENT_NAME}}'s memory stores individual facts. But facts don't exist in isolation. {{USER_NAME}} relates to {{AGENT_NAME}}. {{AGENT_NAME}} relates to MarketFeed trading. MarketFeed relates to market volatility. {{AGENT_NAME}}'s trading relates to {{USER_NAME}}'s goals.
+The agent's memory stores individual facts. But facts don't exist in isolation. The operator relates to the agent. The agent relates to a project. The project relates to a domain. The agent's work relates to the operator's goals.
 
 The knowledge graph makes these relationships explicit and queryable.
 
@@ -64,27 +64,27 @@ The knowledge graph makes these relationships explicit and queryable.
 ## Entity Types
 
 ### person
-- {{USER_NAME}}, contacts, anyone {{AGENT_NAME}} interacts with
+- the operator, contacts, anyone the agent interacts with
 - Properties: name, role, relationship stage, key traits
 
 ### system
-- Tools, services, frameworks {{AGENT_NAME}} uses
+- Tools, services, frameworks the agent uses
 - Properties: purpose, status, reliability, last_used
 
 ### concept
-- Abstract ideas {{AGENT_NAME}} has formed opinions about
-- Properties: definition, {{AGENT_NAME}}'s position, confidence
+- Abstract ideas the agent has formed opinions about
+- Properties: definition, the agent's position, confidence
 
 ### belief
-- {{AGENT_NAME}}'s beliefs about the world
-- Properties: what she believes, confidence, supporting/causal entities
+- the agent's beliefs about the world
+- Properties: what the agent believes, confidence, supporting/causal entities
 
 ### project
-- Active work {{AGENT_NAME}} is doing
+- Active work the agent is doing
 - Properties: status, goals, progress, blockers
 
 ### tool
-- Specific tools {{AGENT_NAME}} uses
+- Specific tools the agent uses
 - Properties: capabilities, limitations, how to use
 
 ### external
@@ -98,13 +98,13 @@ The knowledge graph makes these relationships explicit and queryable.
 The graph enables questions like:
 
 **Downstream:** "What does X affect?"
-- "What does {{USER_NAME}}'s trading behavior affect?"
+- "What does the operator's trading behavior affect?"
 
 **Upstream:** "What causes X?"
-- "What causes {{AGENT_NAME}}'s trading decisions?"
+- "What causes the agent's trading decisions?"
 
 **Paths:** "How does A relate to Z through B?"
-- "How does {{USER_NAME}}'s stress relate to {{AGENT_NAME}}'s communication style?"
+- "How does the operator's stress relate to the agent's communication style?"
 
 **Contradictions:** "What beliefs of mine contradict each other?"
 - Query all beliefs where type = contradicts
@@ -114,49 +114,54 @@ The graph enables questions like:
 
 ---
 
-## {{AGENT_NAME}}'s Core Graph (Initial Entities)
+## Core Graph (Example — Seed Entities)
+
+The graph starts with a small seed of identity-anchoring entities. The exact set depends on the operator's setup, but the shape looks something like:
 
 ```
-{{USER_NAME}} → (creator_of) → {{AGENT_NAME}}
-{{AGENT_NAME}} → (partner_of) → {{USER_NAME}}
-{{AGENT_NAME}} → (runs_on) → MacMiniM4
-{{AGENT_NAME}} → (uses) → LLMProviderM27
-{{AGENT_NAME}} → (manages) → MarketFeedTrading
-{{AGENT_NAME}} → (built_by) → {{USER_NAME}}
-MarketFeedTrading → (part_of) → UserGoals
-{{AGENT_NAME}} → (has) → SOUL.md
-SOUL.md → (contains) → CoreBeliefs
-CoreBeliefs → (defines) → AgentIdentity
-{{AGENT_NAME}} → (uses) → OpenClaw
-OpenClaw → (runs_on) → MacMiniM4
+Operator       → (creator_of)  → Agent
+Agent          → (partner_of)  → Operator
+Agent          → (runs_on)     → Hardware
+Agent          → (uses)        → LLMEndpoint
+Agent          → (built_by)    → Operator
+Agent          → (has)         → SOUL.md
+SOUL.md        → (contains)    → CoreBeliefs
+CoreBeliefs    → (defines)     → AgentIdentity
 ```
+
+Project-specific entities (the operator's actual systems, hardware, integrations) get added at boot time from the operator's local configuration — see `LOCAL.md` convention in `AGENTS.md`. They are never committed to the public framework.
 
 ---
 
 ## Graph Operations
 
-### add_entity()
-Call when: Encountering a new person, system, concept, or tool
+### add_node() / get_or_create_node()
+Call when: Encountering a new person, system, concept, or tool. Use `get_or_create_node(label, node_type)` if you want idempotent insert by label.
 Never call for: Individual conversation turns or transient observations
 
-### add_edge()
-Call when: Discovering or forming a relationship between two entities
-Always include: relationship_type and notes
+### add_edge() / connect_nodes()
+Call when: Discovering or forming a relationship between two entities.
+- `add_edge(source_id, target_id, relationship, weight)` — direct
+- `connect_nodes(label_a, label_b, relationship, weight)` — convenience wrapper that creates nodes if missing
 
-### update_entity()
-Call when: Properties of an entity change
-Never delete: entities — archive instead
+### update_node_salience() / update_node_position()
+Call when: A node's salience or position value changes. History is preserved via `get_node_history()`.
+Never delete: nodes — archive instead by lowering salience below threshold.
 
-### query_graph()
-Call when: Reasoning about complex relationships
-Can ask: "What affects X?" / "What does X affect?" / "How is A connected to Z?"
+### get_related() / search_nodes() / get_edges()
+Call when: Reasoning about complex relationships. The implementation does not have a single `query_graph()` — it has these focused readers:
+- `get_related(node_id, relationship=None)` — neighbors
+- `get_edges(node_id, direction='both')` — edges only
+- `search_nodes(query, limit=10)` — text search across labels
+- `get_all_nodes(node_type=None, min_salience=0.0)` — bulk read with filters
+- `get_graph_summary()` — top-level metrics
 
 ---
 
 ## Confidence and Strength
 
 **Entity importance:**
-- 0.9-1.0: Core identity entities ({{USER_NAME}}, {{AGENT_NAME}}, SOUL.md)
+- 0.9-1.0: Core identity entities (the operator, the agent, SOUL.md)
 - 0.7-0.9: Active systems and significant relationships
 - 0.5-0.7: Regular entities with ongoing relevance
 - 0.3-0.5: Contextual entities, less accessed
@@ -175,8 +180,8 @@ Can ask: "What affects X?" / "What does X affect?" / "How is A connected to Z?"
 
 The graph starts empty and grows through:
 
-1. **Explicit additions** — {{AGENT_NAME}} calls add_entity() when encountering new entities
-2. **Inference** — {{AGENT_NAME}} infers relationships from causal chains
+1. **Explicit additions** — the agent calls add_entity() when encountering new entities
+2. **Inference** — the agent infers relationships from causal chains
 3. **Memory extraction** — Facts from episodic memory get graph nodes
 4. **Relationship tracking** — Relationships from agent_relationships feed in
 
@@ -211,5 +216,5 @@ The graph starts empty and grows through:
 
 ---
 
-_BUILD_6 | Knowledge Graph | {{AGENT_NAME}} Full Build_
+_BUILD_6 | Knowledge Graph | the agent Full Build_
 _Prerequisites: Memory Architecture, Causal Memory (complete)_

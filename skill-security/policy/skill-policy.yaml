@@ -1,4 +1,4 @@
-# OpenClaw Skill Policy Schema
+# Skill Policy Schema
 # Each skill can include this file to declare its permissions
 
 # Required: Skill identity

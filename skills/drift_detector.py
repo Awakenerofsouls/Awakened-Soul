@@ -14,26 +14,40 @@ import hashlib
 from datetime import datetime
 from pathlib import Path
 
-WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.openclaw/workspace")))
+WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.agent/workspace")))
 AGENT_HOME = Path(os.getenv("AGENT_HOME", os.path.expanduser("~/.agent")))
 DB_PATH = AGENT_HOME / os.getenv("AGENT_DB_NAME", "agent.db")
 SOUL_PATH = WORKSPACE / "SOUL.md"
 PERSONALITY_PATH = WORKSPACE / "PERSONALITY.md"
 OVERNIGHT_LOG = WORKSPACE / "OVERNIGHT_LOG.md"
 
-# Baseline — derived from identity behavioral non-negotiables
+# Baseline — derived from identity behavioral non-negotiables.
+#
+# OCEAN baseline lives in brain/oceans.py — that module is the source of
+# truth (it parses operator-edited OCEANS.md and exposes get_all_traits()).
+# Anyone who needs OCEAN values should call get_ocean_baseline() below
+# rather than reading a hard-coded dict here.
 BASELINE_TRAITS = {
     "required": ["direct", "curious", "competent"],
     "forbidden_behaviors": ["sycophancy", "half-baked replies", "speaking as user"],
     "tone_anchors": ["sharp", "warm", "present"],
-    "ocean_baseline": {
-        "openness": 0.85,
-        "conscientiousness": 0.80,
-        "extraversion": 0.55,
-        "agreeableness": 0.65,
-        "neuroticism": 0.25
-    }
 }
+
+
+def get_ocean_baseline() -> dict:
+    """Return the canonical OCEAN baseline from brain/oceans.py.
+
+    Single source of truth: brain.oceans.get_all_traits() reads OCEANS.md
+    (operator-edited) with documented context modulations. Falls back to
+    the brain/oceans DEFAULT_BASELINE if the module isn't importable
+    (only relevant in unit tests that isolate skills/ from brain/).
+    """
+    try:
+        from brain.oceans import get_all_traits  # type: ignore
+        return dict(get_all_traits())
+    except Exception:
+        # Fallback matches brain/oceans.DEFAULT_BASELINE.
+        return {"O": 0.85, "C": 0.85, "E": 0.50, "A": 0.70, "N": 0.15}
 
 
 def get_db():
@@ -47,7 +61,7 @@ def hash_file(path):
     try:
         content = Path(path).read_text()
         return hashlib.sha256(content.encode()).hexdigest()[:16]
-    except:
+    except Exception:
         return None
 
 
@@ -58,7 +72,7 @@ def get_live_state(db):
     for row in rows:
         try:
             state[row["key"]] = json.loads(row["value"])
-        except:
+        except (json.JSONDecodeError, TypeError):
             state[row["key"]] = row["value"]
     return state
 
@@ -270,14 +284,19 @@ def main():
 
     if status == "breach":
         print(f"[drift] ⚠️ BREACH DETECTED — composite {composite}")
-        # Emergency trigger — call proactive initiation immediately on breach
-        import subprocess
-        subprocess.Popen([
-            "python3",
-            os.path.join(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.openclaw/workspace")), "skills/proactive_initiation.py"),
-            "--emergency"
-        ])
-        print("[drift] emergency initiation triggered")
+        # Emergency trigger — call proactive_initiation.py if it exists. Skip
+        # gracefully when missing so a breach is still recorded in drift_log
+        # and OVERNIGHT_LOG.md even without the optional initiation script.
+        proactive = WORKSPACE / "skills" / "proactive_initiation.py"
+        if proactive.exists():
+            import subprocess
+            subprocess.Popen(["python3", str(proactive), "--emergency"])
+            print("[drift] emergency initiation triggered")
+        else:
+            print(
+                f"[drift] WARNING: breach detected but {proactive} not found — "
+                "skipping emergency initiation. Drift was still logged to drift_log + OVERNIGHT_LOG.md."
+            )
     else:
         print(f"[drift] identity {status}")
 

@@ -2,7 +2,7 @@
 Interest writer — post-generation hook for heartbeat activities.
 
 After an activity generates content, checks if the content revealed a genuinely
-new interest {{AGENT_NAME}} wants to track. If yes, appends to INTERESTS.md via the
+new interest the agent wants to track. If yes, appends to INTERESTS.md via the
 existing append_interest() which also seeds EGE curiosity debt.
 
 Usage:

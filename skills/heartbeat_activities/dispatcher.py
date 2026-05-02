@@ -40,6 +40,7 @@ from .insight import run as run_insight
 from .news import run as run_news
 from .memory_capture import run as run_memory_capture
 from .consolidation import run as run_consolidation
+from .future_letter import run as run_future_letter
 from .open_question import run as run_open_question
 from .tool_explore import run as run_tool_explore
 from .narrative import run as run_narrative
@@ -95,6 +96,7 @@ ACTIVITY_REGISTRY: dict[str, callable] = {
     "insight":        run_insight,
     "private_entry":  run_private_entry,
     "open_question":  run_open_question,
+    "future_letter":  run_future_letter,
     # Creative / Expression
     "creative":       run_creative,
     "humor":          run_humor,

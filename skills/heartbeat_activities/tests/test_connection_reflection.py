@@ -24,7 +24,7 @@ def state(tmp_path):
 @pytest.fixture
 def user_file(tmp_path):
     path = tmp_path / "USER.md"
-    path.write_text("# {{USER_NAME}}\n", encoding="utf-8")
+    path.write_text("# the operator\n", encoding="utf-8")
     return path
 
 
@@ -60,7 +60,7 @@ def test_connection_writes_to_relationships(user_file, state, monkeypatch):
 
 
 def test_connection_primary_name_in_prompt(user_file, state, monkeypatch):
-    """Prompt includes the extracted primary name."""
+    """Prompt includes the extracted primary name from USER.md."""
     import heartbeat_activities.connection_reflection as m
     captured = []
     def fake_gen(prompt, **kw):
@@ -70,7 +70,11 @@ def test_connection_primary_name_in_prompt(user_file, state, monkeypatch):
     monkeypatch.setattr("heartbeat_activities.log.log_activity", noop_log)
     monkeypatch.setattr(random, "random", lambda: 0.9)
     run(state)
-    assert "user" in captured[0].lower()
+    # The fixture's USER.md sets the primary name to "the operator" — the
+    # framework default placeholder. Match on that. (Older tests asserted
+    # "user" from when USER.md still defaulted to a literal username; the
+    # public-release sanitization moved everything to "the operator".)
+    assert "the operator" in captured[0].lower()
 
 
 def test_connection_no_user_file(tmp_path, state, monkeypatch):

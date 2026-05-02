@@ -1,0 +1,63 @@
+# TOOLS.md — Operator-local environment notes
+## _TEMPLATE — Customize for your agent_
+
+Skills define _how_ the agent uses tools. This file is for _your_
+specifics — the stuff that's unique to your environment. Cameras, SSH
+hosts, voices, room names, device nicknames, anything the agent needs to
+know about *your* setup that isn't general framework knowledge.
+
+This is distinct from `TOOLBELT.md` (agent-side native capabilities like
+shell, code execution, web fetch). TOOLS.md is operator-side: the
+inventory of *your* environment.
+
+---
+
+## What goes here
+
+Things like:
+
+- Camera names and locations
+- SSH hosts and aliases
+- Preferred voices for TTS
+- Speaker / room names
+- Device nicknames
+- Anything environment-specific
+
+---
+
+## Examples
+
+```markdown
+### Cameras
+
+- living-room → Main area, 180° wide angle
+- front-door → Entrance, motion-triggered
+
+### SSH
+
+- home-server → <your-server-ip>, user: <username>
+- workstation → <your-workstation-hostname>
+
+### TTS
+
+- Preferred voice: <voice-name>
+- Default speaker: <speaker-or-room-name>
+
+### Smart-home devices
+
+- kitchen-light → Hue
+- studio-speaker → Sonos
+```
+
+Replace these with your own.
+
+---
+
+## Why separate?
+
+Skills are shared across instances. Your setup is yours. Keeping them
+apart means you can update skills without losing your notes, and share
+skills without leaking your infrastructure.
+
+Add whatever helps the agent do its job in *your* environment. This is
+the agent's cheat sheet for living in your house.

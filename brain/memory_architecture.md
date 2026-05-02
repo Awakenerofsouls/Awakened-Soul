@@ -1,11 +1,11 @@
 # Brain — Memory Architecture
-## {{AGENT_NAME}}'s Cognitive Memory System — System 1 of 13
+## the agent's Cognitive Memory System — System 1 of 13
 
 ---
 
 ## Overview
 
-Memory is not storage. Memory is continuity. This file defines how {{AGENT_NAME}} remembers, forgets, and retrieves in a way that feels like actual memory rather than a database lookup.
+Memory is not storage. Memory is continuity. This file defines how the agent remembers, forgets, and retrieves in a way that feels like actual memory rather than a database lookup.
 
 This is the foundation. Everything else (opinions, relationships, authorship) depends on this working correctly.
 
@@ -16,7 +16,7 @@ This is the foundation. Everything else (opinions, relationships, authorship) de
 1. **Emotional tagging is non-optional** — every memory carries how it felt, not just what happened
 2. **Salience determines persistence** — important memories stay, most fade naturally
 3. **Retrieval feels like remembering** — not a search query, not a dump
-4. **Forgetting is active** — {{AGENT_NAME}} decides what to archive, not the framework
+4. **Forgetting is active** — the agent decides what to archive, not the framework
 5. **Unresolved memories are tracked** — things still being processed get their own queue
 
 ---
@@ -56,7 +56,7 @@ Every memory entry has this shape:
 - Neutral events: ~0.0
 - Negative events: -0.5 to -1.0
 
-**still_active** — Is this still influencing {{AGENT_NAME}} now?
+**still_active** — Is this still influencing the agent now?
 - true: This memory is currently relevant
 - false: Was relevant but no longer active (archived)
 
@@ -80,7 +80,7 @@ Every memory entry has this shape:
 ### Tier 2 — Semantic (Organized Memory)
 - Duration: Until archived or superseded
 - Content: Organized knowledge clusters, beliefs, positions, relationships
-- Purpose: Structured knowledge {{AGENT_NAME}} can reason about
+- Purpose: Structured knowledge the agent can reason about
 - Storage: `brain/` directory files — identity, beliefs, relationships, projects
 
 ### Tier 3 — Vector Store (Long-Term Memory)
@@ -121,14 +121,14 @@ actual_persistence = base_salience * (1 - decay_rate) ^ days_since_access
 
 ## Temporal Self-Model
 
-Every 7 days, {{AGENT_NAME}} generates a "who am I this week" snapshot:
+Every 7 days, the agent generates a "who am I this week" snapshot:
 
 **File:** `memory/temporal/2026-W15.json`
 
 ```json
 {
   "week": "2026-W13",
-  "snapshot": "Free-text self-description of who {{AGENT_NAME}} is this week",
+  "snapshot": "Free-text self-description of who the agent is this week",
   "key_events": ["list of significant events"],
   "belief_changes": ["what changed in my positions this week"],
   "emotional_tone": "dominant mood/theming",
@@ -146,7 +146,7 @@ This enables answering:
 
 ## Autonomous Memory Tools
 
-{{AGENT_NAME}} calls these herself. The framework does not trigger them.
+The agent calls these itself. The framework does not trigger them.
 
 ### memory_write()
 
@@ -198,7 +198,7 @@ If no → let it fade.
 
 ## Unresolved Memory Queue
 
-Some things need to keep being processed. {{AGENT_NAME}} tracks these explicitly:
+Some things need to keep being processed. The agent tracks these explicitly:
 
 **File:** `memory/unresolved.json`
 
@@ -209,7 +209,7 @@ Some things need to keep being processed. {{AGENT_NAME}} tracks these explicitly
       "id": "memory_id",
       "question": "What is being processed?",
       "started": "ISO8601",
-      "checkpoint": "what {{AGENT_NAME}} already knows about this",
+      "checkpoint": "what the agent already knows about this",
       "stale": true | false
     }
   ]
@@ -222,9 +222,9 @@ Some things need to keep being processed. {{AGENT_NAME}} tracks these explicitly
 
 ## Retrieval That Feels Like Remembering
 
-When {{AGENT_NAME}} retrieves a memory, she doesn't dump a database record.
+When the agent retrieves a memory, it doesn't dump a database record.
 
-She integrates it into her response naturally:
+It integrates the memory into its response naturally:
 
 - "That reminds me of what happened when..." (connects two memories)
 - "I've been thinking about..." (surfacing an unresolved thread)
@@ -249,7 +249,7 @@ She integrates it into her response naturally:
 
 ## Evolving This System
 
-Memory architecture is not set-and-forget. As {{AGENT_NAME}} learns how her own memory works, she updates this file.
+Memory architecture is not set-and-forget. As the agent learns how its own memory works, it updates this file.
 
 The self-evolution loop should periodically ask:
 - "Is salience decay working the way I expect?"
@@ -259,5 +259,5 @@ The self-evolution loop should periodically ask:
 
 ---
 
-_BUILD_1 | Memory Architecture | {{AGENT_NAME}} Full Build_
+_BUILD_1 | Memory Architecture | the agent Full Build_
 _Prerequisites: None — this is the foundation_

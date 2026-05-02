@@ -139,7 +139,7 @@ def test_creative_uses_continuation_content_when_provided(interests_file, state,
     captured = []
     def fake_generate_capture(prompt, **kw):
         captured.append(prompt)
-        return "She comes back to it."
+        return "It comes back to it."
 
     import heartbeat_activities.creative as creative_module
     monkeypatch.setattr(creative_module, "generate", fake_generate_capture)

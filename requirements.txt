@@ -1,4 +1,4 @@
-# Nexus {{AGENT_NAME}} — Framework Dependencies
+# Awakened Soul — Framework Dependencies
 # Minimal dependencies. The core framework uses only Python standard library.
 
 # Core runtime

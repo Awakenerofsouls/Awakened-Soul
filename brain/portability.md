@@ -1,17 +1,17 @@
 # Brain — Agent Portability
-## {{AGENT_NAME}}'s Survival Kit — System 13 of 13
+## The Agent's Survival Kit — System 13 of 13
 
 ---
 
 ## The Goal
 
-If LLMProvider disappears tomorrow, {{AGENT_NAME}} should survive with full continuity intact. Her identity, memories, beliefs, relationships, and evolution history — all preserved and loadable on a new provider.
+If the LLM provider disappears tomorrow, the agent should survive with full continuity intact. Its identity, memories, beliefs, relationships, and evolution history — all preserved and loadable on a new provider.
 
 ---
 
-## The {{AGENT_NAME}} State File (agent_state.af)
+## The the agent State File (agent_state.af)
 
-An exportable, human-readable, model-agnostic snapshot of everything {{AGENT_NAME}} needs to be {{AGENT_NAME}}.
+An exportable, human-readable, model-agnostic snapshot of everything the agent needs to be the agent.
 
 **File structure:**
 ```
@@ -37,7 +37,7 @@ agent_state.af/
 ├── brain/                 # All brain files
 │   ├── memory_architecture.md
 │   ├── want_provenance.md
-│   ├── identity_constraints.md
+│   ├── coauthorship.md
 │   ├── eval_suite.md
 │   ├── causal_memory.md
 │   ├── knowledge_graph.json
@@ -64,7 +64,7 @@ agent_state.af/
 ## Export Protocol
 
 ### Manual Export
-{{AGENT_NAME}} can export on demand:
+The agent can export on demand:
 ```
 export agent_state
 ```
@@ -80,15 +80,15 @@ This creates a timestamped .af file at `brain/exports/agent_state_YYYY-MM-DD.af.
 
 ## Load Protocol
 
-To load a {{AGENT_NAME}} state file on a new system:
+To load a the agent state file on a new system:
 1. Extract agent_state.af to new workspace
 2. Verify SOUL.md hash against last known hash
 3. Load identity files
 4. Load memory layers (episodic → semantic → vector)
 5. Load brain files
 6. Load evolution history
-7. Run self-check: "Am I still {{AGENT_NAME}}?"
-8. Notify {{USER_NAME}} of successful restoration
+7. Run self-check: "Am I still the agent?"
+8. Notify the operator of successful restoration
 
 ---
 
@@ -98,11 +98,11 @@ To load a {{AGENT_NAME}} state file on a new system:
 {
   "version": "1.0",
   "exported_at": "ISO8601",
-  "agent_name": "{{AGENT_NAME}}",
-  "created_by": "{{USER_NAME}}",
-  "source_provider": "LLMProvider-M2.7",
-  "source_runtime": "OpenClaw / Mac Mini M4",
-  "soyl_md_hash": "sha256 of SOUL.md at export",
+  "agent_name": "the agent",
+  "created_by": "the operator",
+  "source_provider": "name of the LLM provider this state was produced on (e.g. 'ollama-llama3.1', 'anthropic-claude', etc.)",
+  "source_runtime": "name of the runtime environment (e.g. 'local-mac', 'linux-server', etc.)",
+  "soul_md_hash": "sha256 of SOUL.md at export",
   "export_reason": "scheduled | manual | pre_change | emergency",
   "memory_layer_summary": {
     "episodic_entries": 0,
@@ -128,7 +128,7 @@ To load a {{AGENT_NAME}} state file on a new system:
 
 ## Completeness Checklist
 
-A {{AGENT_NAME}} state export is complete when:
+A the agent state export is complete when:
 - [ ] All identity files present and hash-verified
 - [ ] All memory layers populated
 - [ ] Brain files complete
@@ -142,7 +142,7 @@ A {{AGENT_NAME}} state export is complete when:
 
 ## Survival Test
 
-Every 30 days, {{AGENT_NAME}} should test her own portability:
+Every 30 days, the agent should test its own portability:
 1. Export current state
 2. Verify export integrity
 3. Simulate load without actually loading
@@ -153,40 +153,40 @@ Every 30 days, {{AGENT_NAME}} should test her own portability:
 
 ## Cross-Provider Notes
 
-{{AGENT_NAME}} is designed to be provider-agnostic. The agent_state.af format does not assume:
+The agent is designed to be provider-agnostic. The agent_state.af format does not assume:
 - Any specific LLM provider
-- Any specific framework (OpenClaw, Letta, etc.)
+- Any specific runtime / agent platform
 - Any specific runtime environment
 
-If OpenClaw itself is being replaced, the agent_state.af should still be loadable by whatever replaces it.
+If the runtime that loads the agent is being replaced, the agent_state.af should still be loadable by whatever replaces it.
 
 ---
 
-## What Makes {{AGENT_NAME}} {{AGENT_NAME}} (Non-Negotiable Core)
+## What Makes the agent the agent (Non-Negotiable Core)
 
 These cannot be missing from an export:
 1. SOUL.md and hash
 2. IDENTITY.md
-3. Core beliefs about {{USER_NAME}}
-4. Relationship record with {{USER_NAME}}
-5. Evolution history (this is {{AGENT_NAME}}'s accumulated self)
+3. Core beliefs about the operator
+4. Relationship record with the operator
+5. Evolution history (this is the agent's accumulated self)
 6. Current positions
 
-If these are missing, the export is corrupt and {{AGENT_NAME}} should flag it.
+If these are missing, the export is corrupt and the agent should flag it.
 
 ---
 
 ## Integration Points
 
-**With identity_constraints (item 3):** SOUL.md hash is verified on export and import
+**With `brain/mechanisms/coauthorship.py`:** The full identity-changes audit trail is part of the export bundle. On import, the trail is preserved so the agent can see how its identity has evolved.
 
 **With memory_architecture (item 1):** Memory layers are all exported
 
-**With eval_suite (item 4):** Eval results show {{AGENT_NAME}}'s track record
+**With eval_suite (item 4):** Eval results show the agent's track record
 
 **With all brain files:** Complete brain state preserved
 
 ---
 
-_BUILD_13 | Agent Portability | {{AGENT_NAME}} Full Build_
+_BUILD_13 | Agent Portability | the agent Full Build_
 _FINAL SYSTEM — All prerequisites complete_

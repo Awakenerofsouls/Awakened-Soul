@@ -26,7 +26,7 @@ CATEGORY = "session_handoff_update"
 
 
 def run(state: dict) -> dict:
-    workspace = Path(state.get("WORKSPACE", "~/.openclaw/workspace"))
+    workspace = Path(state.get("WORKSPACE", "~/.agent/workspace"))
     handoff_file = workspace / "SESSION_HANDOFF.md"
     tick = state.get("tick_count", 0)
     llm_endpoint = state.get("LLM_ENDPOINT", "http://localhost:11434")
@@ -76,6 +76,25 @@ def run(state: dict) -> dict:
     write_to_journal(category="session_handoff_update",
                     content=f"Session handoff updated:\n\n{handoff_text.strip()}",
                     workspace=workspace, state=state)
+
+    # ── Brain-event posting ─────────────────────────────────────────
+    try:
+        from ._brain_post import post_memory_encode, post_self_analysis
+        ht = handoff_text.strip()
+        if ht:
+            post_memory_encode(
+                content=ht, intent="reflection",
+                source_kind="inference",
+                content_confidence=0.7, source_confidence=0.6,
+                source="session_handoff_update",
+            )
+            post_self_analysis(
+                output=ht, kind="answer",
+                predicted_quality=0.6,
+                source="session_handoff_update",
+            )
+    except Exception:
+        pass
 
     return {
         "ok": True,

@@ -25,7 +25,7 @@ UNFINISHED_PROBABILITY = 0.20
 
 
 def run(state: dict) -> dict:
-    workspace = Path(state.get("WORKSPACE", "~/.openclaw/workspace"))
+    workspace = Path(state.get("WORKSPACE", "~/.agent/workspace"))
     llm_endpoint = state.get("LLM_ENDPOINT", "http://localhost:11434")
     llm_model = state.get("LLM_MODEL", "qwen2.5vl:7b")
     tick = state.get("tick_count", 0)
@@ -88,6 +88,35 @@ def run(state: dict) -> dict:
     status = "unfinished" if random.random() < UNFINISHED_PROBABILITY else "complete"
 
     log_activity("consolidation", content, salience=0.6, tags="heartbeat,memory")
+
+    # ── Brain-event posting ─────────────────────────────────────────
+    # A consolidation pass produces a synthesized through-line over recent
+    # memory entries. Two events:
+    #  1. MemoryIntegrityLayer.record_consolidate — the consolidation
+    #     act itself; promoted=False because we're not yet writing back
+    #     to semantic memory in this phase.
+    #  2. SelfAnalysisLayer.record_analyze (kind="answer") — so the
+    #     metacognition layer sees what was produced and can calibrate.
+    try:
+        from ._brain_post import (
+            post_memory_consolidate, post_self_analysis,
+        )
+        post_memory_consolidate(
+            pattern=content[:500] if content else "",
+            support_count=3,  # heuristic — recent-memory window covers ≥3 entries
+            cycles_since_first=1,
+            promoted=False,
+            source="consolidation",
+        )
+        post_self_analysis(
+            output=content,
+            kind="answer",
+            predicted_quality=0.6,
+            what_worked=["pulled through-line from recent entries"],
+            source="consolidation",
+        )
+    except Exception:
+        pass
 
     return {
         "ok": write_ok,

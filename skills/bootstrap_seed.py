@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-bootstrap_seed.py — {{AGENT_NAME}} v15 bootstrap
+bootstrap_seed.py — the agent v15 bootstrap
 Run once to populate all 21 empty tables with founding rows.
 This gives generators meaningful context on first real run instead of working from nothing.
 """
@@ -8,10 +8,14 @@ import sqlite3, time
 from pathlib import Path
 import os
 
-DB_PATH = Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent")))) / "agent.db"
-NOW = time.time()
+DB_PATH = Path(os.getenv("AGENT_HOME", str(Path.home() / ".agent"))) / "agent.db"
+
 
 def seed(db):
+    # Compute NOW at call time, not at import time, so a long-lived process
+    # that imports this module and later calls seed() doesn't stamp every
+    # row with the import timestamp.
+    NOW = time.time()
     cur = db.cursor()
 
     # action_log — action selector
@@ -68,16 +72,16 @@ def seed(db):
     cur.execute("""
         INSERT INTO meta_consciousness_log (timestamp, trait, direction, magnitude, reflection, snapshot)
         VALUES (?, ?, ?, ?, ?, ?)
-    """, (NOW, "self_model_coherence", "stable", 0.5, "{{AGENT_NAME}} initialized. Identity stable.", "identity_snapshot_v15"))
+    """, (NOW, "self_model_coherence", "stable", 0.5, "the agent initialized. Identity stable.", "identity_snapshot_v15"))
     print("✓ meta_consciousness_log")
 
     # semantic_memory — long-term conceptual store
     cur.execute("""
         INSERT INTO semantic_memory (created_at, source, content, embedding_key, tags, confidence, concept, definition)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, (NOW, "bootstrap", "{{AGENT_NAME}} identity core — self model initialized v15.0",
+    """, (NOW, "bootstrap", "the agent identity core — self model initialized v15.0",
           "agent_identity_core", "bootstrap,identity,core", 0.8,
-          "agent_identity", "{{AGENT_NAME}} is the autonomous agent operating in this workspace. Identity is self-authored and evolving."))
+          "agent_identity", "the agent is the autonomous agent operating in this workspace. Identity is self-authored and evolving."))
     print("✓ semantic_memory")
 
     # --- life/ subsystem stubs ---
@@ -99,11 +103,11 @@ def seed(db):
 
     # experience_predictor
     cur.execute("INSERT INTO experience_predictor (timestamp) VALUES (?)", (NOW,))
-    print("✓ experience_outcome_simulator")
+    print("✓ experience_predictor")
 
     # experience_outcome_simulator
     cur.execute("INSERT INTO experience_outcome_simulator (timestamp) VALUES (?)", (NOW,))
-    print("✓ experience_predictor")
+    print("✓ experience_outcome_simulator")
 
     # long_term_reward
     cur.execute("INSERT INTO long_term_reward (timestamp) VALUES (?)", (NOW,))
@@ -129,9 +133,13 @@ def seed(db):
     db.commit()
 
 def main():
-    print(f"=== {{AGENT_NAME}} v15 Bootstrap Seed ===")
+    print(f"=== the agent v15 Bootstrap Seed ===")
     print(f"DB: {DB_PATH}")
     print()
+
+    # Make sure AGENT_HOME exists before connecting; sqlite3 will create the
+    # file but won't create the parent directory.
+    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
 
     db = sqlite3.connect(DB_PATH)
     seed(db)

@@ -63,6 +63,12 @@ class SafeguardTestBase(unittest.TestCase):
 
 class TestWhitelist(SafeguardTestBase):
 
+    def test_01_whitelisted_emergency_initiation_allowed(self):
+        result = safeguard.can_perform(
+            "subprocess",
+            ["python3", "skills/proactive_initiation.py", "--emergency"],
+        )
+        self.assertTrue(result)
 
     def test_02_whitelisted_crontab_read_allowed(self):
         result = safeguard.can_perform("subprocess", ["crontab", "-l"])
@@ -171,8 +177,13 @@ class TestLoopDetectionAndHalt(SafeguardTestBase):
         self.assertIsNone(state.get("halted_until"))
         self.assertEqual(state.get("blocked_counts"), {})
 
+        # After reset the halt is cleared; a whitelisted command that
+        # *would* have been blocked while halted now returns True. Use an
+        # actually-whitelisted entry from ALLOWED_COMMANDS so this test
+        # proves the halt was lifted, not that a non-whitelisted command
+        # was somehow re-allowed.
         result = safeguard.can_perform(
-            "subprocess", ["python3", "skills/example-skill.py"]
+            "subprocess", ["crontab", "-l"]
         )
         self.assertTrue(result)
 

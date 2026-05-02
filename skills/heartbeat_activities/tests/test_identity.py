@@ -19,14 +19,14 @@ def tmp_workspace(tmp_path):
 
 def test_extracts_name_from_h1(tmp_workspace):
     path = tmp_workspace / "USER.md"
-    path.write_text("# {{USER_NAME}}\n\nSome description", encoding="utf-8")
-    assert extract_primary_name(tmp_workspace) == "{{USER_NAME}}"
+    path.write_text("# the operator\n\nSome description", encoding="utf-8")
+    assert extract_primary_name(tmp_workspace) == "the operator"
 
 
 def test_extracts_name_mari(tmp_workspace):
     path = tmp_workspace / "USER.md"
-    path.write_text("# {{USER_NAME}}\n\nMy name is {{USER_NAME}}", encoding="utf-8")
-    assert extract_primary_name(tmp_workspace) == "{{USER_NAME}}"
+    path.write_text("# the operator\n\nMy name is the operator", encoding="utf-8")
+    assert extract_primary_name(tmp_workspace) == "the operator"
 
 
 def test_returns_empty_when_no_file(tmp_workspace):
@@ -57,13 +57,13 @@ def test_first_h1_wins(tmp_workspace):
 
 def test_name_is_stripped(tmp_workspace):
     path = tmp_workspace / "USER.md"
-    path.write_text("#   {{USER_NAME}}   \n\nExtra whitespace", encoding="utf-8")
+    path.write_text("#   the operator   \n\nExtra whitespace", encoding="utf-8")
     result = extract_primary_name(tmp_workspace)
-    assert result == "{{USER_NAME}}"
+    assert result == "the operator"
 
 
 def test_custom_user_file(tmp_workspace):
     path = tmp_workspace / "IDENTITY.md"
-    path.write_text("# {{AGENT_NAME}}\n\nSomething", encoding="utf-8")
+    path.write_text("# the agent\n\nSomething", encoding="utf-8")
     result = extract_primary_name(tmp_workspace, user_file="IDENTITY.md")
-    assert result == "{{AGENT_NAME}}"
+    assert result == "the agent"

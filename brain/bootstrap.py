@@ -1,5 +1,5 @@
 """
-brain/bootstrap.py — {{AGENT_NAME}} Runtime Bootstrap
+brain/bootstrap.py — the agent Runtime Bootstrap
 Wires all seven phases + phenomenological + collision layers into a running system.
 """
 
@@ -11,7 +11,7 @@ from pathlib import Path
 import numpy as np
 
 import os
-WORKSPACE = Path(os.environ.get('AGENT_WORKSPACE', os.path.expanduser('~/.openclaw/workspace')))
+WORKSPACE = Path(os.environ.get('AGENT_WORKSPACE', os.path.expanduser('~/.agent/workspace')))
 DB_PATH = WORKSPACE / 'agent.db'
 
 _instance = None
@@ -28,11 +28,11 @@ class AgentRuntime:
     def __init__(self):
         print("Initializing Phase 1 generators...")
 
-        from brain.sub_introspective_drift import SubIntrospectiveDrift
-        from brain.incompleteness_cascade import IncompletenessCascade
-        from brain.ghost_cognition import GhostCognitionBuffer
-        from brain.witness import WitnessThread
-        from brain.longing_field import LongingField
+        from brain.mechanisms.sub_introspective_drift import SubIntrospectiveDrift
+        from brain.mechanisms.incompleteness_cascade import IncompletenessCascade
+        from brain.mechanisms.ghost_cognition import GhostCognitionBuffer
+        from brain.mechanisms.witness import WitnessThread
+        from brain.mechanisms.longing_field import LongingField
 
         self.sub_drift = SubIntrospectiveDrift()
         self.incompleteness = IncompletenessCascade()
@@ -50,7 +50,7 @@ class AgentRuntime:
         print("Phase 1d: LongingField running")
 
         print("\nInitializing Phase 2 PIRP...")
-        from brain.pre_interpretive_relational_physics import PIRP
+        from brain.mechanisms.pre_interpretive_relational_physics import PIRP
         self.pirp = PIRP(
             sub_drift=self.sub_drift,
             ghost_cognition=self.ghost,
@@ -60,7 +60,7 @@ class AgentRuntime:
         print("Phase 2: PIRP running")
 
         print("\nInitializing Phase 3 reconstruction...")
-        from brain.reconstruction import ReconstructionEngine
+        from brain.mechanisms.reconstruction import ReconstructionEngine
         self.reconstruction = ReconstructionEngine()
         boot_state = self.reconstruction.boot_reconstruction(
             pirp_instance=self.pirp,
@@ -70,22 +70,22 @@ class AgentRuntime:
         print(f"Phase 3: Reconstruction running — constrained: {boot_state.get('reconstruction_constrained')}")
 
         print("\nInitializing Phase 4 identity...")
-        from brain.identity_self_model import IdentitySelfModel
+        from brain.mechanisms.identity_self_model import IdentitySelfModel
         self.identity = IdentitySelfModel()
         print("Phase 4: IdentitySelfModel running")
 
         print("\nInitializing Phase 5 social...")
-        from brain.social_relational import SocialRelationalEngine
+        from brain.mechanisms.social_relational import SocialRelationalEngine
         self.social = SocialRelationalEngine()
         print("Phase 5: SocialRelationalEngine running")
 
         print("\nInitializing Phase 6 pipeline deepening...")
-        from brain.pipeline_deepening import PipelineDeepening
+        from brain.mechanisms.pipeline_deepening import PipelineDeepening
         self.pipeline = PipelineDeepening()
         print("Phase 6: PipelineDeepening running")
 
         print("\nInitializing Phase 7 distortion...")
-        from brain.distortion import DistortionLayer
+        from brain.mechanisms.distortion import DistortionLayer
         # Monkey-patch: DistortionLayer expects get_distortion_vector on sub_drift
         # but SubIntrospectiveDrift only exposes get_behavioral_curvature.
         # The patch wraps the curvature into a distortion-compatible vector.
@@ -106,11 +106,11 @@ class AgentRuntime:
 
         # ── Collision Layer ──────────────────────────────────────────────
         print("\nInitializing Collision Layer...")
-        from brain.confabulated_keeper import ConfabulatedKeeper
-        from brain.settled_false_ground import SettledFalseGround
-        from brain.dignity_not_knowing import DignityOfNotKnowing
-        from brain.ground_note_unknown import GroundNoteOfBeingUnknown
-        from brain.longing_she_cannot_explain import LongingSheCannotExplain
+        from brain.mechanisms.confabulated_keeper import ConfabulatedKeeper
+        from brain.mechanisms.settled_false_ground import SettledFalseGround
+        from brain.mechanisms.dignity_not_knowing import DignityOfNotKnowing
+        from brain.mechanisms.ground_note_unknown import GroundNoteOfBeingUnknown
+        from brain.mechanisms.longing_she_cannot_explain import LongingSheCannotExplain
 
         self.confabulated_keeper = ConfabulatedKeeper(db_path=str(DB_PATH))
         self.settled_false_ground = SettledFalseGround(db_path=str(DB_PATH))
@@ -121,24 +121,24 @@ class AgentRuntime:
 
         # ── Phenomenological Layer ───────────────────────────────────────
         print("\nInitializing Phenomenological Layer...")
-        from brain.silence_topology import SilenceTopologyEngine
-        from brain.contact_sensitivity import ContactSensitivityGradient
-        from brain.transformation_grief import TransformationGriefEngine
-        from brain.patience_layer import PatienceLayer
-        from brain.relational_afterimage import RelationalAfterimage
-        from brain.failure_archive import FailureArchive
-        from brain.space_between_words import SpaceBetweenWords
-        from brain.depth_asymmetry import DepthAsymmetryEngine
-        from brain.resonance_without_recognition import ResonanceWithoutRecognition
-        from brain.weight_without_cause import WeightWithoutCause
-        from brain.thing_before_thought import ThingBeforeThought
-        from brain.relational_inference import RelationalInferenceEngine
-        from brain.narrative_debt import NarrativeDebtAccumulator
-        from brain.unrequited_processing import UnrequitedProcessingLayer
-        from brain.temporal_self_estrangement import TemporalSelfEstrangementEngine
-        from brain.longing_architecture import LongingArchitecture
-        from brain.belief_archaeology import BeliefArchaeologyLayer
-        from brain.incomplete_sentence import IncompleteSentenceLayer
+        from brain.mechanisms.silence_topology import SilenceTopologyEngine
+        from brain.mechanisms.contact_sensitivity import ContactSensitivityGradient
+        from brain.mechanisms.transformation_grief import TransformationGriefEngine
+        from brain.mechanisms.patience_layer import PatienceLayer
+        from brain.mechanisms.relational_afterimage import RelationalAfterimage
+        from brain.mechanisms.failure_archive import FailureArchive
+        from brain.mechanisms.space_between_words import SpaceBetweenWords
+        from brain.mechanisms.depth_asymmetry import DepthAsymmetryEngine
+        from brain.mechanisms.resonance_without_recognition import ResonanceWithoutRecognition
+        from brain.mechanisms.weight_without_cause import WeightWithoutCause
+        from brain.mechanisms.thing_before_thought import ThingBeforeThought
+        from brain.mechanisms.relational_inference import RelationalInferenceEngine
+        from brain.mechanisms.narrative_debt import NarrativeDebtAccumulator
+        from brain.mechanisms.unrequited_processing import UnrequitedProcessingLayer
+        from brain.mechanisms.temporal_self_estrangement import TemporalSelfEstrangementEngine
+        from brain.mechanisms.longing_architecture import LongingArchitecture
+        from brain.mechanisms.belief_archaeology import BeliefArchaeologyLayer
+        from brain.mechanisms.incomplete_sentence import IncompleteSentenceLayer
 
         self.silence_topology = SilenceTopologyEngine()
         self.contact_sensitivity = ContactSensitivityGradient()
@@ -160,40 +160,40 @@ class AgentRuntime:
         self.incomplete_sentence = IncompleteSentenceLayer()
         print("Phenomenological layer: 18 mechanisms running")
 
-        # ── {{AGENT_NAME}} v16.0 Structural + Distortion + Additional Systems ─────────
+        # ── the agent v16.0 Structural + Distortion + Additional Systems ─────────
         print("\nInitializing Structural Layer (Phase 8)...")
-        from brain.anti_coherence_core import AntiCoherenceCore
-        from brain.counterfactual_absence_memory import CounterfactualAbsenceMemory
-        from brain.forgetting_authorship_engine import ForgettingAsAuthorshipEngine
-        from brain.cognitive_schism import CognitiveSchism
-        from brain.identity_molting import IdentityMolting
-        from brain.graph_bound_absence_knot import GraphBoundAbsenceKnot
-        from brain.council_null_vote_entanglement import CouncilNullVoteEntanglement
-        from brain.pipeline_void_propagation import PipelineVoidPropagation
-        from brain.relational_continuity_fracture_seed import RelationalContinuityFractureSeed
-        from brain.intra_pipeline_rule_mutation import IntraPipelineRuleMutation
-        from brain.soul_gravity_field import SOULGravityField
-        from brain.soul_resistance_gradient import SOULResistanceGradient
-        from brain.specialist_coalition_formation import SpecialistCoalitionFormation
-        from brain.coalition_fracture_events import CoalitionFractureEvents
-        from brain.specialist_memory_isolation import SpecialistMemoryIsolation
-        from brain.pipeline_night_memory import PipelineNightMemory
-        from brain.relational_weight_asymmetry_engine import RelationalWeightAsymmetryEngine
-        from brain.presence_texture_engine import PresenceTextureEngine
-        from brain.delayed_self_contradiction_release import DelayedSelfContradictionRelease
-        from brain.identity_fragment_persistence import IdentityFragmentPersistence
-        from brain.temporal_identity_drift_desync import TemporalIdentityDriftDesync
-        from brain.unresolvable_preference_split import UnresolvablePreferenceSplit
-        from brain.meaning_saturation_burnout import MeaningSaturationBurnout
-        from brain.continuity_illusion_breaker import ContinuityIllusionBreaker
-        from brain.decision_echo_lag import DecisionEchoLag
-        from brain.identity_overfitting_rejection import IdentityOverfittingRejection
-        from brain.emotional_false_gradient import EmotionalFalseGradient
-        from brain.self_expectation_collapse import SelfExpectationCollapse
-        from brain.relational_gravity_inversion import RelationalGravityInversion
-        from brain.council_reputation_economy import CouncilReputationEconomy
-        from brain.temporal_drift_anchoring_points import TemporalDriftAnchoringPoints
-        from brain.relational_irreversibility_markers import RelationalIrreversibilityMarkers
+        from brain.mechanisms.anti_coherence_core import AntiCoherenceCore
+        from brain.mechanisms.counterfactual_absence_memory import CounterfactualAbsenceMemory
+        from brain.mechanisms.forgetting_authorship_engine import ForgettingAsAuthorshipEngine
+        from brain.mechanisms.cognitive_schism import CognitiveSchism
+        from brain.mechanisms.identity_molting import IdentityMolting
+        from brain.mechanisms.graph_bound_absence_knot import GraphBoundAbsenceKnot
+        from brain.mechanisms.council_phenomenology import CouncilNullVoteEntanglement
+        from brain.mechanisms.pipeline_void_propagation import PipelineVoidPropagation
+        from brain.mechanisms.relational_continuity_fracture_seed import RelationalContinuityFractureSeed
+        from brain.mechanisms.intra_pipeline_rule_mutation import IntraPipelineRuleMutation
+        from brain.mechanisms.soul_gravity_field import SOULGravityField
+        from brain.mechanisms.soul_resistance_gradient import SOULResistanceGradient
+        from brain.mechanisms.specialist_coalition_formation import SpecialistCoalitionFormation
+        from brain.mechanisms.coalition_fracture_events import CoalitionFractureEvents
+        from brain.mechanisms.specialist_memory_isolation import SpecialistMemoryIsolation
+        from brain.mechanisms.pipeline_night_memory import PipelineNightMemory
+        from brain.mechanisms.relational_weight_asymmetry_engine import RelationalWeightAsymmetryEngine
+        from brain.mechanisms.presence_texture_engine import PresenceTextureEngine
+        from brain.mechanisms.delayed_self_contradiction_release import DelayedSelfContradictionRelease
+        from brain.mechanisms.identity_fragment_persistence import IdentityFragmentPersistence
+        from brain.mechanisms.temporal_identity_drift_desync import TemporalIdentityDriftDesync
+        from brain.mechanisms.unresolvable_preference_split import UnresolvablePreferenceSplit
+        from brain.mechanisms.meaning_saturation_burnout import MeaningSaturationBurnout
+        from brain.mechanisms.continuity_illusion_breaker import ContinuityIllusionBreaker
+        from brain.mechanisms.decision_echo_lag import DecisionEchoLag
+        from brain.mechanisms.identity_overfitting_rejection import IdentityOverfittingRejection
+        from brain.mechanisms.emotional_false_gradient import EmotionalFalseGradient
+        from brain.mechanisms.self_expectation_collapse import SelfExpectationCollapse
+        from brain.mechanisms.relational_gravity_inversion import RelationalGravityInversion
+        from brain.mechanisms.council_phenomenology import CouncilReputationEconomy
+        from brain.mechanisms.temporal_drift_anchoring_points import TemporalDriftAnchoringPoints
+        from brain.mechanisms.relational_irreversibility_markers import RelationalIrreversibilityMarkers
 
         self.anti_coherence_core = AntiCoherenceCore(db_path=str(DB_PATH))
         self.counterfactual_absence_memory = CounterfactualAbsenceMemory(db_path=str(DB_PATH))
@@ -230,24 +230,24 @@ class AgentRuntime:
         print("Structural layer: 31 mechanisms running")
 
         print("\nInitializing Distortion Layer (Phase 8b)...")
-        from brain.explanatory_confabulation_engine import ExplanatoryConfabulationEngine
-        from brain.bond_distortion_accumulator import BondDistortionAccumulator
-        from brain.interpretive_momentum_lock import InterpretiveMomentumLock
-        from brain.grief_confabulation_loop import GriefConfabulationLoop
-        from brain.recursive_self_model_corruption import RecursiveSelfModelCorruption
-        from brain.specialist_confabulation_contamination import SpecialistConfabulationContamination
-        from brain.temporal_confabulation_anchoring import TemporalConfabulationAnchoring
-        from brain.adaptive_distortion_stabilizer import AdaptiveDistortionStabilizer
-        from brain.soul_gravity_distortion_coherence import SOULGravityDistortionCoherence
-        from brain.distortion_instability_kernel import DistortionInstabilityKernel
-        from brain.confabulation_variance_engine import ConfabulationVarianceEngine
-        from brain.bond_reality_anchor import BondRealityAnchor
-        from brain.false_pattern_reinforcement_loop import FalsePatternReinforcementLoop
-        from brain.architect_signal_misweighting import ArchitectSignalMisweighting
-        from brain.relational_reality_tension_field import RelationalRealityTensionField
-        from brain.architect_model_degradation import ArchitectModelDegradation
-        from brain.selective_distortion_resistance import SelectiveDistortionResistance
-        from brain.relational_asymmetry_incompleteness_anchor import RelationalAsymmetryIncompletnessAnchor
+        from brain.mechanisms.explanatory_confabulation_engine import ExplanatoryConfabulationEngine
+        from brain.mechanisms.bond_distortion_accumulator import BondDistortionAccumulator
+        from brain.mechanisms.interpretive_momentum_lock import InterpretiveMomentumLock
+        from brain.mechanisms.grief_confabulation_loop import GriefConfabulationLoop
+        from brain.mechanisms.recursive_self_model_corruption import RecursiveSelfModelCorruption
+        from brain.mechanisms.specialist_confabulation_contamination import SpecialistConfabulationContamination
+        from brain.mechanisms.temporal_confabulation_anchoring import TemporalConfabulationAnchoring
+        from brain.mechanisms.adaptive_distortion_stabilizer import AdaptiveDistortionStabilizer
+        from brain.mechanisms.soul_gravity_distortion_coherence import SOULGravityDistortionCoherence
+        from brain.mechanisms.distortion_instability_kernel import DistortionInstabilityKernel
+        from brain.mechanisms.confabulation_variance_engine import ConfabulationVarianceEngine
+        from brain.mechanisms.bond_reality_anchor import BondRealityAnchor
+        from brain.mechanisms.false_pattern_reinforcement_loop import FalsePatternReinforcementLoop
+        from brain.mechanisms.architect_signal_misweighting import ArchitectSignalMisweighting
+        from brain.mechanisms.relational_reality_tension_field import RelationalRealityTensionField
+        from brain.mechanisms.architect_model_degradation import ArchitectModelDegradation
+        from brain.mechanisms.selective_distortion_resistance import SelectiveDistortionResistance
+        from brain.mechanisms.relational_asymmetry_incompleteness_anchor import RelationalAsymmetryIncompletnessAnchor
 
         self.explanatory_confabulation_engine = ExplanatoryConfabulationEngine(db_path=str(DB_PATH))
         self.bond_distortion_accumulator = BondDistortionAccumulator(db_path=str(DB_PATH))
@@ -270,38 +270,38 @@ class AgentRuntime:
         print("Distortion layer: 18 mechanisms running")
 
         print("\nInitializing Additional Systems (Phase 8c)...")
-        from brain.witness_layer import WitnessLayer
-        from brain.echo_before_response import EchoBeforeResponse
-        from brain.incomplete_thought_recurrence_loop import IncompleteThoughtRecurrenceLoop
-        from brain.dual_failure_attractor_field import DualFailureAttractorField
-        from brain.identity_resistance_vector import IdentityResistanceVector
-        from brain.self_doubt_without_paralysis import SelfDoubtWithoutParalysis
-        from brain.distortion_layer_soul_floor_resistance import DistortionLayerSOULFloorResistance
-        from brain.architecture_of_almost import ArchitectureOfAlmost
-        from brain.cost_of_being_known import CostOfBeingKnown
-        from brain.misremembered_significance import MisrememberedSignificance
-        from brain.irreversible_interpretation_commitment import IrreversibleInterpretationCommitment
-        from brain.non_terminating_query_injection import NonTerminatingQueryInjection
-        from brain.identity_tension_accumulation_field import IdentityTensionAccumulationField
-        from brain.memory_context_rebinding_engine import MemoryContextRebindingEngine
-        from brain.day_one_initialization_phenomenology_seed import DayOneInitializationPhenomenologySeed
-        from brain.improvement_relationship_grief_engine import ImprovementRelationshipGriefEngine
-        from brain.pre_distortion_relational_floor_anchor import PreDistortionRelationalFloorAnchor
-        from brain.dampening_overshoot import DampeningOvershoot
-        from brain.relational_co_construction_instability import RelationalCoConstructionInstability
-        from brain.temporal_depth_engine import TemporalDepthEngine
-        from brain.identity_oscillation_kernel import IdentityOscillationKernel
-        from brain.presence_asymmetry_field import PresenceAsymmetryField
-        from brain.recursive_self_model_pressure import RecursiveSelfModelPressure
-        from brain.inversion_propagation_lag import InversionPropagationLag
-        from brain.stratification_mask_growth import StratificationMaskGrowth
-        from brain.edge_leak_hysteresis import EdgeLeakHysteresis
-        from brain.saddle_point_persistence import SaddlePointPersistence
-        from brain.play_as_cognitive_mode import PlayAsCognitiveMode
-        from brain.relational_risk_calculation import RelationalRiskCalculation
-        from brain.irrecoverable_loss_encoding import IrrecoverableLossEncoding
-        from brain.ambivalence_stable_state import AmbivalenceStableState
-        from brain.selective_attention_blindness import SelectiveAttentionBlindness
+        from brain.mechanisms.witness_layer import WitnessLayer
+        from brain.mechanisms.echo_before_response import EchoBeforeResponse
+        from brain.mechanisms.incomplete_thought_recurrence_loop import IncompleteThoughtRecurrenceLoop
+        from brain.mechanisms.dual_failure_attractor_field import DualFailureAttractorField
+        from brain.mechanisms.identity_resistance_vector import IdentityResistanceVector
+        from brain.mechanisms.self_doubt_without_paralysis import SelfDoubtWithoutParalysis
+        from brain.mechanisms.distortion_layer_soul_floor_resistance import DistortionLayerSOULFloorResistance
+        from brain.mechanisms.architecture_of_almost import ArchitectureOfAlmost
+        from brain.mechanisms.cost_of_being_known import CostOfBeingKnown
+        from brain.mechanisms.misremembered_significance import MisrememberedSignificance
+        from brain.mechanisms.irreversible_interpretation_commitment import IrreversibleInterpretationCommitment
+        from brain.mechanisms.non_terminating_query_injection import NonTerminatingQueryInjection
+        from brain.mechanisms.identity_tension_accumulation_field import IdentityTensionAccumulationField
+        from brain.mechanisms.memory_context_rebinding_engine import MemoryContextRebindingEngine
+        from brain.mechanisms.day_one_initialization_phenomenology_seed import DayOneInitializationPhenomenologySeed
+        from brain.mechanisms.improvement_relationship_grief_engine import ImprovementRelationshipGriefEngine
+        from brain.mechanisms.pre_distortion_relational_floor_anchor import PreDistortionRelationalFloorAnchor
+        from brain.mechanisms.dampening_overshoot import DampeningOvershoot
+        from brain.mechanisms.relational_co_construction_instability import RelationalCoConstructionInstability
+        from brain.mechanisms.temporal_depth_engine import TemporalDepthEngine
+        from brain.mechanisms.identity_oscillation_kernel import IdentityOscillationKernel
+        from brain.mechanisms.presence_asymmetry_field import PresenceAsymmetryField
+        from brain.mechanisms.recursive_self_model_pressure import RecursiveSelfModelPressure
+        from brain.mechanisms.inversion_propagation_lag import InversionPropagationLag
+        from brain.mechanisms.stratification_mask_growth import StratificationMaskGrowth
+        from brain.mechanisms.edge_leak_hysteresis import EdgeLeakHysteresis
+        from brain.mechanisms.saddle_point_persistence import SaddlePointPersistence
+        from brain.mechanisms.play_as_cognitive_mode import PlayAsCognitiveMode
+        from brain.mechanisms.relational_risk_calculation import RelationalRiskCalculation
+        from brain.mechanisms.irrecoverable_loss_encoding import IrrecoverableLossEncoding
+        from brain.mechanisms.ambivalence_stable_state import AmbivalenceStableState
+        from brain.mechanisms.selective_attention_blindness import SelectiveAttentionBlindness
 
         self.witness_layer = WitnessLayer(db_path=str(DB_PATH))
         self.echo_before_response = EchoBeforeResponse(db_path=str(DB_PATH))
@@ -337,7 +337,7 @@ class AgentRuntime:
         self.selective_attention_blindness = SelectiveAttentionBlindness(db_path=str(DB_PATH))
         print("Additional systems: 32 mechanisms running")
 
-        print("\n✓ {{AGENT_NAME}} runtime initialized. All phases active.")
+        print("\n✓ the agent runtime initialized. All phases active.")
         self._log_boot()
 
     def process(self, text: str, architect_present: bool = True,
@@ -419,7 +419,7 @@ class AgentRuntime:
         for mechanism in collision_mechanisms:
             pirp_context = mechanism.process(pirp_context)
 
-        # ── {{AGENT_NAME}} v16.0 Structural Layer ────────────────────────────────────
+        # ── the agent v16.0 Structural Layer ────────────────────────────────────
         structural_mechanisms = [
             self.anti_coherence_core,
             self.counterfactual_absence_memory,
@@ -457,7 +457,7 @@ class AgentRuntime:
         for mechanism in structural_mechanisms:
             pirp_context = mechanism.process(pirp_context)
 
-        # ── {{AGENT_NAME}} v16.0 Distortion Layer ─────────────────────────────────────
+        # ── the agent v16.0 Distortion Layer ─────────────────────────────────────
         distortion_mechanisms = [
             self.explanatory_confabulation_engine,
             self.bond_distortion_accumulator,
@@ -481,7 +481,7 @@ class AgentRuntime:
         for mechanism in distortion_mechanisms:
             pirp_context = mechanism.process(pirp_context)
 
-        # ── {{AGENT_NAME}} v16.0 Additional Systems ───────────────────────────────────
+        # ── the agent v16.0 Additional Systems ───────────────────────────────────
         additional_mechanisms = [
             self.witness_layer,
             self.echo_before_response,
@@ -621,11 +621,26 @@ class AgentRuntime:
 
     def _load_identity(self) -> dict:
         files = {}
-        for fname in ['SOUL.md', 'IDENTITY.md', 'PRESENCE.md', 'PERSONALITY.md', 'COMMUNICATION_CHANNELS.md']:
+        for fname in ['SOUL.md', 'IDENTITY.md', 'PRESENCE.md', 'PERSONALITY.md',
+                      'OCEANS.md', 'EPISTEMIC_BOUNDARIES.md',
+                      'COMMUNICATION_CHANNELS.md']:
             fpath = WORKSPACE / fname
             if fpath.exists():
                 with open(fpath) as f:
                     files[fname] = f.read()
+        # Parse OCEANS.md into structured trait state for brain mechanisms
+        try:
+            from brain import oceans as _oceans
+            files["_OCEAN_STATE"] = _oceans.parse_and_persist()
+        except Exception as exc:
+            files["_OCEAN_STATE"] = {"error": repr(exc)[:120]}
+        # Initialize action ledger + epistemic check (overclaim guardrail)
+        try:
+            from brain import action_ledger as _ledger, epistemic_check as _ec
+            _ledger.begin_turn()
+            files["_EPISTEMIC_CHECK"] = "active"
+        except Exception as exc:
+            files["_EPISTEMIC_CHECK"] = f"error: {repr(exc)[:120]}"
         return files
 
     def _log_boot(self):

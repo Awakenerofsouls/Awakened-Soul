@@ -29,7 +29,7 @@ UNFINISHED_RATE = 0.15
 
 
 def run(state: dict) -> dict:
-    workspace = Path(state.get("WORKSPACE", "~/.openclaw/workspace"))
+    workspace = Path(state.get("WORKSPACE", "~/.agent/workspace"))
     tick = state.get("tick_count", 0)
 
     api_key = get_api_key("tavily")
@@ -58,6 +58,30 @@ def run(state: dict) -> dict:
     try_append_new_interest(content, state, source_activity="tavily_answer")
 
     status = "unfinished" if random.random() < UNFINISHED_RATE else "complete"
+    # ── Brain-event posting ─────────────────────────────────────────
+    # External fetch — outward_reach for the network call,
+    # memory_encode for the finding (source=external).
+    try:
+        from ._brain_post import post_outward_reach_call, post_memory_encode
+        backend = locals().get("backend") or (
+            (locals().get("web") or {}).get("backend") if isinstance(locals().get("web"), dict) else None
+        ) or "external"
+        if backend and backend != "llm-only":
+            post_outward_reach_call(
+                provider=backend, intent="research",
+                success=True,
+                source="tavily_answer",
+            )
+        if content:
+            post_memory_encode(
+                content=content, intent="observation",
+                source_kind="external" if backend != "llm-only" else "inference",
+                content_confidence=0.7, source_confidence=0.75,
+                source="tavily_answer",
+            )
+    except Exception:
+        pass
+
     return {
         "ok": True,
         "status": status,

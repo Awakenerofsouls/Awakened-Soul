@@ -1,6 +1,6 @@
 TEMPLATE: self_awareness.py
 
-Self-awareness introspection layer for Nexus {{AGENT_NAME}} agents.
+Self-awareness introspection layer for {{AGENT_NAME}} agents.
 Queries every system the agent has access to and returns a complete,
 live picture of capabilities, state, patterns, and continuity.
 

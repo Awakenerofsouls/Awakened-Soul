@@ -36,7 +36,7 @@ UNFINISHED_PROBABILITY = 0.15
 
 
 def run(state: dict) -> dict:
-    workspace = Path(state.get("WORKSPACE", "~/.openclaw/workspace"))
+    workspace = Path(state.get("WORKSPACE", "~/.agent/workspace"))
     llm_endpoint = state.get("LLM_ENDPOINT", "http://localhost:11434")
     llm_model = state.get("LLM_MODEL", "qwen2.5vl:7b")
     tick = state.get("tick_count", 0)
@@ -105,6 +105,28 @@ def run(state: dict) -> dict:
     status = "unfinished" if random.random() < UNFINISHED_PROBABILITY else "complete"
 
     log_activity("dream_log", content, salience=0.4, tags="heartbeat,dreams")
+
+    # ── Brain-event posting ─────────────────────────────────────────
+    # Memory operation — encode the result + register a
+    # consolidation pass for the MemoryIntegrityLayer.
+    try:
+        from ._brain_post import post_memory_encode, post_memory_consolidate
+        if content:
+            post_memory_encode(
+                content=content, intent="episode",
+                source_kind="observation",
+                content_confidence=0.75, source_confidence=0.7,
+                source="dream_log",
+            )
+            post_memory_consolidate(
+                pattern=content[:300],
+                support_count=2,
+                cycles_since_first=1,
+                promoted=False,
+                source="dream_log",
+            )
+    except Exception:
+        pass
 
     return {
         "ok": write_ok,

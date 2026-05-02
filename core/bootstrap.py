@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 core/bootstrap.py
-{{AGENT_NAME}} Loop — State File Initialization
+The agent Loop — State File Initialization
 
 Idempotent bootstrap. Creates all required state files if they don't exist
 or are empty. Safe to re-run at any time.
@@ -48,7 +48,7 @@ DEFAULTS = {
     },
     "state/observations.log": "",
     "state/alerts.log": "",
-    "state/pending_for_user.md": "# Pending for {{USER_NAME}}\n\n",
+    "state/pending_for_user.md": "# Pending for the operator\n\n",
     "state/session_log.md": "# Session Log\n\n",
 }
 

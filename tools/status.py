@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 tools/status.py
-Terminal-readable {{AGENT_NAME}} status. No UI. No color codes. Pipeable.
+Terminal-readable the agent status. No UI. No color codes. Pipeable.
 
 Run: python status.py
 Or:  python status.py | grep tension
@@ -13,7 +13,7 @@ import sqlite3, os, time
 from datetime import datetime
 import os
 
-WORKSPACE = os.path.join(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.openclaw/workspace")), "brain")
+WORKSPACE = os.path.join(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.agent/workspace")), "brain")
 AUTO_DB = os.path.join(WORKSPACE, "agent_autonomous.db")
 AUTO_BIO_DB = os.path.join(WORKSPACE, "agent_autobiographical.db")
 SENSATIONS_DB = os.path.join(WORKSPACE, "agent_sensations.db")

@@ -137,7 +137,13 @@ class TestRunnerTick:
         runner.state = {"tick_count": 0, "unfinished_threads": [], "WORKSPACE": "/tmp"}
         runner.running = False  # stop after one tick
 
-        with patch("heartbeat_activities.runner.save_state") as mock_save, \
+        # Mock _brain_core_tick — these tests are about runner's tick logic
+        # (counter, dispatcher, save cadence). The brain core tick boots the
+        # full AgentBrainIntegration with 924 mechanisms and several daemon
+        # threads, which both makes the test slow and leaves background
+        # threads alive past the test boundary. Stub it out.
+        with patch("heartbeat_activities.runner._brain_core_tick"), \
+             patch("heartbeat_activities.runner.save_state") as mock_save, \
              patch("heartbeat_activities.runner.time.sleep"):
             runner.tick()
 
@@ -150,9 +156,10 @@ class TestRunnerTick:
         runner.state = {"tick_count": 2, "unfinished_threads": [], "WORKSPACE": "/tmp"}
         runner.running = False
 
-        with patch("heartbeat_activities.runner.dispatcher.dispatch", mock_dispatcher.dispatch):
-            with patch("heartbeat_activities.runner.time.sleep"):
-                runner.tick()
+        with patch("heartbeat_activities.runner._brain_core_tick"), \
+             patch("heartbeat_activities.runner.dispatcher.dispatch", mock_dispatcher.dispatch), \
+             patch("heartbeat_activities.runner.time.sleep"):
+            runner.tick()
 
         mock_dispatcher.dispatch.assert_called_once()
 
@@ -164,7 +171,8 @@ class TestRunnerTick:
         runner.state = {"tick_count": 1, "unfinished_threads": [], "WORKSPACE": "/tmp"}
         runner.running = False
 
-        with patch("heartbeat_activities.runner.time.sleep"):
+        with patch("heartbeat_activities.runner._brain_core_tick"), \
+             patch("heartbeat_activities.runner.time.sleep"):
             runner.tick()
 
         mock_dispatcher.dispatch.assert_not_called()
@@ -174,7 +182,7 @@ class TestRunnerTick:
 
         fake_dispatch = MagicMock(return_value={
             "ok": True, "status": "complete", "category": "self_check",
-            "content": "I want to tell user something",
+            "content": "I want to tell the operator something",
             "proactive": True, "detail": "",
         })
 
@@ -183,13 +191,14 @@ class TestRunnerTick:
         runner.state = {"tick_count": 2, "unfinished_threads": [], "WORKSPACE": "/tmp"}
         runner.running = False
 
-        with patch("heartbeat_activities.runner.dispatcher.dispatch", fake_dispatch):
-            with patch("heartbeat_activities.runner.send_proactive") as mock_send, \
-                 patch("heartbeat_activities.runner.time.sleep"):
-                mock_send.return_value = True
-                runner.tick()
+        with patch("heartbeat_activities.runner._brain_core_tick"), \
+             patch("heartbeat_activities.runner.dispatcher.dispatch", fake_dispatch), \
+             patch("heartbeat_activities.runner.send_proactive") as mock_send, \
+             patch("heartbeat_activities.runner.time.sleep"):
+            mock_send.return_value = True
+            runner.tick()
 
-        mock_send.assert_called_once_with("I want to tell user something")
+        mock_send.assert_called_once_with("I want to tell the operator something")
 
     def test_non_proactive_result_does_not_trigger_sender(self, mock_dispatcher):
         from heartbeat_activities.runner import HeartbeatRunner
@@ -199,7 +208,8 @@ class TestRunnerTick:
         runner.state = {"tick_count": 0, "unfinished_threads": [], "WORKSPACE": "/tmp"}
         runner.running = False
 
-        with patch("heartbeat_activities.runner.send_proactive") as mock_send, \
+        with patch("heartbeat_activities.runner._brain_core_tick"), \
+             patch("heartbeat_activities.runner.send_proactive") as mock_send, \
              patch("heartbeat_activities.runner.time.sleep"):
             runner.tick()
 
@@ -217,18 +227,20 @@ class TestRunnerTick:
         runner.state = {"tick_count": STATE_SAVE_EVERY - 2, "unfinished_threads": [], "WORKSPACE": "/tmp"}
         runner.running = False
 
-        with patch("heartbeat_activities.runner.dispatcher.dispatch", fake_dispatch):
-            with patch("heartbeat_activities.runner.save_state") as mock_save, \
-                 patch("heartbeat_activities.runner.time.sleep"):
-                runner.tick()  # tick_count becomes 9 — not a save point
+        with patch("heartbeat_activities.runner._brain_core_tick"), \
+             patch("heartbeat_activities.runner.dispatcher.dispatch", fake_dispatch), \
+             patch("heartbeat_activities.runner.save_state") as mock_save, \
+             patch("heartbeat_activities.runner.time.sleep"):
+            runner.tick()  # tick_count becomes 9 — not a save point
 
         mock_save.assert_not_called()
 
         # Second tick in a fresh patch context: tick_count becomes 10 → save fires
-        with patch("heartbeat_activities.runner.dispatcher.dispatch", fake_dispatch):
-            with patch("heartbeat_activities.runner.save_state") as mock_save, \
-                 patch("heartbeat_activities.runner.time.sleep"):
-                runner.tick()
+        with patch("heartbeat_activities.runner._brain_core_tick"), \
+             patch("heartbeat_activities.runner.dispatcher.dispatch", fake_dispatch), \
+             patch("heartbeat_activities.runner.save_state") as mock_save, \
+             patch("heartbeat_activities.runner.time.sleep"):
+            runner.tick()
 
         mock_save.assert_called_once()
 

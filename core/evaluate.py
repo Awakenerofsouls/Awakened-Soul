@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 core/evaluate.py
-{{AGENT_NAME}} Loop — Evaluation System (Phase 5)
+The agent Loop — Evaluation System (Phase 5)
 
 Every action produces an evaluation entry in state/evaluations.json.
 Simple success/fail for now, quality scoring next phase.

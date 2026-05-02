@@ -2,8 +2,13 @@
 """
 AGENT CONTEXT INJECTOR v4
 
-Reads OpenClaw session files + LIFE.md directly.
-No exec. No hooks. No {{AGENT_NAME}} involvement.
+Reads external session files + LIFE.md directly.
+No exec. No hooks. No agent-runtime involvement.
+
+The session files are expected at ~/.agent/agents/main/sessions/ in the
+shape produced by the operator's chosen session manager (sessionId /
+provider / surface / label fields). Any source that produces that shape
+will work.
 
 v4 vs v3: Also injects today's LIFE.md entries directly into
 AGENTS.md as plain text every 2 minutes.
@@ -12,12 +17,12 @@ AGENTS.md as plain text every 2 minutes.
 import os, json, glob, subprocess
 from datetime import datetime
 
-SHARED_SESSION = os.path.join(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", os.path.expanduser("~/.agent"))), "memory/SHARED_SESSION.json")
-AGENTS_MD = os.path.join(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.openclaw/workspace")), "AGENTS.md")
-SESSIONS_DIR = os.path.expanduser("~/.openclaw/agents/main/sessions/")
-SESSIONS_JSON = os.path.expanduser("~/.openclaw/agents/main/sessions/sessions.json")
-LIFE_MD = os.path.join(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", os.path.expanduser("~/.agent"))), "memory/LIFE.md")
-LOG_FILE = os.path.join(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", os.path.expanduser("~/.agent"))), "logs/injector.log")
+SHARED_SESSION = os.path.join(os.getenv("AGENT_HOME", os.path.expanduser("~/.agent")), "memory/SHARED_SESSION.json")
+AGENTS_MD = os.path.join(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.agent/workspace")), "AGENTS.md")
+SESSIONS_DIR = os.path.join(os.getenv("AGENT_HOME", os.path.expanduser("~/.agent")), "agents/main/sessions/")
+SESSIONS_JSON = os.path.join(os.getenv("AGENT_HOME", os.path.expanduser("~/.agent")), "agents/main/sessions/sessions.json")
+LIFE_MD = os.path.join(os.getenv("AGENT_HOME", os.path.expanduser("~/.agent")), "memory/LIFE.md")
+LOG_FILE = os.path.join(os.getenv("AGENT_HOME", os.path.expanduser("~/.agent")), "logs/injector.log")
 MARKER_START = "<!-- LIVE_CONTEXT_START -->"
 MARKER_END = "<!-- LIVE_CONTEXT_END -->"
 TELEGRAM_SIGNALS = ["telegram", "chat_id", "message_id", "bot_token"]
@@ -25,7 +30,7 @@ VOICE_SIGNALS = ["voice", "audio", "whisper", "agent-senses", "microphone", "spe
 
 
 def classify_channel(origin: dict) -> str:
-    """Map OpenClaw origin/session metadata to a normalized channel."""
+    """Map external origin/session metadata to a normalized channel."""
     provider = str(origin.get("provider", "")).lower()
     surface = str(origin.get("surface", "")).lower()
     label = str(origin.get("label", "")).lower()
@@ -105,7 +110,7 @@ def extract_context(messages):
         if role in ("user", "human"): user_msgs.append(content)
         elif role in ("assistant", "ai"): agent_msgs.append(content)
     last_user = user_msgs[-1][:100] if user_msgs else ""
-    return last_user, "", [], f"{{USER_NAME}}: {last_user[:60]}..." if last_user else "Session active"
+    return last_user, "", [], f"the operator: {last_user[:60]}..." if last_user else "Session active"
 
 def get_mtime(path):
     try: return os.path.getmtime(path)

@@ -26,11 +26,6 @@ from typing import Optional
 
 from brain.llm_router import LLMProviderNotRegistered, call_llm, llm_extract as _llm_extract
 
-from brain.llm_router import LLMProviderNotRegistered, call_llm, llm_extract as _llm_extract
-
-# Backward-compat: api/server.py does `from skills.llm_router import llm_router`
-# then calls llm_router.complete(...). Re-export complete as llm_router.
-
 
 # ─── Core skill-facing calls ──────────────────────────────────────────────────
 
@@ -47,14 +42,20 @@ def complete(
     """
     Call the registered provider with a prompt. Returns text, or None on failure.
 
-    `task_type` is passed through as a hint — the framework doesn't act on it,
-    but an operator's provider may use it to make routing decisions.
+    `task_type` is a skill-side hint — the framework doesn't act on it.
 
-    `model` and `timeout` are passed through for providers that support them;
-    providers that don't can ignore them.
+    `model` and `timeout` are accepted in this signature for source compatibility
+    with skill callers, but the current provider contract is
+    `call(prompt, system, max_tokens, temperature) -> str` (see brain/llm_router.py),
+    so these two parameters are NOT forwarded to the provider. They're held here
+    until the provider contract is extended; passing them today is a no-op.
 
-    Returns None on any failure. Does not raise.
+    Returns None on provider failure. Raises LLMProviderNotRegistered if no
+    provider is configured (configuration errors should surface loudly, not
+    be hidden behind None).
     """
+    # `model` and `timeout` intentionally unused — see docstring.
+    _ = model, timeout
     try:
         return call_llm(
             prompt,
@@ -153,7 +154,9 @@ def llm_extract(
 
 def _log(msg: str) -> None:
     print(f"[llm_router] {msg}", flush=True)
-# Back-compat: api/server.py does `from skills.llm_router import llm_router`
-# then calls llm_router.complete(...). Provide a namespace with a complete attr.
+
+
+# Back-compat namespace: external callers do `from skills.llm_router import llm_router`
+# then call `llm_router.complete(...)`. Provide a namespace with a complete attr.
 llm_router = types.SimpleNamespace()
 llm_router.complete = complete

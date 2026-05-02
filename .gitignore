@@ -84,6 +84,17 @@ brain/monologue_log.json
 brain/goals.json
 brain/evaluation_rules.json
 brain/dream_log.json
+brain/action_ledger/
+brain/attention_log.json
+brain/body_awareness.json
+brain/phenomenology_journal.json
+brain/what_was_that_like.json
+brain/lattice/
+brain/mythos/
+brain/narratives/
+brain/overnight/
+brain/dreams/
+*.jsonl
 
 # === Eval reports (regenerated) ===
 eval/*.json

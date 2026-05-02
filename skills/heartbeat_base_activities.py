@@ -54,14 +54,19 @@ import os
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 
-WORKSPACE    = Path(os.getenv("AGENT_WORKSPACE", os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))))
-MEMORY_DIR   = WORKSPACE / "memory"
-STATE_FILE   = MEMORY_DIR / "heartbeat-state.json"
-OUTBOX_FILE  = MEMORY_DIR / "outbox.jsonl"
+WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".agent" / "workspace")))
+MEMORY_DIR = WORKSPACE / "memory"
+STATE_FILE = MEMORY_DIR / "heartbeat-state.json"
+OUTBOX_FILE = MEMORY_DIR / "outbox.jsonl"
 CHECKSUM_SCRIPT = WORKSPACE / "skills" / "checksum_guard.py"
-AGENT_HOME    = Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent"))))
+AGENT_HOME = Path(os.getenv("AGENT_HOME", str(Path.home() / ".agent")))
 
-MEMORY_DIR.mkdir(parents=True, exist_ok=True)
+
+def _ensure_memory_dir() -> None:
+    """Make sure MEMORY_DIR exists. Called by run_all() / state save —
+    NOT at module import, so importing this module is side-effect-free.
+    """
+    MEMORY_DIR.mkdir(parents=True, exist_ok=True)
 
 
 # ── State helpers ─────────────────────────────────────────────────────────────
@@ -94,6 +99,7 @@ def _fresh_state() -> Dict[str, Any]:
 def _save_state(state: Dict[str, Any]) -> None:
     """Always save state, even if an activity raised."""
     try:
+        _ensure_memory_dir()
         STATE_FILE.write_text(json.dumps(state, indent=2, default=str))
     except Exception as e:
         print(f"[heartbeat_base] FAILED to write state: {e}")
@@ -259,6 +265,7 @@ def run_all() -> None:
     Run all base activities in order, with per-activity error isolation.
     State is always saved in a finally block after each activity.
     """
+    _ensure_memory_dir()
     state = _load_state()
     state["last_run"] = _iso_now()
 

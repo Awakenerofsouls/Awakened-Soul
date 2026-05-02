@@ -2,7 +2,7 @@
 """
 TEMPLATE: activity_pool.py
 
-Activity pool for Nexus {{AGENT_NAME}} agents — what the agent does when it doesn't
+Activity pool for agents — what the agent does when it doesn't
 have specific tasks. Pull-based, not schedule-based. The agent looks at
 what's available, picks what resonates, can veto anything that doesn't fit.
 
@@ -48,7 +48,7 @@ from typing import Optional
 # ── Configuration ──────────────────────────────────────────────────────────────
 
 # Adjust for your deployment
-WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.openclaw/workspace")))
+WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.agent/workspace")))
 INTERESTS_FILE = WORKSPACE / "INTERESTS.md"
 AGENT_HOME = Path(os.getenv("AGENT_HOME", os.path.expanduser("~/.agent")))
 

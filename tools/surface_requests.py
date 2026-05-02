@@ -12,7 +12,7 @@ Built from v20.0 handoff spec.
 
 import sys, os
 import os
-sys.path.insert(0, os.path.join(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.openclaw/workspace")), "brain"))
+sys.path.insert(0, os.path.join(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.agent/workspace")), "brain"))
 
 from meta.surface_request import SurfaceRequestSystem, Significance
 from datetime import datetime

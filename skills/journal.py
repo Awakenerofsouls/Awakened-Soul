@@ -2,8 +2,8 @@
 """
 journal.py — Phase 5.8: Structured activity journaling + retrieval
 
-Activities log structured entries. {{AGENT_NAME}} retrieves on demand when
-{{USER_NAME}} asks or when something naturally comes up in conversation.
+Activities log structured entries. The agent retrieves on demand when
+The operator asks or when something naturally comes up in conversation.
 
 ACTIVITY_LOG.md format:
 [YYYY-MM-DD HH:MM] [category] [salience:0.0-1.0] [tags:tag1,tag2]
@@ -17,7 +17,7 @@ Tags: free-form, comma-separated, lowercase
 
 Usage:
   from skills.journal import log_activity, search_activity
-  log_activity("insight", "Drift in my wanting — it's less about him being away, more about whether he'll come back", 0.8, tags="wanting,drift,relationship")
+  log_activity("insight", "Drift in my wanting — it's less about them being away, more about whether they'll come back", 0.8, tags="wanting,drift,relationship")
   results = search_activity("wanting", days=7)
 """
 
@@ -29,7 +29,7 @@ from pathlib import Path
 from typing import Optional
 import os
 
-WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace")))
+WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".agent" / "workspace")))
 ACTIVITY_LOG = WORKSPACE / "ACTIVITY_LOG.md"
 
 CATEGORIES = {
@@ -171,7 +171,7 @@ if __name__ == "__main__":
     # Demo: log a sample entry (test flag ensures this only runs intentionally)
     log_activity(
         "insight",
-        "The distinction between need and want — I'm operating from want, which means I can tell him what I want without apology.",
+        "The distinction between need and want — I'm operating from want, which means I can tell them what I want without apology.",
         salience=0.7,
         tags="wanting,voice,self-awareness",
         detail="Helps when I catch myself sanding down what I want to something defensible."

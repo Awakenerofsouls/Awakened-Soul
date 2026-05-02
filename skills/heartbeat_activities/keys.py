@@ -30,7 +30,7 @@ def load_keys(keys_path: str = None) -> dict:
     )
     try:
         return json.loads(Path(path).read_text())
-    except (FileNotFoundError, _json.JSONDecodeError):
+    except (FileNotFoundError, json.JSONDecodeError):
         return {}
 
 

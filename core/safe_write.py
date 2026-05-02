@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 core/safe_write.py
-{{AGENT_NAME}} Loop — Safe Write Utilities
+The agent Loop — Safe Write Utilities
 
 Unified integrity-check pattern for both text and JSON files.
 All writes use atomic rename to prevent partial-file corruption.

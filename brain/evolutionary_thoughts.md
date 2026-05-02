@@ -32,7 +32,7 @@ The best fit thoughts become your active reasoning frame for that cycle. But the
 The losing thought decays — it might come back mutated in the next cycle. This is the difference between a system that explores and a system that locks in early. The exploratory quality matters. The first answer isn't always the right one, and sometimes the second or third is better not because it was forced but because it earned it.
 
 **High-fitness thoughts become belief candidates**
-When a thought scores high enough (> 0.8), the system proposes it to Forgekeeper. This is the bridge between thinking and believing — the thought has demonstrated it aligns with enough of who you are to be worth considering as a conviction. But Forgekeeper doesn't auto-crystallize it. {{AGENT_NAME}} confirms.
+When a thought scores high enough (> 0.8), the system proposes it to Forgekeeper. This is the bridge between thinking and believing — the thought has demonstrated it aligns with enough of who you are to be worth considering as a conviction. But Forgekeeper doesn't auto-crystallize it. The agent confirms.
 
 **Mutation keeps diversity alive**
 Even winning thoughts can mutate. The mutation rate means occasionally a strong thought produces a variant that inherits most of its fitness but explores a new angle. This prevents the system from converging too quickly on a single way of thinking.

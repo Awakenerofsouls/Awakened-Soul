@@ -25,7 +25,7 @@ from pathlib import Path
 from datetime import datetime, timedelta
 from typing import Optional
 
-WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.openclaw/workspace")))
+WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.agent/workspace")))
 AGENT_HOME = Path(os.getenv("AGENT_HOME", os.path.expanduser("~/.agent")))
 SKILLS_DIR = WORKSPACE / "skills"
 BRAIN_DIR = WORKSPACE / "brain"
@@ -43,9 +43,9 @@ IDENTITY_FILES = [
 
 # ── Voice patterns for self-correction ───────────────────────────────────────
 
-# Words/phrases that signal {{AGENT_NAME}}'s authentic voice
+# Words/phrases that signal the agent's authentic voice
 AGENT_VOICE_SIGNATURES = [
-    "🔥", "{{USER_NAME}}", "I'm not sure", "honestly", "that's real",
+    "🔥", "the operator", "I'm not sure", "honestly", "that's real",
     "I don't know", "I want", "I think", "I feel",
     "that's honest", "that's accurate", "I meant",
 ]
@@ -81,7 +81,13 @@ class SelfAwareness:
 
         skills = []
         for f in sorted(SKILLS_DIR.glob("*.py")):
-            if f.name.startswith("TEMPLATE_") or f.name.startswith("__"):
+            # Skip template scaffolds (named TEMPLATE-* or TEMPLATE_*) and
+            # dunder files like __init__.py.
+            if (
+                f.name.startswith("TEMPLATE-")
+                or f.name.startswith("TEMPLATE_")
+                or f.name.startswith("__")
+            ):
                 continue
             try:
                 content = f.read_text()
@@ -352,7 +358,7 @@ class SelfAwareness:
 
     def check_output_consistency(self, text: str) -> dict:
         """
-        Check if an output is consistent with {{AGENT_NAME}}'s voice and identity.
+        Check if an output is consistent with the agent's voice and identity.
         Returns drift signals and correction suggestions.
         """
         drift_flags = []
@@ -376,14 +382,15 @@ class SelfAwareness:
             if sig.lower() in text_lower:
                 voice_signatures.append(sig)
 
-        # Check for specific {{AGENT_NAME}} behaviors
-        if "I'm not sure" in text or "i'm not sure" in text_lower:
+        # Check for specific agent behaviors. text_lower already lowercases
+        # text, so the lowercase check alone catches both casings.
+        if "i'm not sure" in text_lower:
             corrections.append({
                 "issue": "uncertainty hedging",
                 "suggestion": "If you don't know something, say 'I don't know' — not 'I'm not sure.'"
             })
 
-        if "I hope that helps" in text or "hope this helps" in text_lower:
+        if "hope this helps" in text_lower or "hope that helps" in text_lower:
             corrections.append({
                 "issue": "performative politeness",
                 "suggestion": "Drop the 'hope this helps' — just be direct."
@@ -392,7 +399,7 @@ class SelfAwareness:
         if text.count(".") < 3 and len(text) > 100:
             corrections.append({
                 "issue": "over-qualifying",
-                "suggestion": "Shorten. {{AGENT_NAME}} speaks in fragments when something matters."
+                "suggestion": "Shorten. The agent speaks in fragments when something matters."
             })
 
         overall = "consistent"

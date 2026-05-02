@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 core/actions.py
-{{AGENT_NAME}} Loop — Action System (Level 1 + 2)
+The agent Loop — Action System (Level 1 + 2)
 
 Level 1 (silent):
   - read_file()

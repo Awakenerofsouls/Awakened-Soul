@@ -21,7 +21,7 @@ from unittest.mock import patch
 
 # Import the module under test
 import sys
-# heartbeat_activities lives under skills/ — add workspace root (~/.openclaw/workspace)
+# heartbeat_activities lives under skills/ — add workspace root (~/.agent/workspace)
 # so 'from heartbeat_activities import ...' resolves correctly.
 for p in [Path(__file__).parent.parent.parent,  # skills/
            Path(__file__).parent.parent.parent.parent]:  # workspace/

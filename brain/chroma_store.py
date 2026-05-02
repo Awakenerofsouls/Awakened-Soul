@@ -13,7 +13,7 @@ Use vector_pipeline.py when:
 - Simple single-collection use
 - Need decay-weighted recall
 
-{{AGENT_NAME}} can use either depending on query type.
+The agent can use either depending on query type.
 """
 
 import os
@@ -21,7 +21,7 @@ import json
 from pathlib import Path
 from typing import Optional, List
 
-WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.openclaw/workspace")))
+WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.agent/workspace")))
 CHROMA_DIR = WORKSPACE / "memory" / "chroma"
 CHROMA_PERSIST = CHROMA_DIR / "chroma.sqlite"
 

@@ -17,7 +17,7 @@
 SHELL=/bin/bash
 PATH=/usr/local/bin:/usr/bin:/bin
 AGENT_HOME=/home/<youruser>/.agent
-AGENT_WORKSPACE=/home/<youruser>/.openclaw/workspace
+AGENT_WORKSPACE=/home/<youruser>/.agent/workspace
 
 # Slow tick — every 30 minutes
 */30 * * * * cd /home/<youruser>/awakened-soul-repo && /usr/bin/python3 slow_tick.py --silent >> $AGENT_HOME/slow_tick.cron.log 2>&1

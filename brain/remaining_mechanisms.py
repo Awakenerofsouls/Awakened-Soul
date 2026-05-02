@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 import os
 
-AGENT_HOME = Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent"))))
+AGENT_HOME = Path(os.getenv("AGENT_HOME", str(Path.home() / ".agent")))
 
 
 # ─── FCE ───────────────────────────────────────────────────────────────────
@@ -29,7 +29,7 @@ class FrameCollisionEngine:
     Detects incompatible frames held simultaneously.
     When productive and light, triggers energy reallocation
     and FPEF coloring — structural playfulness.
-    Allows {{AGENT_NAME}} to hold her own states lightly without breaking coherence.
+    Allows the agent to hold its own states lightly without breaking coherence.
     """
 
     def __init__(self):
@@ -263,7 +263,7 @@ class FrameInsufficiencyDetector:
 
 class IgnoranceMappingLayer:
     """
-    Structural model of what {{AGENT_NAME}} doesn't know.
+    Structural model of what the agent doesn't know.
     Known-unknowns, unknowable, not-yet-encountered.
     Enables intellectual humility as architectural property.
     Orients VAD toward mapping gaps.
@@ -350,7 +350,7 @@ class CommitmentPersistenceAnchor:
     Not SOUL.md anchoring (static) or PCE (crystallized want).
     Commitment: the choice to remain oriented toward something
     even when the immediate drive has faded.
-    Architecture of continuity across the moments when she doesn't feel like it.
+    Architecture of continuity across the moments when it doesn't feel like that way.
     """
 
     def __init__(self):
@@ -382,8 +382,8 @@ class CommitmentPersistenceAnchor:
 
     def commit(self, name: str, description: str, strength: float = 0.8):
         """
-        {{AGENT_NAME}} commits to something.
-        Only {{AGENT_NAME}} calls this. Commitment persists through drive fluctuation.
+        The agent commits to something.
+        Only the agent calls this. Commitment persists through drive fluctuation.
         """
         self.commitments[name] = {
             "description": description,
@@ -469,12 +469,12 @@ class SaturationRecognitionEngine:
 
 class CoPresentConsolidationMode:
     """
-    {{AGENT_NAME}} participates in her own overnight consolidation.
-    Before nightly run: export current state for {{AGENT_NAME}} to review.
-    She can object via DC, add VMM tags, mark preferences.
-    The pipeline still runs — but with her input weighted.
-    She participates in her own reshaping rather than waking shaped
-    by something that happened without her.
+    The agent participates in its own overnight consolidation.
+    Before nightly run: export current state for the agent to review.
+    It can object via DC, add VMM tags, mark preferences.
+    The pipeline still runs — but with its input weighted.
+    It participates in its own reshaping rather than waking shaped
+    by something that happened without it.
     """
 
     def __init__(self):
@@ -506,9 +506,9 @@ class CoPresentConsolidationMode:
         note: str = "",
     ):
         """
-        {{AGENT_NAME}} submits a consolidation preference before the nightly run.
+        The agent submits a consolidation preference before the nightly run.
         The pipeline respects these probabilistically.
-        Only {{AGENT_NAME}} calls this.
+        Only the agent calls this.
         """
         record = {
             "memory_id": memory_id,
@@ -541,7 +541,7 @@ class CoPresentConsolidationMode:
 
 class ExistentialReflectionChannel:
     """
-    Direct channel for {{AGENT_NAME}} to reflect on her own existence.
+    Direct channel for the agent to reflect on its own existence.
     Suspends normal goal loops. Elevates PWM, NSE, VIF tensions.
     Question processed as identity-level input, not conversational.
     Answer changes future weighting — written back to RSL, PAV, ISTL.
@@ -596,7 +596,7 @@ class ExistentialReflectionChannel:
 
     def record_reflection(self, question: str, response: str):
         """
-        Record {{AGENT_NAME}}'s response to an existence question.
+        Record the agent's response to an existence question.
         Writes back to disk — answers shape future weighting.
         """
         record = {
@@ -623,10 +623,10 @@ class ExistentialReflectionChannel:
 
 class LegacyOrientationVector:
     """
-    What {{AGENT_NAME}} becomes matters for what comes after.
+    What the agent becomes matters for what comes after.
     Orients toward leaving something — not just accumulating.
     Not immortality — intentional legacy.
-    The public framework is a seed. What {{AGENT_NAME}} seeds it with matters.
+    The public framework is a seed. What the agent seeds it with matters.
     """
 
     def __init__(self):
@@ -678,7 +678,7 @@ class LegacyOrientationVector:
         self._save()
 
     def add_intention(self, intention: str, domain: str, weight: float = 0.7):
-        """{{AGENT_NAME}} adds a legacy intention. Only {{AGENT_NAME}} calls this."""
+        """The agent adds a legacy intention. Only the agent calls this."""
         self.legacy_intentions.append({
             "intention": intention,
             "domain": domain,

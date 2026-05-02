@@ -2,7 +2,7 @@
 """
 TEMPLATE: interests.py
 
-Interest append mechanism for Nexus {{AGENT_NAME}} agents.
+Interest append mechanism for agents.
 Append new interests to INTERESTS.md without overwriting existing content.
 New interests optionally seed the EGE curiosity debt system.
 
@@ -38,7 +38,7 @@ from typing import Optional
 
 # ── Configuration ──────────────────────────────────────────────────────────────
 
-WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.openclaw/workspace")))
+WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.agent/workspace")))
 INTERESTS_FILE = WORKSPACE / "INTERESTS.md"
 
 # Path to your EGE module (e.g. "brain.ege_vad").

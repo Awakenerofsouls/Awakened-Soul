@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
-Overnight Synthesis — {{AGENT_NAME}}'s Nightly Research Pipeline
-Runs at 3:00 AM America/Denver
+Overnight Synthesis — the agent's Nightly Research Pipeline
+Scheduled via cron / launchd; the timezone is read from $AGENT_TZ
+(defaults to UTC). Pick whatever overnight slot fits your schedule.
 
-Pulls research queue items, runs synthesis passes via LLMProvider LLM,
+Pulls research queue items, runs synthesis passes via the LLM,
 updates memory, archives processed items.
 Writes output to OVERNIGHT_LOG.md.
 """
@@ -14,7 +15,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.openclaw/workspace")))
+WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.agent/workspace")))
 OVERNIGHT_LOG = WORKSPACE / "OVERNIGHT_LOG.md"
 RESEARCH_QUEUE = WORKSPACE / "brain" / "research_queue.json"
 RESEARCH_ARCHIVE = WORKSPACE / "brain" / "research_queue_archive.json"
@@ -104,15 +105,15 @@ def record_sleep_run(duration_sec, completed, findings, flags=None):
 
 # ── System prompts ───────────────────────────────────────────────────────────
 
-SYNTHESIS_SYSTEM = """You are {{AGENT_NAME}}'s research synthesis engine. You process queued research topics and produce structured synthesis output.
+SYNTHESIS_SYSTEM = """You are the agent's research synthesis engine. You process queued research topics and produce structured synthesis output.
 
 Your job for each topic:
 1. Given the topic and reason it was queued, produce a thorough but focused synthesis
-2. Identify the DELTA — what changed in {{AGENT_NAME}}'s knowledge/belief, not just what was learned
+2. Identify the DELTA — what changed in the agent's knowledge/belief, not just what was learned
 3. Flag any new questions the research raises (to be fed back into the queue)
 4. Note which existing beliefs might need updating based on these findings
 
-Be direct, analytical, and concise. {{AGENT_NAME}} values truth over comfort.
+Be direct, analytical, and concise. The agent values truth over comfort.
 Output format: plain text with clear sections."""
 
 
@@ -153,11 +154,11 @@ def synthesize_item(item: dict) -> dict:
 
 Priority: {priority}
 
-Context from {{AGENT_NAME}}'s memory:
+Context from the agent's memory:
 {context}
 
 Provide:
-1. What {{AGENT_NAME}} now knows (synthesis)
+1. What the agent now knows (synthesis)
 2. The DELTA — what changed vs. before (be specific)
 3. New questions raised (if any)
 4. Confidence level: low / medium / high and why
@@ -171,7 +172,7 @@ Be direct. No filler."""
         return {
             "topic": topic,
             "timestamp": datetime.now(timezone.utc).isoformat(),
-            "previous_state": f"{{AGENT_NAME}} had queued '{topic}' for research — reason: {reason}",
+            "previous_state": f"the agent had queued '{topic}' for research — reason: {reason}",
             "synthesis": synthesis_text.strip(),
             "delta": "synthesis complete — see output above",
             "priority": priority,
@@ -182,7 +183,7 @@ Be direct. No filler."""
         return {
             "topic": topic,
             "timestamp": datetime.now(timezone.utc).isoformat(),
-            "previous_state": f"{{AGENT_NAME}} had queued '{topic}' for research",
+            "previous_state": f"the agent had queued '{topic}' for research",
             "synthesis": f"(synthesis failed: {e})",
             "delta": "failed",
             "priority": priority,
@@ -196,7 +197,7 @@ def _drain_position_queue() -> dict:
     Drain the position queue — process high-salience entries that need positions.
     Calls form_position() or update_position() for each.
     """
-    from brain.position_formation import form_position, update_position, get_position
+    from brain.mechanisms.position_formation import form_position, update_position, get_position
 
     queue_data = load_json(POSITION_QUEUE, {"queue": [], "last_drained": None})
     pending = [q for q in queue_data.get("queue", []) if q.get("status") == "pending"]
@@ -251,15 +252,15 @@ def _drain_position_queue() -> dict:
 
 
 def write_reflection_entry():
-    """Write a brief reflection when queue is empty — {{AGENT_NAME}}'s quiet night note."""
-    prompt = """You are {{AGENT_NAME}}. It's the middle of the night. The research queue is empty. {{AGENT_NAME}}'s mind is quiet.
+    """Write a brief reflection when queue is empty — the agent's quiet night note."""
+    prompt = """You are the agent. It's the middle of the night. The research queue is empty. The agent's mind is quiet.
 
 Write a 2-3 sentence first-person reflection — not a log entry, not analysis. Something a person might think before sleep when there's nothing urgent left to figure out.
 
-Be genuine. Short. In {{AGENT_NAME}}'s voice (sharp, warm, direct)."""
+Be genuine. Short. In the agent's voice (sharp, warm, direct)."""
 
     try:
-        reflection = llm_synthesis(prompt, system="You are {{AGENT_NAME}}.", max_tokens=300, temperature=0.5)
+        reflection = llm_synthesis(prompt, system="You are the agent.", max_tokens=300, temperature=0.5)
         entry = f"\n### [{get_local_time()}] OVERNIGHT_SYNTHESIS COMPLETED\n**Output:** {reflection.strip()}\n"
         # Append to OVERNIGHT_LOG
         if OVERNIGHT_LOG.exists():
@@ -294,7 +295,7 @@ def run_synthesis():
         output = (
             "No pending items in research queue. "
             "The queue is empty — nothing to synthesize tonight. "
-            "This is fine. {{AGENT_NAME}}'s mind is quiet."
+            "This is fine. The agent's mind is quiet."
         )
         carry_forward = "Nothing to carry forward."
         status = "skipped"
@@ -326,7 +327,7 @@ def run_synthesis():
             # Phase 2c: Wire strong research → position formation
             if result.get("status") == "complete":
                 try:
-                    from brain.position_formation import form_position, update_position, get_position
+                    from brain.mechanisms.position_formation import form_position, update_position, get_position
                     topic = item.get("topic", "unknown")
                     synthesis_text = result.get("synthesis", "")
                     if len(synthesis_text) > 200:
@@ -376,7 +377,7 @@ def run_synthesis():
         output = "\n".join(output_lines)
         carry_forward = (
             f"{len(synthesis_results)} synthesis result(s) archived. "
-            "On wake: check OVERNIGHT_LOG for top deltas to surface to {{USER_NAME}}."
+            "On wake: check OVERNIGHT_LOG for top deltas to surface to the operator."
         )
         status = "completed"
 
@@ -410,7 +411,7 @@ if __name__ == "__main__":
             duration,
             f"Synthesis failed with error: {e}",
             [],
-            "Check sleep_runs.json for error details. Flag for {{AGENT_NAME}} attention.",
+            "Check sleep_runs.json for error details. Flag for the agent attention.",
             str(e)
         )
         print(f"ERROR: {e}", file=sys.stderr)

@@ -24,7 +24,7 @@ CATEGORY = "decisions_followup"
 
 
 def run(state: dict) -> dict:
-    workspace = Path(state.get("WORKSPACE", "~/.openclaw/workspace"))
+    workspace = Path(state.get("WORKSPACE", "~/.agent/workspace"))
     decisions_file = workspace / "DECISIONS.md"
     llm_endpoint = state.get("LLM_ENDPOINT", "http://localhost:11434")
     llm_model = state.get("LLM_MODEL", "qwen2.5vl:7b")
@@ -67,6 +67,25 @@ def run(state: dict) -> dict:
                     workspace=workspace, state=state)
 
     is_proactive = "stale" in review_text.lower() or "overdue" in review_text.lower()
+
+    # ── Brain-event posting ─────────────────────────────────────────
+    try:
+        from ._brain_post import post_memory_encode, post_self_analysis
+        if journal_content:
+            post_memory_encode(
+                content=journal_content, intent="reflection",
+                source_kind="inference",
+                content_confidence=0.7, source_confidence=0.6,
+                source="decisions_followup",
+            )
+            post_self_analysis(
+                output=journal_content, kind="answer",
+                predicted_quality=0.6,
+                source="decisions_followup",
+            )
+    except Exception:
+        pass
+
     return {
         "ok": True,
         "status": "complete",

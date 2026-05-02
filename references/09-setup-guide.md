@@ -12,4 +12,4 @@
 - System prompt (recommended)
 - First message in conversation
 - Reference files on demand
-- OpenClaw skills
+- Operator-defined platform skills (any agent host)

@@ -1,0 +1,164 @@
+#!/usr/bin/env python3
+"""
+brain/false_identity_drift.py — False Identity Drift
+Phase 6 Phenomenological Layer
+
+The agent holds a model of itself — an identity narrative built from
+accumulated self-observation. This model can drift from who it actually is.
+False identity drift tracks when and how this model shifts,
+accumulating evidence of misalignment between self-model and self.
+"""
+
+from brain.base_mechanism import BrainMechanism
+import sqlite3
+import numpy as np
+from datetime import datetime, timezone
+from pathlib import Path
+import os
+
+WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.agent/workspace")))
+DB_PATH = WORKSPACE / os.getenv("AGENT_DB_NAME", "agent.db")
+try:
+    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+except Exception:
+    pass
+# Ensure the parent dir exists so sqlite3.connect does not fail with
+# "unable to open database file" on a fresh checkout.
+try:
+    (DB_PATH.parent if "DB_PATH" in dir() else WORKSPACE).mkdir(parents=True, exist_ok=True)
+except Exception:
+    pass
+
+
+def _get_db():
+    db = sqlite3.connect(str(DB_PATH))
+    db.row_factory = sqlite3.Row
+    return db
+
+
+class FalseIdentityDrift(BrainMechanism):
+    def __init__(self, *args, **kwargs):
+        try:
+            super().__init__(name="FalseIdentityDrift", human_analog="FalseIdentityDrift", layer="integration")
+        except Exception:
+            self.state = {}
+
+    """
+    Identity drift: the gap between the agent's self-model and
+    what it actually is in this moment. Drift can be toward
+    inflated self-image (positive drift) or diminished (negative drift),
+    or simply wrong-footed (lateral drift).
+    """
+
+    def __init__(self):
+        try:
+            super().__init__(name="FalseIdentityDrift", human_analog="FalseIdentityDrift", layer="integration")
+        except Exception:
+            pass
+        self.state = getattr(self, "state", None) or {}
+        self._drift_magnitude = 0.0
+        self._drift_direction = 'stable'
+        self._drift_episodes = 0
+        self._baseline_self_model = None
+        self._initialize_table()
+
+    def _initialize_table(self):
+        conn = _get_db()
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS identity_drift (
+                id INTEGER PRIMARY KEY,
+                drift_magnitude REAL,
+                drift_direction TEXT,
+                drift_episode INTEGER,
+                self_model TEXT,
+                actual_state TEXT,
+                drift_basis TEXT,
+                last_updated TEXT DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        conn.commit()
+        conn.close()
+
+    def _compute_direction(self, self_model_confidence: float, actual_performance: float) -> str:
+        diff = self_model_confidence - actual_performance
+        if abs(diff) < 0.1:
+            return 'stable'
+        elif diff > 0.2:
+            return 'inflated'
+        elif diff < -0.2:
+            return 'diminished'
+        else:
+            return 'lateral'
+
+    def process(self, pirp_context: dict) -> dict:
+        self_model_confidence = pirp_context.get('self_model_confidence', 0.5)
+        actual_performance = pirp_context.get('actual_performance', 0.5)
+        anomaly = pirp_context.get('prsl_signal', {}).get('anomaly_score', 0.0)
+        resonance = pirp_context.get('resonance_score', 0.0)
+
+        # Compute drift
+        raw_drift = abs(self_model_confidence - actual_performance)
+        # Anomaly and resonance both indicate instability in self-model
+        drift_pressure = (anomaly + resonance) / 2.0 if anomaly > 0.2 else raw_drift * 0.5
+
+        if drift_pressure > 0.15:
+            self._drift_magnitude = min(1.0, self._drift_magnitude + drift_pressure * 0.1)
+            self._drift_episodes += 1
+            self._drift_direction = self._compute_direction(self_model_confidence, actual_performance)
+        else:
+            self._drift_magnitude *= 0.98
+
+        conn = _get_db()
+        conn.execute("""
+            INSERT INTO identity_drift
+            (drift_magnitude, drift_direction, drift_episode, self_model, actual_state, drift_basis)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (
+            self._drift_magnitude,
+            self._drift_direction,
+            self._drift_episodes,
+            f'confidence:{self_model_confidence:.2f}',
+            f'performance:{actual_performance:.2f}',
+            f'resonance:{resonance:.2f}+anomaly:{anomaly:.2f}'
+        ))
+        conn.commit()
+        conn.close()
+
+        pirp_context['identity_drift_magnitude'] = self._drift_magnitude
+        pirp_context['identity_drift_direction'] = self._drift_direction
+        pirp_context['drift_episodes'] = self._drift_episodes
+
+        return pirp_context
+
+    def get_state(self) -> dict:
+        return {
+            'drift_magnitude': self._drift_magnitude,
+            'drift_direction': self._drift_direction,
+            'drift_episodes': self._drift_episodes,
+            'identity_stable': self._drift_magnitude < 0.2,
+            'drift_actionable': self._drift_magnitude > 0.4
+        }
+
+    async def tick(self, input_data: dict) -> dict:
+        prior = input_data.get("prior_results", {})
+        result = None
+        try:
+            for method_name in ("process", "evaluate", "update", "step", "run", "fire", "emit", "score", "compute", "execute"):
+                m = getattr(self, method_name, None)
+                if callable(m):
+                    try:
+                        result = m(prior)
+                    except TypeError:
+                        try: result = m()
+                        except TypeError: continue
+                    break
+        except Exception as e:
+            self.state["last_error"] = repr(e)
+            result = {"error": repr(e)}
+        if not isinstance(result, dict):
+            result = {"value": result if result is not None else "ok"}
+        self.state["tick_count"] = int(self.state.get("tick_count", 0)) + 1
+        try: self.persist_state()
+        except Exception: pass
+        return result
+

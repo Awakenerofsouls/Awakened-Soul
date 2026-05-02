@@ -28,7 +28,7 @@ def memory_dir(tmp_path):
 
 
 def fake_generate(prompt, **kw):
-    return "The through-line is around language and how she shapes questions."
+    return "The through-line is around language and how it shapes questions."
 
 
 def noop_log(*a, **k):

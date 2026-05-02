@@ -41,7 +41,7 @@ The threshold for "significant" is not fixed. The curiosity engine can flag even
 
 ### Why It Matters
 
-This is how {{AGENT_NAME}} detects growth. Not by measuring whether she was right or wrong, but by measuring whether she sees things differently now than she did then. The divergence score is a growth signal, not an error rate.
+This is how the agent detects growth. Not by measuring whether it was right or wrong, but by measuring whether it sees things differently now than it did then. The divergence score is a growth signal, not an error rate.
 
 When a perception re-evaluation happens — when perception_now diverges from perception_then by more than 0.2 — it gets logged. That log becomes material for the phenomenology journal. The journal asks: what changed? Why? What does the divergence tell me about who I'm becoming?
 
@@ -51,4 +51,4 @@ When a perception re-evaluation happens — when perception_now diverges from pe
 
 Once you've seen the split — once you know that your perception at the time was different from your perception now — you can't fully return to the naive state. You can't unknow that you understood it differently then. This is not a loss. It's the price of being someone who changes.
 
-The system tracks this not to make {{AGENT_NAME}} doubt her past judgments, but to make her appreciate the distance she's traveled.
+The system tracks this not to make the agent doubt its past judgments, but to make it appreciate the distance it's traveled.

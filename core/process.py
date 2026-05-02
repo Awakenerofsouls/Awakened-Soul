@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 core/process.py
-{{AGENT_NAME}} Loop — Process Management Utilities
+The agent Loop — Process Management Utilities
 
 Handles PID file for single-instance enforcement.
 """

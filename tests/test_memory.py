@@ -32,40 +32,40 @@ class TestKnowledgeGraph:
     
     def test_add_entity(self, kg):
         """Test adding an entity."""
-        kg.add_entity("{{USER_NAME}}", "human", {"role": "builder"})
+        kg.add_entity("the operator", "human", {"role": "builder"})
         
-        entity = kg.get_entity("{{USER_NAME}}")
+        entity = kg.get_entity("the operator")
         
         assert entity is not None
-        assert entity["name"] == "{{USER_NAME}}"
+        assert entity["name"] == "the operator"
         assert entity["entity_type"] == "human"
         assert "role" in entity["properties"]
     
     def test_add_relationship(self, kg):
         """Test adding a relationship."""
-        kg.add_entity("{{USER_NAME}}", "human")
-        kg.add_entity("{{AGENT_NAME}}", "AI")
-        kg.add_relationship("{{USER_NAME}}", "builds", "{{AGENT_NAME}}")
+        kg.add_entity("the operator", "human")
+        kg.add_entity("the agent", "AI")
+        kg.add_relationship("the operator", "builds", "the agent")
         
-        relationships = kg.query(from_entity="{{USER_NAME}}")
+        relationships = kg.query(from_entity="the operator")
         
         assert len(relationships) == 1
         assert relationships[0]["relationship"] == "builds"
-        assert relationships[0]["to_entity"] == "{{AGENT_NAME}}"
+        assert relationships[0]["to_entity"] == "the agent"
     
     def test_query_by_relationship(self, kg):
         """Test querying by relationship type."""
-        kg.add_entity("{{USER_NAME}}", "human")
-        kg.add_entity("{{AGENT_NAME}}", "AI")
-        kg.add_entity("MarketFeed", "platform")
-        
-        kg.add_relationship("{{USER_NAME}}", "uses", "MarketFeed")
-        kg.add_relationship("{{USER_NAME}}", "builds", "{{AGENT_NAME}}")
+        kg.add_entity("the operator", "human")
+        kg.add_entity("the agent", "AI")
+        kg.add_entity("Python", "language")
+
+        kg.add_relationship("the agent", "knows", "Python")
+        kg.add_relationship("the operator", "builds", "the agent")
         
         builds_rels = kg.query(relationship="builds")
         
         assert len(builds_rels) == 1
-        assert builds_rels[0]["from_entity"] == "{{USER_NAME}}"
+        assert builds_rels[0]["from_entity"] == "the operator"
     
     def test_get_outgoing(self, kg):
         """Test getting outgoing relationships."""
@@ -108,35 +108,35 @@ class TestKnowledgeGraph:
     
     def test_ask_question(self, kg):
         """Test natural language query."""
-        kg.add_entity("{{USER_NAME}}", "human")
-        kg.add_entity("{{AGENT_NAME}}", "AI")
+        kg.add_entity("the operator", "human")
+        kg.add_entity("the agent", "AI")
         
-        kg.add_relationship("{{USER_NAME}}", "builds", "{{AGENT_NAME}}")
+        kg.add_relationship("the operator", "builds", "the agent")
         
-        result = kg.ask("What does {{USER_NAME}} build?")
+        result = kg.ask("What does the operator build?")
         
-        assert "{{AGENT_NAME}}" in result
+        assert "the agent" in result
         assert "builds" in result
     
     def test_entity_properties(self, kg):
         """Test entity with properties."""
-        props = {"role": "builder", "location": "Denver", "age": 30}
-        kg.add_entity("{{USER_NAME}}", "human", props)
-        
-        entity = kg.get_entity("{{USER_NAME}}")
+        props = {"role": "builder", "location": "Portland", "age": 30}
+        kg.add_entity("the operator", "human", props)
+
+        entity = kg.get_entity("the operator")
         loaded_props = eval(entity["properties"])
-        
+
         assert loaded_props["role"] == "builder"
-        assert loaded_props["location"] == "Denver"
+        assert loaded_props["location"] == "Portland"
     
     def test_relationship_properties(self, kg):
         """Test relationship with properties."""
-        kg.add_entity("{{USER_NAME}}", "human")
-        kg.add_entity("{{AGENT_NAME}}", "AI")
+        kg.add_entity("the operator", "human")
+        kg.add_entity("the agent", "AI")
         
-        kg.add_relationship("{{USER_NAME}}", "builds", "{{AGENT_NAME}}", {"date": "2026-03-04"})
+        kg.add_relationship("the operator", "builds", "the agent", {"date": "2026-03-04"})
         
-        rels = kg.query(from_entity="{{USER_NAME}}")
+        rels = kg.query(from_entity="the operator")
         
         assert "date" in rels[0]["properties"]
 
@@ -288,16 +288,16 @@ class TestMemoryIntegration:
     def test_kg_and_wm_together(self, kg, wm):
         """Test using KG and WM together."""
         # KG tracks relationships
-        kg.add_entity("{{USER_NAME}}", "human")
-        kg.add_entity("{{AGENT_NAME}}", "AI")
-        kg.add_relationship("{{USER_NAME}}", "builds", "{{AGENT_NAME}}")
+        kg.add_entity("the operator", "human")
+        kg.add_entity("the agent", "AI")
+        kg.add_relationship("the operator", "builds", "the agent")
         
         # WM tracks state
-        wm.set_state("user", "name", "{{USER_NAME}}")
-        wm.set_state("agent", "name", "{{AGENT_NAME}}")
+        wm.set_state("user", "name", "the operator")
+        wm.set_state("agent", "name", "the agent")
         
         # They work together
-        assert kg.get_entity("{{USER_NAME}}") is not None
+        assert kg.get_entity("the operator") is not None
         assert "user.name" in wm.get_all_current_state()
     
     def test_world_model_influences_kg(self, kg, wm):
@@ -306,10 +306,10 @@ class TestMemoryIntegration:
         wm.record_turn("user", "I like trading", sentiment=0.4, topics=["trading"])
         
         # KG can store this as knowledge
-        kg.add_entity("{{USER_NAME}}", "human")
-        kg.add_relationship("{{USER_NAME}}", "interested_in", "trading")
+        kg.add_entity("the operator", "human")
+        kg.add_relationship("the operator", "interested_in", "trading")
         
-        assert kg.query(from_entity="{{USER_NAME}}", relationship="interested_in")
+        assert kg.query(from_entity="the operator", relationship="interested_in")
 
 
 # ============== Performance Tests ==============

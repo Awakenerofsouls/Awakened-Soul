@@ -33,7 +33,7 @@ import sqlite3
 from pathlib import Path
 from typing import Dict, Any, Optional, List
 
-WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", "~/.openclaw/workspace"))
+WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.agent/workspace")))
 DB_PATH = WORKSPACE / os.getenv("AGENT_DB_NAME", "agent.db")
 
 

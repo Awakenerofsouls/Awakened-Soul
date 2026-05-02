@@ -5,25 +5,40 @@ Daily checksum verification for protected identity files.
 Runs via cron — checks SHA256 hash of SOUL.md and IDENTITY.md against known baseline.
 Alerts via Telegram if hash changes unexpectedly.
 
-{{USER_NAME}} must initialize baseline by running with --init first.
+The operator must initialize baseline by running with --init first.
 After init, run daily without flags.
 
-TELEGRAM: Uses `openclaw message send --channel telegram` — never raw Bot API.
-No bot token lives in this skill. OpenClaw handles the channel natively.
+TELEGRAM: Uses the agent-bridge CLI (`AGENT_BRIDGE_BIN message send --channel
+telegram`) — never raw Bot API. No bot token lives in this skill; the bridge
+handles the channel natively.
 """
 
 import os
 import sys
 import json
 import hashlib
+import shutil
 import subprocess
 from datetime import datetime
 from pathlib import Path
+from typing import Optional
 
-WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.openclaw/workspace")))
+WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.agent/workspace")))
 AGENT_HOME = Path(os.getenv("AGENT_HOME", os.path.expanduser("~/.agent")))
+
+#: Bridge CLI binary — operators set AGENT_BRIDGE_BIN to override.
+BRIDGE_BIN = os.getenv("AGENT_BRIDGE_BIN", "agent-bridge")
+
+
+def _resolve_bridge_bin() -> Optional[Path]:
+    candidate = Path(BRIDGE_BIN)
+    if candidate.is_absolute() and candidate.exists():
+        return candidate
+    resolved = shutil.which(BRIDGE_BIN)
+    return Path(resolved) if resolved else None
+
+
 STATE_FILE = AGENT_HOME / "state" / "checksum_baseline.json"
-ALERT_LOG = AGENT_HOME / "logs" / "checksum_alerts.log"
 LOG_FILE = AGENT_HOME / "logs" / "checksum_guard.log"
 
 PROTECTED_FILES = [
@@ -70,13 +85,18 @@ def _compute_hash(path):
 
 def _send_telegram(message: str) -> bool:
     """
-    Send alert via openclaw native tool — no raw Bot API, no token in this file.
-    OpenClaw resolves the Telegram channel and bot credentials from openclaw.json.
+    Send alert via the agent-bridge CLI — no raw Bot API, no token in this file.
+    The bridge resolves the Telegram channel and bot credentials from its own
+    config file. Returns False gracefully if the bridge isn't installed.
     """
+    bridge = _resolve_bridge_bin()
+    if bridge is None:
+        _log(f"agent bridge {BRIDGE_BIN!r} not found in PATH — set AGENT_BRIDGE_BIN to override")
+        return False
     try:
         result = subprocess.run(
             [
-                "openclaw", "message", "send",
+                str(bridge), "message", "send",
                 "--channel", "telegram",
                 "--message", message,
             ],
@@ -86,10 +106,7 @@ def _send_telegram(message: str) -> bool:
         )
         if result.returncode == 0:
             return True
-        _log(f"openclaw send failed: {result.stderr[:200]}")
-        return False
-    except FileNotFoundError:
-        _log("openclaw CLI not found in PATH")
+        _log(f"bridge send failed: {result.stderr[:200]}")
         return False
     except Exception as e:
         _log(f"send error: {e}")

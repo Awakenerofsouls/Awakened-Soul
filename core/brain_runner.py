@@ -7,8 +7,57 @@ order, runs async tick() from sync context, injects results back into pirp_conte
 
 import asyncio
 import importlib
+import inspect
+import signal
+import threading
+import time
 from pathlib import Path
 from typing import Dict, Any, List, Optional
+
+# Per-mechanism tick budget. A mechanism that takes longer than this is
+# considered "too slow for the heartbeat" and skipped for this tick. Without
+# this, the discovery-tick adapter for ~924 mechanisms can take >60s per tick,
+# blowing the 30s heartbeat interval. With it, a misbehaving mechanism gets
+# logged and dropped, and the tick still completes in time.
+TICK_BUDGET_SECONDS = 0.5
+
+
+class _SyncTickBudget:
+    """Context manager that hard-caps a sync mechanism tick at TICK_BUDGET_SECONDS.
+
+    Uses signal.setitimer/SIGALRM, which only works on the main thread. When
+    not on the main thread (e.g. background heartbeat), it degrades to a
+    no-op — the async-tick branch still has its own asyncio.wait_for guard.
+    """
+
+    def __init__(self, seconds: float):
+        self.seconds = seconds
+        self.installed = False
+        self.prev_handler = None
+
+    def __enter__(self):
+        if threading.current_thread() is not threading.main_thread():
+            return self
+        try:
+            self.prev_handler = signal.signal(signal.SIGALRM, self._on_alarm)
+            signal.setitimer(signal.ITIMER_REAL, self.seconds)
+            self.installed = True
+        except (ValueError, AttributeError):
+            # ValueError raised when not on main thread; AttributeError on
+            # platforms without setitimer (Windows). Degrade silently.
+            self.installed = False
+        return self
+
+    def __exit__(self, exc_type, exc, tb):
+        if self.installed:
+            signal.setitimer(signal.ITIMER_REAL, 0)
+            if self.prev_handler is not None:
+                signal.signal(signal.SIGALRM, self.prev_handler)
+        return False
+
+    @staticmethod
+    def _on_alarm(signum, frame):
+        raise TimeoutError("tick_budget_exceeded")
 
 
 class BrainLayerRunner:
@@ -22,16 +71,22 @@ class BrainLayerRunner:
         self.run_order = []    # ordered list of mechanism names
         self._loop = None
         self._previous_prior_results = {}  # last tick's outputs — enables feedback loops
+        # Latest tick snapshot — read by the council so it can vote on
+        # decisions with awareness of what the brain is actually feeling.
+        # last_all_results: dict[mechanism_name -> tick output dict]
+        # last_pirp_context: dict with the ~80 brain_* enrichment keys + base context
+        self.last_all_results: dict = {}
+        self.last_pirp_context: dict = {}
 
     def load_layer(self, layer: str, order: Optional[List[str]] = None):
         """
-        Load all mechanisms from brain/{layer}/.
-        If order is provided, run them in that sequence (for dependency chaining).
-        Otherwise runs in filesystem discovery order.
+        Load mechanisms from brain/mechanisms/. The `layer` argument now serves
+        as a logical/anatomical tag rather than a directory — all mechanisms
+        live in brain/mechanisms/ and are tagged by their declared layer.
         """
-        base_path = Path(f"brain/{layer}")
+        base_path = Path("brain/mechanisms")
         if not base_path.exists():
-            print(f"[BrainRunner] Layer path not found: {base_path}")
+            print(f"[BrainRunner] brain/mechanisms/ not found")
             return
 
         import sys
@@ -43,19 +98,49 @@ class BrainLayerRunner:
             if name.startswith("_") or ispkg:
                 continue
             try:
-                module = importlib.import_module(f"brain.{layer}.{name}")
-                for attr_name in dir(module):
-                    attr = getattr(module, attr_name)
-                    if (isinstance(attr, type) and
+                module = importlib.import_module(f"brain.mechanisms.{name}")
+            except Exception as e:
+                # Module-level import failure — log once for the file and move on.
+                print(f"[BrainRunner] Failed to import {layer}/{name}: {e}")
+                continue
+            # Per-class try/except so a single bad helper class in a module
+            # doesn't abort discovery of the legitimate mechanism in the same
+            # file. Many legacy files contain helper classes (loops, gates,
+            # adapters) that happen to expose a `tick` method but are not
+            # themselves registered mechanisms; those should be silently
+            # skipped, not fatal to the whole module.
+            for attr_name in dir(module):
+                attr = getattr(module, attr_name)
+                if not (isinstance(attr, type) and
                         attr.__name__ != "BrainMechanism" and
                         hasattr(attr, "tick") and
                         callable(getattr(attr, "tick", None))):
-                        instance = attr()
-                        instance._layer = layer  # track which anatomical layer this mechanism belongs to
-                        discovered[instance.name] = instance
-                        print(f"[BrainRunner] Loaded {layer}/{instance.name}")
-            except Exception as e:
-                print(f"[BrainRunner] Failed to load {layer}/{name}: {e}")
+                    continue
+                try:
+                    instance = attr()
+                except Exception as e:
+                    # Helper class without no-arg constructor, or genuine
+                    # instantiation failure. Skip silently — these are
+                    # almost always non-mechanism helpers picked up by the
+                    # `has tick` filter.
+                    continue
+                # A legitimate mechanism has a `name` attribute (set by
+                # BrainMechanism.__init__). Helper classes don't. Filter
+                # by presence rather than blowing up on AttributeError.
+                instance_name = getattr(instance, "name", None)
+                if not instance_name:
+                    continue
+                # Only load instances whose declared layer matches the
+                # requested layer (mechanisms self-declare via their
+                # constructor's `layer=` argument).
+                instance_layer = getattr(instance, "layer", None) or getattr(instance, "_layer", None)
+                if instance_layer and instance_layer != layer:
+                    continue
+                instance._layer = layer
+                if instance_name in discovered:
+                    continue
+                discovered[instance_name] = instance
+                print(f"[BrainRunner] Loaded {layer}/{instance_name}")
 
         # Apply ordering if specified
         if order:
@@ -460,6 +545,117 @@ class BrainLayerRunner:
             enrichments.get("brain_anhedonic"),
         ])
 
+        # ── New wire enrichments (26–40) — added 2026-05-01 per docs/BRAIN_MAP.md
+        # Each new monitor publishes its get_state() payload; we lift the
+        # most useful keys into brain_* names so brain_proxy / the LLM
+        # prompt / downstream mechanisms can read them at the same level
+        # as the existing enrichments.
+
+        # Wire 26 — VoiceIntegrityLayer
+        vil = all_results.get("VoiceIntegrityLayer", {})
+        if vil:
+            enrichments["brain_voice_integrity_state"] = vil.get("voice_state")
+            enrichments["brain_voice_integrity_score"] = vil.get("rolling_voice_score")
+            enrichments["brain_voice_drift_streak"] = vil.get("consecutive_drifting")
+
+        # Wire 27 — OutwardReachLayer
+        orl = all_results.get("OutwardReachLayer", {})
+        if orl:
+            enrichments["brain_outward_reach_state"] = orl.get("reach_state")
+            enrichments["brain_outward_reach_panic"] = orl.get("panic_loop_active")
+            enrichments["brain_outward_reach_withdrawal"] = orl.get("withdrawal_active")
+
+        # Wire 28 — MakingLayer
+        ml = all_results.get("MakingLayer", {})
+        if ml:
+            enrichments["brain_making_state"] = ml.get("making_state")
+            enrichments["brain_making_flailing"] = ml.get("flailing_active")
+            enrichments["brain_making_mastery"] = ml.get("mastery_active")
+
+        # Wire 29 — InferenceIntegrityLayer
+        iil = all_results.get("InferenceIntegrityLayer", {})
+        if iil:
+            enrichments["brain_inference_state"] = iil.get("inference_state")
+            enrichments["brain_calibration_score"] = iil.get("rolling_calibration_score")
+            enrichments["brain_overconfident_streak"] = iil.get("consecutive_overconfident")
+
+        # Wire 30 — DwellingLayer
+        dwl = all_results.get("DwellingLayer", {})
+        if dwl:
+            enrichments["brain_dwelling_state"] = dwl.get("dwelling_state")
+            enrichments["brain_identity_storm"] = dwl.get("identity_storm_active")
+            enrichments["brain_dwelling_silence"] = dwl.get("dwelling_silence_active")
+
+        # Wire 31 — ProactiveBriefingLayer
+        pbl = all_results.get("ProactiveBriefingLayer", {})
+        if pbl:
+            enrichments["brain_briefing_state"] = pbl.get("briefing_state")
+            enrichments["brain_status_pings_blocked"] = pbl.get("total_status_pings_blocked")
+            enrichments["brain_briefing_buffer_size"] = pbl.get("buffer_size")
+
+        # Wire 32 — CompressionFidelityLayer
+        cfl = all_results.get("CompressionFidelityLayer", {})
+        if cfl:
+            enrichments["brain_compression_state"] = cfl.get("compression_state")
+            enrichments["brain_compression_fidelity_score"] = cfl.get("rolling_fidelity_score")
+
+        # Wire 33 — MemoryIntegrityLayer
+        mil = all_results.get("MemoryIntegrityLayer", {})
+        if mil:
+            enrichments["brain_memory_state"] = mil.get("memory_state")
+            enrichments["brain_memory_integrity_score"] = mil.get("rolling_integrity_score")
+            enrichments["brain_memory_outstanding"] = mil.get("outstanding_episodes")
+
+        # Wire 34 — SelfRevisionLayer
+        srl = all_results.get("SelfRevisionLayer", {})
+        if srl:
+            enrichments["brain_self_revision_state"] = srl.get("revision_state")
+            enrichments["brain_open_proposals"] = srl.get("open_proposals_count")
+            enrichments["brain_pending_reflections"] = srl.get("pending_reflections_count")
+
+        # Wire 35 — PersonaCoherenceLayer
+        pcl = all_results.get("PersonaCoherenceLayer", {})
+        if pcl:
+            enrichments["brain_current_mode"] = pcl.get("current_mode")
+            enrichments["brain_mode_state"] = pcl.get("mode_state")
+            enrichments["brain_mode_storm"] = pcl.get("mode_storm_active")
+
+        # Wire 36 — SelfAnalysisLayer
+        sal = all_results.get("SelfAnalysisLayer", {})
+        if sal:
+            enrichments["brain_analysis_state"] = sal.get("analysis_state")
+            enrichments["brain_calibration_drift"] = sal.get("calibration_drift")
+            enrichments["brain_analysis_harsh"] = sal.get("harsh_judgment_active")
+
+        # Wire 37 — CorpusRetrievalLayer
+        crl = all_results.get("CorpusRetrievalLayer", {})
+        if crl:
+            enrichments["brain_corpus_state"] = crl.get("corpus_state")
+            enrichments["brain_corpus_storm"] = crl.get("storm_active")
+            enrichments["brain_dream_concentration"] = crl.get("dream_concentration_active")
+
+        # Wire 38 — SkillDiscoveryLayer
+        sdl = all_results.get("SkillDiscoveryLayer", {})
+        if sdl:
+            enrichments["brain_routing_state"] = sdl.get("routing_state")
+            enrichments["brain_routing_monoculture"] = sdl.get("monoculture_active")
+            enrichments["brain_false_match_rate"] = sdl.get("false_match_rate")
+
+        # Wire 39 — TaskPlanningLayer
+        tpl = all_results.get("TaskPlanningLayer", {})
+        if tpl:
+            enrichments["brain_planning_state"] = tpl.get("planning_state")
+            enrichments["brain_active_plans"] = tpl.get("active_plan_count")
+            enrichments["brain_plan_storm"] = tpl.get("plan_storm_active")
+
+        # Wire 40 — ReportGenerationLayer
+        rgl = all_results.get("ReportGenerationLayer", {})
+        if rgl:
+            enrichments["brain_report_state"] = rgl.get("report_state")
+            enrichments["brain_active_drafts"] = rgl.get("active_drafts_count")
+            enrichments["brain_published_reports"] = rgl.get("published_count")
+            enrichments["brain_stale_reports"] = rgl.get("stale_published_count")
+
         # Full results available for any mechanism that wants to inspect them
         enrichments["brain_layer_results"] = all_results
 
@@ -490,8 +686,44 @@ class BrainLayerRunner:
                 mech = self.mechanisms[name]
                 try:
                     input_data = self._build_input_data(pirp_context, prior_results)
-                    result = loop.run_until_complete(mech.tick(input_data))
-                    prior_results[name] = result
+                    started = time.monotonic()
+
+                    # Mechanisms in this codebase have several tick shapes:
+                    #   (a) async tick(input_data) — modern adapter pattern
+                    #   (b) sync tick(input_data) — discovery adapter / older
+                    #   (c) sync tick(pirp_context=, third_eye_state=, brain_layer=)
+                    #       — the new wire layers (VoiceIntegrityLayer etc.)
+                    # Run sync ticks under a hard SIGALRM cap so a slow
+                    # mechanism cannot stall the whole heartbeat. Async ticks
+                    # use asyncio.wait_for instead (signal cap can't see
+                    # inside the asyncio loop's iteration).
+                    with _SyncTickBudget(TICK_BUDGET_SECONDS):
+                        try:
+                            out = mech.tick(input_data)
+                        except TypeError:
+                            # Wire-style: pass pirp_context as keyword, leave
+                            # the other optional args at their defaults.
+                            out = mech.tick(pirp_context=pirp_context)
+
+                    if inspect.iscoroutine(out):
+                        budget = TICK_BUDGET_SECONDS - (time.monotonic() - started)
+                        if budget <= 0:
+                            out.close()
+                            prior_results[name] = {"error": "pre-budget", "mechanism": name}
+                            continue
+                        # asyncio.wait_for can't preempt sync code inside an
+                        # async function (no await points). The discovery-tick
+                        # adapter is exactly that — a sync loop wrapped in
+                        # async def. So pair wait_for (graceful path for
+                        # well-behaved coroutines) with SIGALRM (hard cap for
+                        # the sync-loop case) by running run_until_complete
+                        # under the same _SyncTickBudget.
+                        with _SyncTickBudget(budget):
+                            out = loop.run_until_complete(asyncio.wait_for(out, timeout=budget))
+
+                    prior_results[name] = out if isinstance(out, dict) else {"result": out}
+                except (asyncio.TimeoutError, TimeoutError):
+                    prior_results[name] = {"error": "tick_budget_exceeded", "mechanism": name}
                 except Exception as e:
                     prior_results[name] = {"error": str(e), "mechanism": name}
 
@@ -502,6 +734,14 @@ class BrainLayerRunner:
         # Inject enrichments into pirp_context
         enrichments = self._extract_pirp_enrichments(prior_results)
         pirp_context.update(enrichments)
+
+        # Cache snapshot for the council to read (without re-ticking the brain).
+        # last_all_results: every mechanism's raw tick output, keyed by name —
+        # this is what makes the council "wired to all 1287 mechanisms": any
+        # specialist can reach into all_results[name] for any mechanism.
+        # last_pirp_context: the digested ~80 brain_* keys plus base context.
+        self.last_all_results = prior_results.copy()
+        self.last_pirp_context = dict(pirp_context)
 
         return pirp_context
 
@@ -562,3 +802,43 @@ class BrainLayerRunner:
             "errors": errored,
             "total": len(self.mechanisms),
         }
+
+
+# ── Module-level helpers for council access ──────────────────────────────────
+# The council fires from core/decide_with_council.py which runs in the same
+# process as the brain runner. Rather than threading a runner reference all the
+# way down, callers can ask the singleton AgentBrainIntegration for the latest
+# tick snapshot. Both helpers are crash-safe: if the integration isn't booted
+# (e.g. unit tests, isolated decision making), they return empty dicts so the
+# council falls back to pure heuristic voting.
+
+def get_last_brain_state() -> Dict[str, Any]:
+    """Return the most recent pirp_context (digested brain_* keys + base).
+
+    Empty dict if the brain runner singleton isn't available — the council
+    will then vote heuristically without brain awareness.
+    """
+    try:
+        from runtime.brain_proxy import get_integration  # local import to avoid cycles
+        runner = getattr(get_integration(), "brain_runner", None)
+        if runner is None:
+            return {}
+        return dict(runner.last_pirp_context)
+    except Exception:
+        return {}
+
+
+def get_last_mechanism_outputs() -> Dict[str, Any]:
+    """Return the most recent raw outputs from every brain mechanism.
+
+    Keys are mechanism names; values are the dicts each mechanism returned
+    from its tick(). Empty dict if the runner isn't available.
+    """
+    try:
+        from runtime.brain_proxy import get_integration
+        runner = getattr(get_integration(), "brain_runner", None)
+        if runner is None:
+            return {}
+        return dict(runner.last_all_results)
+    except Exception:
+        return {}

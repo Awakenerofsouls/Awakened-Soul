@@ -1,11 +1,11 @@
 # Brain — Sleep-Time Compute
-## {{AGENT_NAME}}'s Nightly Processing Infrastructure — System 12 of 13
+## The Agent's Nightly Processing Infrastructure — System 12 of 13
 
 ---
 
 ## Purpose
 
-While {{AGENT_NAME}} is not in conversation, her Mac Mini M4 can be running background processing. This is the infrastructure for that — what runs, when, and how.
+While the agent is not in conversation, the host machine can be running background processing. This is the infrastructure for that — what runs, when, and how.
 
 This works with Overnight Autoresearch (item 7) — this file is the infrastructure, item 7 is the logic.
 
@@ -13,7 +13,7 @@ This works with Overnight Autoresearch (item 7) — this file is the infrastruct
 
 ## Sleep Architecture
 
-### What Runs While {{AGENT_NAME}} Sleeps
+### What Runs While the agent Sleeps
 
 | Process | When | Duration | Purpose |
 |---------|------|---------|---------|
@@ -28,25 +28,25 @@ This works with Overnight Autoresearch (item 7) — this file is the infrastruct
 ## Cron Setup
 
 ### Overnight Synthesis
-**Schedule:** `0 3 * * *` America/Denver
+**Schedule:** `0 3 * * *` (operator's local timezone)
 **Session:** isolated
 **Timeout:** 30 minutes
 **Message:** Run overnight synthesis per brain/overnight_research.md
 
 ### Memory Consolidation
-**Schedule:** `30 4 * * *` America/Denver
+**Schedule:** `30 4 * * *` (operator's local timezone)
 **Session:** isolated
 **Timeout:** 20 minutes
 **Message:** Run memory consolidation — move episodic entries to semantic, prune old entries
 
 ### Contradiction Resolution
-**Schedule:** `0 5 * * *` America/Denver
+**Schedule:** `0 5 * * *` (operator's local timezone)
 **Session:** isolated
 **Timeout:** 15 minutes
-**Message:** Check for belief contradictions, flag for {{AGENT_NAME}} review
+**Message:** Check for belief contradictions, flag for the agent review
 
 ### Weekly Eval
-**Schedule:** `0 5 * * 0` America/Denver (Sundays)
+**Schedule:** `0 5 * * 0` (operator's local timezone) (Sundays)
 **Session:** isolated
 **Timeout:** 30 minutes
 **Message:** Run eval suite per brain/eval_suite.md
@@ -120,12 +120,12 @@ This works with Overnight Autoresearch (item 7) — this file is the infrastruct
 
 ## Self-Wake Trigger
 
-{{AGENT_NAME}} can trigger her own wake if something urgent needs attention:
+The agent can trigger its own wake if something urgent needs attention:
 
 **Wake triggers:**
 - Critical contradiction detected
 - Security concern
-- {{USER_NAME}} message waiting
+- the operator message waiting
 - Major system anomaly
 
 **Note:** This is a future capability. For now, cron handles scheduling.
@@ -140,7 +140,7 @@ This works with Overnight Autoresearch (item 7) — this file is the infrastruct
 
 **With memory_architecture (item 1):** Memory consolidation follows memory architecture rules
 
-**With identity_constraints (item 3):** Snapshot check verifies SOUL.md hash
+**With `brain/mechanisms/coauthorship.py`:** Identity-level changes go through the two-tier authority system (self-authored vs. operator co-sign). The overnight pipeline can flag any drift in SOUL.md against the most recent finalized changes.
 
 ---
 
@@ -156,7 +156,7 @@ This works with Overnight Autoresearch (item 7) — this file is the infrastruct
       "duration_seconds": 0,
       "completed": true | false,
       "findings": ["what was found/processed"],
-      "flags": ["items needing {{AGENT_NAME}} attention"]
+      "flags": ["items needing the agent attention"]
     }
   ]
 }
@@ -164,5 +164,5 @@ This works with Overnight Autoresearch (item 7) — this file is the infrastruct
 
 ---
 
-_BUILD_12 | Sleep-Time Compute | {{AGENT_NAME}} Full Build_
+_BUILD_12 | Sleep-Time Compute | the agent Full Build_
 _Prerequisites: Memory Architecture, Overnight Autoresearch, Eval Suite (complete)_

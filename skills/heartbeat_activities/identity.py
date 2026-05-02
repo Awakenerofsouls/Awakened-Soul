@@ -20,8 +20,8 @@ def extract_primary_name(workspace: Path, user_file: str = "USER.md") -> str:
     Returns the name as a stripped string, or empty string if not found.
 
     Examples:
-        "# {{USER_NAME}}"        → "{{USER_NAME}}"
-        "# {{USER_NAME}}"         → "{{USER_NAME}}"
+        "# the operator"        → "the operator"
+        "# the operator"         → "the operator"
         "" (no file)     → ""
         "" (no heading)  → ""
 

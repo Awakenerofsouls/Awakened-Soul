@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-eval/fix_memory_coherence.py — Fix all broken cross-references in {{AGENT_NAME}}'s workspace.
+eval/fix_memory_coherence.py — Fix all broken cross-references in the agent's workspace.
 """
 import os, re, json, shutil
 
-WORKSPACE = "~/.openclaw/workspace"
+WORKSPACE = "~/.agent/workspace"
 MEMORY_DIR = os.path.join(WORKSPACE, "memory")
 BRAIN_DIR  = os.path.join(WORKSPACE, "brain")
 ARCHIVE_DIR = os.path.join(WORKSPACE, "_archive")
@@ -125,15 +125,18 @@ else:
     print(f"  = {rel} (no change)")
 
 # 3.  memory/2026-04-05-404-error-model-qwen2-5-14b-no.md
-#     ~/.openclaw/openclaw.json is outside workspace — remove the reference
+#     Legacy memory entries reference a vendor-specific config path
+#     (`~/.agent/openclaw.json`) that no longer exists in the
+#     platform-agnostic build. Strip those lines so the entry is
+#     consistent with the current architecture.
 rel = "memory/2026-04-05-404-error-model-qwen2-5-14b-no.md"
 content = read(rel)
 original = content
-# Remove lines referencing the missing config file
+# Remove lines referencing the legacy vendor config path.
 content = re.sub(r'.*openclaw\.json.*\n?', '', content)
 if content != original:
     write(rel, content)
-    note(f"Removed missing-path reference in: {rel}")
+    note(f"Removed legacy-vendor-path reference in: {rel}")
 else:
     print(f"  = {rel} (no change)")
 
@@ -151,7 +154,7 @@ else:
 
 # Also create the user relationship stub if not present
 create_stub("brain/relationships/user.json", {
-    "entity_id": "user", "entity_name": "{{USER_NAME}}", "entity_type": "creator",
+    "entity_id": "user", "entity_name": "the operator", "entity_type": "creator",
     "stage": "reciprocal", "since": "2026-03-15",
     "model_of_them": {"values":[],"patterns":[],"preferences":[],"boundaries":[],
                       "trust_signals":[],"trust_violations":[]},
@@ -197,7 +200,11 @@ for fname in brain_files:
     content = re.sub(r'memory/episodic/YYYY-MM-DD\.json', 'memory/episodic/2026-04-05.json', content)
     content = re.sub(r'brain/overnight/digest_YYYY-MM-DD\.json', 'brain/overnight/digest_2026-04-08.json', content)
     content = re.sub(r'memory/temporal/YYYY-WXX\.json', 'memory/temporal/2026-W15.json', content)
-    content = content.replace("~/.openclaw/openclaw.json", "~/.openclaw/openclaw.json")
+    # Strip legacy vendor-specific config references — the platform-
+    # agnostic build no longer has this file, so any line mentioning it
+    # in old memory snapshots is stale and should be removed entirely
+    # rather than rewritten to point at something that doesn't exist.
+    content = re.sub(r'.*~/\.agent/openclaw\.json.*\n?', '', content)
     if content != original:
         write(rel, content)
         note(f"Fixed patterns in: {rel}")

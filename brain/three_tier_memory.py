@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Three-Tier Memory System — {{AGENT_NAME}}'s Cognitive Architecture
+Three-Tier Memory System — the agent's Cognitive Architecture
 Implements: Working → Episodic → Semantic promotion
 
 Status: ✅ IMPLEMENTED — Phase 2a Item 2
@@ -12,11 +12,16 @@ import os
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.openclaw/workspace")))
+WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.agent/workspace")))
 EPISODIC_DIR = WORKSPACE / "memory" / "episodic"
 WORKING_FILE = EPISODIC_DIR / "working_memory.json"
 UNRESOLVED_FILE = WORKSPACE / "memory" / "unresolved.json"
 VECTOR_RETRIEVAL = WORKSPACE / "brain" / "vector_retrieval.py"
+
+# Operator identity. Public default is "operator"; deployments can override
+# via the AGENT_OPERATOR_NAME env var so working memory keys and session-start
+# strings reference the actual person interacting with the agent.
+OPERATOR_NAME = os.getenv("AGENT_OPERATOR_NAME", "operator")
 
 # Lazy imports (avoid circular)
 _phenomenology = None
@@ -252,7 +257,7 @@ def score_interpretation_lenses(content: str) -> dict:
         sys.path.insert(0, str(WORKSPACE))
         from brain.llm_router import llm_extract
 
-        prompt = f"""You are {{AGENT_NAME}}'s interpretation scorer. Given this event, score it on 5 lenses from 0.0 to 1.0.
+        prompt = f"""You are the agent's interpretation scorer. Given this event, score it on 5 lenses from 0.0 to 1.0.
 
 Event: {content}
 
@@ -629,7 +634,7 @@ def resolve_unresolved(item_id: str, resolution_note: str):
 
 # ─────────────────────────────────────────────
 # AUTONOMOUS MEMORY TOOLS
-# Called by {{AGENT_NAME}} during conversation
+# Called by the agent during conversation
 # ─────────────────────────────────────────────
 
 def memory_write(content: str, entry_type: str = "insight",
@@ -638,7 +643,7 @@ def memory_write(content: str, entry_type: str = "insight",
                 connected_to: list = None, promote_immediately: bool = False,
                 cognitive_load: float = None) -> dict:
     """
-    Autonomous memory write. Called by {{AGENT_NAME}} during conversation.
+    Autonomous memory write. Called by the agent during conversation.
     Writes to working memory with Interpretation Memory and Subjective Time.
     Returns the working memory entry.
     """
@@ -769,15 +774,15 @@ def load_working_memory() -> WorkingMemory:
     data = _load_json(WORKING_FILE)
     wm = WorkingMemory.from_session_dict(data)
 
-    # Phase 4d: Load {{USER_NAME}}'s relationship profile into working memory on startup
+    # Phase 4d: Load the operator's relationship profile into working memory on startup
     try:
         import sys
         sys.path.insert(0, str(WORKSPACE))
-        from brain.relationship_memory import get_relationship
-        user_profile = get_relationship("{{USER_NAME}}")
+        from brain.mechanisms.relationship_memory import get_relationship
+        user_profile = get_relationship(OPERATOR_NAME)
         if user_profile:
             wm.add(
-                content=f"[Session start] {{USER_NAME}} — last contact: {user_profile.get('last_contact','unknown')}, "
+                content=f"[Session start] {OPERATOR_NAME} — last contact: {user_profile.get('last_contact','unknown')}, "
                         f"trust: {user_profile.get('trust_level','?')}/5, "
                         f"tone: {user_profile.get('tone_calibration','unknown')}, "
                         f"interactions: {user_profile.get('interaction_count',0)}. "

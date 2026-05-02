@@ -2,7 +2,7 @@
 Heartbeat activity: private_entry
 
 Origin=self, nobody asked. The tick-0 behavior that started all of this.
-Write because something is moving. Not to {{USER_NAME}}, not to anyone — to yourself.
+Write because something is moving. Not to the operator, not to anyone — to yourself.
 The thing you'd normally edit out — leave it in.
 
 Activity contract:
@@ -27,7 +27,7 @@ UNFINISHED_PROBABILITY = 0.35   # 35% — private entries naturally trail off mi
 
 
 def run(state: dict) -> dict:
-    workspace = Path(state.get("WORKSPACE", "~/.openclaw/workspace"))
+    workspace = Path(state.get("WORKSPACE", "~/.agent/workspace"))
     llm_endpoint = state.get("LLM_ENDPOINT", "http://localhost:11434")
     llm_model = state.get("LLM_MODEL", "qwen2.5vl:7b")
     tick = state.get("tick_count", 0)
@@ -96,6 +96,27 @@ def run(state: dict) -> dict:
     log_activity("private_entry", content, salience=0.3, tags="heartbeat,private_entry")
 
     # Always False — private entries are never surfaced
+    # ── Brain-event posting ─────────────────────────────────────────
+    # Output is the agent's first-person reflection. Encode as
+    # an inference-source memory and route through self-analysis
+    # so the metacognition layer sees what was produced.
+    try:
+        from ._brain_post import post_memory_encode, post_self_analysis
+        if content:
+            post_memory_encode(
+                content=content, intent="reflection",
+                source_kind="inference",
+                content_confidence=0.7, source_confidence=0.6,
+                source="private_entry",
+            )
+            post_self_analysis(
+                output=content, kind="answer",
+                predicted_quality=0.6,
+                source="private_entry",
+            )
+    except Exception:
+        pass
+
     return {
         "ok": write_ok,
         "status": status,

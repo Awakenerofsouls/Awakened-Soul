@@ -47,7 +47,7 @@
     <key>AGENT_HOME</key>
     <string>/Users/<youruser>/.agent</string>
     <key>AGENT_WORKSPACE</key>
-    <string>/Users/<youruser>/.openclaw/workspace</string>
+    <string>/Users/<youruser>/.agent/workspace</string>
   </dict>
 
   <!-- Run every 30 minutes. macOS will defer if the machine is asleep

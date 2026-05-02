@@ -1,5 +1,5 @@
 """
-heartbeat_activities — neutral activity pool for Nexus {{AGENT_NAME}} framework.
+heartbeat_activities — neutral activity pool for the agent framework.
 
 Each module is one activity. Each activity follows the same contract:
 

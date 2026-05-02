@@ -1,4 +1,4 @@
-# OpenClaw Skill Sandbox Configuration
+# Awakened Soul — Skill Sandbox Configuration
 
 container:
   user: "nobody"
@@ -25,7 +25,7 @@ container:
   env_block:
     - "ANTHROPIC_API_KEY"
     - "OPENAI_API_KEY"
-    - "LLMPROVIDER_API_KEY"
+    - "LLM_API_KEY"
     - "AWS_SECRET"
     - "GITHUB_TOKEN"
 
@@ -85,7 +85,7 @@ limits:
 
 audit:
   enabled: true
-  log_file: /var/log/openclaw/skill-audit.log
+  log_file: /var/log/agent/skill-audit.log
   log_level: info
   events:
     - file_read

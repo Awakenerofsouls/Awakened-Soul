@@ -13,7 +13,11 @@ REGISTRY_FILE = SKILLS_DIR / "REGISTRY.json"
 
 class SkillDispatcher:
     """Dispatches skills only from active registry."""
-    
+
+    # Operations that don't actually execute skill code — purely informational
+    # lookups bypass approval-gating because they're safe by construction.
+    READ_ONLY_OPS = {"inspect", "describe", "list", "metadata"}
+
     def __init__(self, registry_path: Path = REGISTRY_FILE):
         self.registry_path = registry_path
         self.registry = self._load_registry()
@@ -48,39 +52,54 @@ class SkillDispatcher:
     
     def dispatch(self, skill_name: str, operation: str = "execute") -> Dict:
         """Dispatch a skill operation with registry enforcement.
-        
+
+        operation values in READ_ONLY_OPS (inspect/describe/list/metadata)
+        bypass trust gating because they don't run skill code. Any other
+        operation is treated as an execution and goes through the trust
+        check.
+
         Returns:
             {
                 "allowed": bool,
                 "skill": dict or None,
-                "error": str or None
+                "operation": str,
+                "error": str or None,
             }
         """
-        # Check if skill exists in registry
         if not self.is_active(skill_name):
             return {
                 "allowed": False,
                 "skill": None,
-                "error": f"Skill '{skill_name}' is not in active registry (archived or deleted)"
+                "operation": operation,
+                "error": f"Skill '{skill_name}' is not in active registry (archived or deleted)",
             }
-        
+
         skill = self.get_skill(skill_name)
-        
-        # Check trust level
+
+        # Read-only inspection ops always allowed for active skills.
+        if operation in self.READ_ONLY_OPS:
+            return {
+                "allowed": True,
+                "skill": skill,
+                "operation": operation,
+                "error": None,
+            }
+
+        # Execution-class operations: gate by trust level.
         trust = skill.get("trust_level", "restricted")
-        
-        # For approval_required skills, require explicit approval
         if trust == "approval_required":
             return {
                 "allowed": False,
                 "skill": skill,
-                "error": f"Skill '{skill_name}' requires approval (trust level: approval_required)"
+                "operation": operation,
+                "error": f"Skill '{skill_name}' requires approval (trust level: approval_required)",
             }
-        
+
         return {
             "allowed": True,
             "skill": skill,
-            "error": None
+            "operation": operation,
+            "error": None,
         }
 
 

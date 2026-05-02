@@ -29,7 +29,7 @@ Vector store requires an embedding model to generate vector representations of t
 - Requires external service
 
 ## Next Step
-{{USER_NAME}} needs to decide which provider to use. Until then, vector store is designed but not implementable.
+The operator needs to decide which provider to use. Until then, vector store is designed but not implementable.
 
 ## When Provider is Selected
 1. Set API key in secrets.env

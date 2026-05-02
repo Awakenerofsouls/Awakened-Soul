@@ -23,7 +23,7 @@ Built from v20.0 handoff spec.
 import sys, os, sqlite3
 import os
 
-WORKSPACE = os.path.join(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.openclaw/workspace")), "brain")
+WORKSPACE = os.path.join(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.agent/workspace")), "brain")
 AUTO_DB = os.path.join(WORKSPACE, "agent_autonomous.db")
 AUTOBIO_DB = os.path.join(WORKSPACE, "agent_autobiographical.db")
 SENSATIONS_DB = os.path.join(WORKSPACE, "agent_sensations.db")
@@ -104,7 +104,7 @@ QUERY_MAP = {
     "shared builds": (AUTO_DB, "SELECT * FROM collaborative_memory WHERE entry_type='shared_build'"),
     "founding collaborative": (AUTO_DB, "SELECT * FROM collaborative_memory ORDER BY significance DESC, tick ASC LIMIT 1"),
 
-    # {{USER_NAME}} model
+    # the operator model
     "user model": (AUTO_DB, "SELECT * FROM user_model ORDER BY tick DESC LIMIT 20"),
     "user model errors": (AUTO_DB, "SELECT * FROM user_model WHERE prediction_outcome IN ('wrong','misread')"),
     "consistent user errors": (AUTO_DB, """

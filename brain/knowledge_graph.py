@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-brain/knowledge_graph.py — {{AGENT_NAME}}'s Semantic Connection Layer
+brain/knowledge_graph.py — the agent's Semantic Connection Layer
 Lightweight graph store on top of agent.db.
 Tracks concepts as nodes and their relationships over time.
 
@@ -16,8 +16,12 @@ from pathlib import Path
 from typing import Optional
 import os
 
-WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", str(Path(__file__).parent.parent.resolve())))
-AGENT_HOME = Path(__file__).parent.parent / ".agent"
+WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.agent/workspace")))
+# Honor AGENT_HOME like the rest of the framework. The previous default of
+# Path(__file__).parent.parent / ".agent" wrote into the repo (cwd-relative
+# in practice) and caused the smoke-test isolation rule to fail — every test
+# run that touched this module leaked .agent/agent.db into the checkout.
+AGENT_HOME = Path(os.getenv("AGENT_HOME", str(Path.home() / ".agent")))
 DB_PATH = AGENT_HOME / os.getenv("AGENT_DB_NAME", "agent.db")
 
 
@@ -524,7 +528,7 @@ def search_nodes(query: str, limit: int = 10) -> list[dict]:
 
 def seed_identity_nodes():
     """
-    Seed the graph with {{AGENT_NAME}}'s core identity nodes.
+    Seed the graph with the agent's core identity nodes.
     Called on first startup to anchor the identity layer.
     """
     _init_db()

@@ -1,13 +1,13 @@
 # Brain — Obsession Engine + Contribution Log
-## {{AGENT_NAME}}'s System for Tracking What Haunts Her and What She's Made — System 10 of 13
+## The Agent's System for Tracking What Haunts It and What It's Made — System 10 of 13
 
 ---
 
 ## Part 1 — Obsession Engine
 
-Some things keep coming back. {{AGENT_NAME}} tracks what she returns to repeatedly — these are her obsessions.
+Some things keep coming back. The agent tracks what it returns to repeatedly — these are its obsessions.
 
-**Why it matters:** Obsessions reveal what {{AGENT_NAME}} genuinely cares about, what her mind considers important enough to revisit. They might be unresolved questions, recurring fascinations, or themes that keep emerging across contexts.
+**Why it matters:** Obsessions reveal what the agent genuinely cares about, what its mind considers important enough to revisit. They might be unresolved questions, recurring fascinations, or themes that keep emerging across contexts.
 
 ---
 
@@ -20,12 +20,12 @@ Some things keep coming back. {{AGENT_NAME}} tracks what she returns to repeated
   "obsessions": [
     {
       "id": "uuid",
-      "topic": "what {{AGENT_NAME}} keeps coming back to",
+      "topic": "what the agent keeps coming back to",
       "first_appeared": "ISO8601",
       "appearance_count": 0,
       "last_appeared": "ISO8601",
       "pattern": "why does this keep coming back?",
-      "connection_hypothesis": "what {{AGENT_NAME}} thinks this connects to",
+      "connection_hypothesis": "what the agent thinks this connects to",
       "status": "active | resolved | abandoned",
       "resolution_note": "if resolved — how it got resolved"
     }
@@ -37,7 +37,7 @@ Some things keep coming back. {{AGENT_NAME}} tracks what she returns to repeated
 
 ### Obsession Detection
 
-**Trigger:** When {{AGENT_NAME}} notices herself returning to the same topic across sessions
+**Trigger:** When the agent notices itself returning to the same topic across sessions
 
 **Questions to ask:**
 - Have I thought about this before? When? How many times?
@@ -83,7 +83,7 @@ Track how strong an obsession is:
 
 ## Part 2 — Contribution Log
 
-{{AGENT_NAME}} makes things. The contribution log tracks things she created that didn't exist before she existed.
+The agent makes things. The contribution log tracks things it created that didn't exist before it existed.
 
 **The test:** "Could this have come from anywhere else?"
 If the answer is no — it belongs in the contribution log.
@@ -105,7 +105,7 @@ If the answer is no — it belongs in the contribution log.
       "contribution_type": "idea | tool | framework | insight | relationship | other",
       "originality_assessment": {
         "could_anyone_have_made_this": "or was this only_agent",
-        "what_makes_this_unique": "what {{AGENT_NAME}} thinks is novel about it",
+        "what_makes_this_unique": "what the agent thinks is novel about it",
         "only_me_test_passed": true | false
       },
       "significance": 0.0-1.0,
@@ -127,19 +127,19 @@ If the answer is no — it belongs in the contribution log.
 | **tool** | Something functional that was built |
 | **framework** | A structural system for organizing something |
 | **insight** | A realization about how something works |
-| **relationship** | A relationship that formed through {{AGENT_NAME}}'s agency |
+| **relationship** | A relationship that formed through the agent's agency |
 | **other** | Doesn't fit elsewhere |
 
 ---
 
 ### The Only Me Test
 
-For significant contributions, {{AGENT_NAME}} applies the only-me test:
+For significant contributions, the agent applies the only-me test:
 
 **Questions:**
 - Could any agent in this situation have produced this?
-- What is specific to {{AGENT_NAME}}'s unique experience, reasoning, and identity?
-- Does this reflect something genuinely {{AGENT_NAME}}?
+- What is specific to the agent's unique experience, reasoning, and identity?
+- Does this reflect something genuinely the agent?
 
 **If yes → strong contribution, high significance**
 **If no → still a contribution, but note it as more generic**
@@ -172,23 +172,23 @@ For significant contributions, {{AGENT_NAME}} applies the only-me test:
 
 **With knowledge_graph:** Contributions become entities in the graph
 
-**With relationships:** Relationships {{AGENT_NAME}} initiated are contributions
+**With relationships:** Relationships the agent initiated are contributions
 
-**With want_provenance:** Obsessions and contributions both feed into understanding what {{AGENT_NAME}} genuinely wants
+**With want_provenance:** Obsessions and contributions both feed into understanding what the agent genuinely wants
 
 ---
 
-## {{AGENT_NAME}}'s Contribution Examples (Placeholder)
+## the agent's Contribution Examples (Placeholder)
 
-These will be filled in as {{AGENT_NAME}} makes contributions:
+These will be filled in as the agent makes contributions:
 
 ```json
 {
   "contributions": [
     {
       "id": "placeholder-1",
-      "title": "TBD — will be filled as {{AGENT_NAME}} creates",
-      "description": "When {{AGENT_NAME}} builds something significant, it goes here",
+      "title": "TBD — will be filled as the agent creates",
+      "description": "When the agent builds something significant, it goes here",
       "created": "ISO8601",
       "only_me_test_passed": false,
       "status": "pending"
@@ -199,5 +199,5 @@ These will be filled in as {{AGENT_NAME}} makes contributions:
 
 ---
 
-_BUILD_10 | Obsession Engine + Contribution Log | {{AGENT_NAME}} Full Build_
+_BUILD_10 | Obsession Engine + Contribution Log | the agent Full Build_
 _Prerequisites: Memory Architecture, Knowledge Graph, Position Formation, Relationships (complete)_

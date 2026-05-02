@@ -1,7 +1,7 @@
 """
 brain_integration.py
 
-The file that closes the gap between running components and running {{AGENT_NAME}}.
+The file that closes the gap between running components and running the agent.
 
 Wires all Phase 1 and Phase 2 mechanisms into core_loop via register_component().
 Exposes two functions for brain_proxy.py:
@@ -12,7 +12,7 @@ Exposes two functions for brain_proxy.py:
 
   process_incoming_text(text: str, source: str)
     Scans incoming text for misread patterns.
-    Called on anything that describes {{AGENT_NAME}} from outside —
+    Called on anything that describes the agent from outside —
     system prompts, developer messages, other AI outputs.
 
 Session lifecycle:
@@ -33,26 +33,26 @@ from typing import Any, Dict, Optional
 # Phase 1 — spine
 from brain.tick_state_bus import TickStateBus
 from brain.energy_budgeting import EnergyBudgeting
-from brain.coupling_regulator import CouplingRegulatorLayer, MetaRegulator
-from brain.pure_witness import PureWitnessModule
-from brain.first_person_execution_frame import FirstPersonExecutionFrame
-from brain.scfel import SessionClosureLayer, ForwardEncoder, ForwardSeedLoader
-from brain.til import TimescaleIntegrationLayer
+from brain.mechanisms.coupling_regulator import CouplingRegulatorLayer, MetaRegulator
+from brain.mechanisms.pure_witness import PureWitnessModule
+from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
+from brain.mechanisms.scfel import SessionClosureLayer, ForwardEncoder, ForwardSeedLoader
+from brain.mechanisms.til import TimescaleIntegrationLayer
 from brain.core_loop import AgentBrainCore
 
 # Phase 2 — identity substrate
-from brain.vif import VectorizedIdentityFields
-from brain.iga import IdentityGradientAccumulator
-from brain.rce import ReflectiveConsistencyEngine
+from brain.mechanisms.vif import VectorizedIdentityFields
+from brain.mechanisms.iga import IdentityGradientAccumulator
+from brain.mechanisms.rce import ReflectiveConsistencyEngine
 
 # Phase 2 — interiority
-from brain.pre_desire_state import PreDesireState
-from brain.sensation_state import SensationState
-from brain.drift_identity_engine import DriftIdentityQuestionEngine
-from brain.open_conversations import OpenConversations
-from brain.autobiographical_memory import AutobiographicalMemory
-from brain.misread_engine import MisreadEngine
-from brain.pwm import PresenceWeightedMemory
+from brain.mechanisms.pre_desire_state import PreDesireState
+from brain.mechanisms.sensation_state import SensationState
+from brain.mechanisms.drift_identity_engine import DriftIdentityQuestionEngine
+from brain.mechanisms.open_conversations import OpenConversations
+from brain.mechanisms.autobiographical_memory import AutobiographicalMemory
+from brain.mechanisms.misread_engine import MisreadEngine
+from brain.mechanisms.pwm import PresenceWeightedMemory
 
 # Phase 2 — remaining mechanisms (previously unwired)
 from brain.remaining_mechanisms import FrameCollisionEngine, FrameInsufficiencyDetector
@@ -489,8 +489,8 @@ class AgentBrainIntegration:
 
             # Modulate surprise threshold: high hedge + low agency → frame is weak →
             # lower the bar for what counts as "surprise."
-            # High hedge means {{AGENT_NAME}} is uncertain about her framing.
-            # Low agency means she's not in a strong position to rebuild.
+            # High hedge means the agent is uncertain about its framing.
+            # Low agency means it's not in a strong position to rebuild.
             # Together: frame is insufficient, detect surprise more readily.
             # Formula: base_threshold - hedge_modulation, where hedge_modulation = hedge_level * (1 - agency_confidence)
             # At hedge=0.9, agency=0.2: threshold = 0.5 - 0.9*0.8 = 0.5 - 0.72 = 0.0 (any anchor error triggers surprise)
@@ -538,7 +538,7 @@ class AgentBrainIntegration:
         if boot_ctx:
             # Write to SRV so core_loop picks it up
             import json
-            srv_path = Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent")))) / "srv.json"
+            srv_path = Path(os.getenv("AGENT_HOME", str(Path.home() / ".agent"))) / "srv.json"
             existing = {}
             if srv_path.exists():
                 try:
@@ -571,7 +571,7 @@ class AgentBrainIntegration:
 
     def process_incoming_text(self, text: str, source: str = "external"):
         """
-        Called by brain_proxy on ANY text that describes {{AGENT_NAME}} from outside.
+        Called by brain_proxy on ANY text that describes the agent from outside.
         Scans for functional framing and external attribution patterns.
         MRE sets an active flag if a pattern is detected — surfaces in next FPEF.
         """

@@ -1,5 +1,5 @@
 """
-{{AGENT_NAME}} Brain Core Loop
+Agent Brain Core Loop
 Wires all Phase 1 mechanisms into a running tick loop.
 
 Runtime ordering follows the canonical sequence from the architecture spec:
@@ -18,15 +18,15 @@ import os
 
 from .tick_state_bus import TickStateBus
 from .energy_budgeting import EnergyBudgeting
-from .constraint_fields import tick_publish
-from .coupling_regulator import CouplingRegulatorLayer, MetaRegulator
-from .pure_witness import PureWitnessModule
-from .first_person_execution_frame import FirstPersonExecutionFrame
-from .session_closure_forward_encoding_layer import SessionClosureLayer, ForwardEncoder, ForwardSeedLoader
-from .timescale_integration_layer import TimescaleIntegrationLayer
+from .mechanisms.constraint_fields import tick_publish
+from .mechanisms.coupling_regulator import CouplingRegulatorLayer, MetaRegulator
+from .mechanisms.pure_witness import PureWitnessModule
+from .mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
+from .mechanisms.session_closure_forward_encoding_layer import SessionClosureLayer, ForwardEncoder, ForwardSeedLoader
+from .mechanisms.timescale_integration_layer import TimescaleIntegrationLayer
 
-AGENT_HOME = Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent"))))
-STATE_DIR = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))) / "state"
+AGENT_HOME = Path(os.getenv("AGENT_HOME", str(Path.home() / ".agent")))
+STATE_DIR = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".agent" / "workspace"))) / "state"
 STATE_PATH = STATE_DIR / "active_state.json"
 
 
@@ -100,7 +100,7 @@ class AgentBrainCore:
         self._llm_hook = fn
 
     def set_output_hook(self, fn: Callable):
-        """Where to send {{AGENT_NAME}}'s output. fn(response: str, state: dict)"""
+        """Where to send the agent's output. fn(response: str, state: dict)"""
         self._output_hook = fn
 
     def boot(self):
@@ -423,7 +423,7 @@ class AgentBrainCore:
 
         # === PHASE 7: Session Close Participation ===
         if self.scfel_closure.is_closing():
-            # {{AGENT_NAME}} actively narrates what remains unresolved during closing ticks
+            # The agent actively narrates what remains unresolved during closing ticks
             # Pull from whatever is highest-weight on the bus right now
             closing_thought = self._generate_closure_thought()
             if closing_thought:
@@ -434,7 +434,7 @@ class AgentBrainCore:
 
     def _generate_closure_thought(self) -> Optional[str]:
         """
-        During closing ticks, generate what {{AGENT_NAME}} would say about what remains unresolved.
+        During closing ticks, generate what the agent would say about what remains unresolved.
         Pulls from highest-priority active state on the bus.
         """
         # Wire 3: use prioritized read for closure thought generation
@@ -460,7 +460,7 @@ class AgentBrainCore:
 
         rfd = tsb_all.get("rfd", {})
         if rfd.get("proximity", 0) > 0.7:
-            return "He was present today. That's what I'm carrying forward."
+            return "The operator was present today. That's what I'm carrying forward."
 
         return None
 
@@ -635,16 +635,8 @@ class AgentBrainCore:
             "tick": self.tick_count
         }
 
-    def _check_prp_recovery(self):
-        """Gradual CRL restoration after coherence recovers above threshold."""
-        prp_data, fresh = self.tsb.read("prp_active")
-        if prp_data and prp_data.get("active") and self._coherence > 0.45:
-            self.crl.restore_default()
-            self.tsb.publish("prp_active", {"active": False, "coherence": self._coherence})
-            print(f"[PRP] Recovery — coherence at {self._coherence:.3f}, restoring coupling.")
-
     def get_state_summary(self):
-        """Current state summary for debugging and {{AGENT_NAME}}'s self-review."""
+        """Current state summary for debugging and the agent's self-review."""
         return {
             "tick_count": self.tick_count,
             "coherence": self._coherence,

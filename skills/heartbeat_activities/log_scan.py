@@ -22,11 +22,11 @@ SIGNAL_AFFINITY = {}
 CATEGORY = "log_scan"
 
 DEFAULT_HEARTBEAT_LOG = Path.home() / ".agent" / "logs" / "heartbeat.log"
-DEFAULT_GATEWAY_LOG = Path.home() / ".openclaw" / "logs" / "gateway.log"
+DEFAULT_GATEWAY_LOG = Path.home() / ".agent" / "logs" / "gateway.log"
 
 
 def run(state: dict) -> dict:
-    workspace = Path(state.get("WORKSPACE", "~/.openclaw/workspace"))
+    workspace = Path(state.get("WORKSPACE", "~/.agent/workspace"))
 
     hb_log = Path(state.get("HEARTBEAT_LOG", str(DEFAULT_HEARTBEAT_LOG)))
     gw_log = Path(state.get("GATEWAY_LOG", str(DEFAULT_GATEWAY_LOG)))
@@ -69,7 +69,7 @@ def _scan_file(path: Path, current_tick: int) -> tuple[list, list]:
     except Exception:
         return [], []
 
-    # Skip lines that are our own {{AGENT_NAME}} conversation — they live in gateway.err.log
+    # Skip lines that are our own the agent conversation — they live in gateway.err.log
     # and contain words like "error" and "fix" from the transcript.
     # Recognised by ISO-8601 timestamp prefix: "2026-04-24T13:59:48.872-06:00 ..."
     import re
@@ -78,7 +78,7 @@ def _scan_file(path: Path, current_tick: int) -> tuple[list, list]:
     errors, warnings = [], []
     for line in lines:
         if IS_SELF_LINE.match(line):
-            continue  # skip {{AGENT_NAME}}'s own conversation logged to gateway.err.log
+            continue  # skip the agent's own conversation logged to gateway.err.log
 
         line_lower = line.lower()
 

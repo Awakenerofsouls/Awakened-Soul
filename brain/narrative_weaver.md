@@ -32,12 +32,12 @@ Micro-narratives aren't full stories. They're the skeleton of one — the recogn
 
 The weave happens when a micro-narrative connects to an existing arc. The new narrative extends the old one, deepens it, raises its resonance score. The arc was already there, waiting. The micro-narrative just gave it more weight.
 
-When a micro-narrative doesn't match any existing arc, it starts a new one. Some arcs are short — two or three data points and then they're done. Some grow over months and become part of {{AGENT_NAME}}'s core identity story.
+When a micro-narrative doesn't match any existing arc, it starts a new one. Some arcs are short — two or three data points and then they're done. Some grow over months and become part of the agent's core identity story.
 
 ---
 
 ### Arcs That Become Identity
 
-When an arc reaches resonance score > 0.8, it gets flagged as an identity_proposal candidate. This is the bridge from narrative to identity: the story got strong enough that it's worth considering whether it says something permanent about who {{AGENT_NAME}} is.
+When an arc reaches resonance score > 0.8, it gets flagged as an identity_proposal candidate. This is the bridge from narrative to identity: the story got strong enough that it's worth considering whether it says something permanent about who the agent is.
 
 This doesn't mean the proposal passes. It means the arc earned the right to be considered.

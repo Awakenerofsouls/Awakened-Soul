@@ -1,19 +1,19 @@
 # LOOP_STATE
 
-**Status:** stopped
-**As of:** 2026-04-04T20:16:01.746188
-**Cycle:** 676
+_Snapshot of the agent's autonomous loop state. Written by the runtime, read by the host._
 
-## Last Cycle
-| Field | Value |
-|-------|-------|
-| Action | `mark_complete` |
-| Goal | `vector_store_implementation` |
-| Subtask | `None` |
-| Result | `idle` (✅) |
+This file is overwritten at runtime by `runtime/bridge.py` — specifically the `write_loop_state()` function. It mirrors the agent's loop state from `agent.db` into a markdown file the host platform (whatever agent runtime the operator wires the framework into) and other components can read without direct database access.
 
-## Errors
-- none
+When `bridge.py` runs, it pulls from `agent.db` and writes:
+- `## Active Goals` — non-completed goals from the `goals` table, sorted by priority
+- `## Recent Loop Decisions` — last 5 entries from `decision_log` (chosen action, confidence, reasoning)
+- `## Recent Loop Memories` — last 10 entries from `episodic_memory` (excluding bridge/overnight syncs)
+- `## Last Eval Scores` — last 4 entries from `evaluation_log`
 
-## Stopped
-**Reason:** stopped by control.json
+The autonomous loop itself is gated by `state/control.json` (`{"run": true|false}`). When `run` is false, the loop exits cleanly and stops writing new cycles — `LOOP_STATE.md` then reflects the last good snapshot until the loop is re-enabled.
+
+Read by `skills/inner_monologue.py` and the host startup sequence so they know what the loop did most recently.
+
+When a fresh agent boots, this file starts empty. The first time `bridge.py` runs against a populated `agent.db`, it overwrites this content with the real loop state.
+
+---

@@ -60,9 +60,9 @@ def no_brain_state(tmp_path):
 
 @pytest.fixture
 def user_file_with_name(tmp_path):
-    """USER.md with primary name '{{USER_NAME}}'."""
+    """USER.md with primary name 'the operator'."""
     path = tmp_path / "USER.md"
-    path.write_text("# {{USER_NAME}}\n\nSome description", encoding="utf-8")
+    path.write_text("# the operator\n\nSome description", encoding="utf-8")
     return path
 
 
@@ -227,7 +227,7 @@ def test_self_check_proactive_fires_on_signal_words(no_brain_state, user_file_wi
     import heartbeat_activities.self_check as self_check_module
 
     def fake_with_signal(prompt, **kw):
-        return "I want to tell {{USER_NAME}} something. Something has been building."
+        return "I want to tell the operator something. Something has been building."
 
 
     monkeypatch.setattr(self_check_module, "generate", fake_with_signal)
@@ -294,7 +294,7 @@ def test_self_check_proactive_malformed_user_file(no_brain_state, malformed_user
     import heartbeat_activities.self_check as self_check_module
 
     def fake_with_signal(prompt, **kw):
-        return "I want to tell {{USER_NAME}} something."
+        return "I want to tell the operator something."
 
 
     monkeypatch.setattr(self_check_module, "generate", fake_with_signal)
@@ -302,6 +302,6 @@ def test_self_check_proactive_malformed_user_file(no_brain_state, malformed_user
     monkeypatch.setattr(random, "random", lambda: 0.99)
 
     result = run(state)
-    # Should succeed without crash — {{USER_NAME}} appears in content itself (not from USER.md)
+    # Should succeed without crash — the operator appears in content itself (not from USER.md)
     assert result["ok"] is True
-    assert result["proactive"] is True  # {{USER_NAME}} is in the content string
+    assert result["proactive"] is True  # the operator is in the content string

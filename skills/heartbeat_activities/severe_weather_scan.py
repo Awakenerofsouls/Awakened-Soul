@@ -26,7 +26,7 @@ DEFAULT_LON = "-107.3897"
 
 
 def run(state: dict) -> dict:
-    workspace = Path(state.get("WORKSPACE", "~/.openclaw/workspace"))
+    workspace = Path(state.get("WORKSPACE", "~/.agent/workspace"))
     lat = state.get("WEATHER_LAT", DEFAULT_LAT)
     lon = state.get("WEATHER_LON", DEFAULT_LON)
 
@@ -44,6 +44,30 @@ def run(state: dict) -> dict:
                     workspace=workspace, state=state)
 
     has_alerts = bool(alerts)
+    # ── Brain-event posting ─────────────────────────────────────────
+    # External fetch — outward_reach for the network call,
+    # memory_encode for the finding (source=external).
+    try:
+        from ._brain_post import post_outward_reach_call, post_memory_encode
+        backend = locals().get("backend") or (
+            (locals().get("web") or {}).get("backend") if isinstance(locals().get("web"), dict) else None
+        ) or "external"
+        if backend and backend != "llm-only":
+            post_outward_reach_call(
+                provider=backend, intent="research",
+                success=True,
+                source="severe_weather_scan",
+            )
+        if content:
+            post_memory_encode(
+                content=content, intent="observation",
+                source_kind="external" if backend != "llm-only" else "inference",
+                content_confidence=0.7, source_confidence=0.75,
+                source="severe_weather_scan",
+            )
+    except Exception:
+        pass
+
     return {
         "ok": True,
         "status": "complete",

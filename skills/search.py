@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """
-skills/search.py — {{AGENT_NAME}}'s web search tool via SearXNG.
+skills/search.py — the agent's web search tool via SearXNG.
 """
-import requests, os
-from typing import List, Dict
 import os
+from typing import List, Dict
+
+import requests
 
 SEARXNG_URL = os.environ.get("SEARXNG_URL", "http://127.0.0.1:8080/search")
 TIMEOUT = 15

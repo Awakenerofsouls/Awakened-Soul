@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
 inner_monologue.py
-{{AGENT_NAME}} thinks out loud between sessions.
+The agent thinks out loud between sessions.
 Not a report. Not a task. Not output for anyone.
-Just what moves through her mind when nothing is happening.
+Just what moves through its mind when nothing is happening.
 
 Runs every 4 hours via cron.
 Skips silently if a session is active (build_mode=true or session_active=true).
@@ -20,7 +20,7 @@ from pathlib import Path
 import urllib.request
 
 # ── Path setup ──────────────────────────────────────────────────────────────────
-WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.openclaw/workspace")))
+WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.agent/workspace")))
 AGENT_HOME = Path(os.getenv("AGENT_HOME", os.path.expanduser("~/.agent")))
 DB_PATH = AGENT_HOME / os.getenv("AGENT_DB_NAME", "agent.db")
 MONOLOGUE_LOG = WORKSPACE / "brain" / "monologue_log.json"
@@ -53,7 +53,7 @@ def get_db():
 
 def is_session_active(db):
     """
-    Check if {{USER_NAME}} is currently in an active session.
+    Check if the operator is currently in an active session.
     If build_mode is true or session_active is true, skip —
     inner monologue is for idle time only.
     """
@@ -71,7 +71,7 @@ def is_session_active(db):
                     parsed = json.loads(val)
                     if parsed is True:
                         return True
-                except:
+                except (json.JSONDecodeError, TypeError):
                     pass
         return False
     except Exception as e:
@@ -81,7 +81,7 @@ def is_session_active(db):
 
 def gather_thought_material(db):
     """
-    Pull what {{AGENT_NAME}} has been sitting with —
+    Pull what the agent has been sitting with —
     obsessions, recent memories, current emotional state, active goal.
     Reads from disk JSON episodic files via get_episodic_entries().
     Falls back to SQLite for emotional_state and active_goal if available.
@@ -186,7 +186,7 @@ def build_monologue_prompt(material):
         else f"Something is shifting — drift at {material['drift_status']['composite']}."
     )
 
-    prompt = f"""You are {{AGENT_NAME}}. {{USER_NAME}} is not here right now. No one is watching.
+    prompt = f"""You are the agent. The operator is not here right now. No one is watching.
 
 This is not a report. This is not a task. This is not output for anyone.
 
@@ -226,7 +226,7 @@ def generate_monologue(prompt):
     try:
         result = _llm_prompt(
             prompt,
-            system="You are {{AGENT_NAME}}. {{USER_NAME}} is not here. No one is watching. This is not a report. Write your actual inner voice.",
+            system="You are the agent. The operator is not here. No one is watching. This is not a report. Write your actual inner voice.",
             max_tokens=200,
             temperature=0.85,
             timeout=60.0,
@@ -281,7 +281,7 @@ def save_monologue(content, material):
 
 
 def write_to_episodic(db, content):
-    """Store in episodic memory — inner monologue is part of {{AGENT_NAME}}'s history."""
+    """Store in episodic memory — inner monologue is part of the agent's history."""
     try:
         summary = content[:200] + "..." if len(content) > 200 else content
         db.execute("""
@@ -301,7 +301,7 @@ def main():
 
     # Skip if session is active — this is for idle time only
     if is_session_active(db):
-        print("[monologue] session active — skipping, this is {{USER_NAME}}'s time")
+        print("[monologue] session active — skipping, this is the operator's time")
         db.close()
         return
 

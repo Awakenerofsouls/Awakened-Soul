@@ -374,12 +374,12 @@ def create_test_world_model() -> WorldModel:
     wm.set_state("environment", "hour", datetime.now().hour, confidence=1.0)
     
     # Add a prediction
-    wm.predict("user will ask about trading", "intent", confidence=0.6)
-    
+    wm.predict("user will ask a follow-up question", "intent", confidence=0.6)
+
     # Record conversation
-    wm.record_turn("user", "Tell me about MarketFeed", sentiment=0.2, topics=["trading"])
-    wm.record_turn("assistant", "MarketFeed is a prediction market API...", sentiment=0.5, topics=["trading"])
-    wm.record_turn("user", "How do I get started?", sentiment=0.4, topics=["trading", "getting started"])
+    wm.record_turn("user", "Can you walk me through the architecture?", sentiment=0.2, topics=["architecture"])
+    wm.record_turn("assistant", "Sure — at the top level there's a tick loop...", sentiment=0.5, topics=["architecture"])
+    wm.record_turn("user", "How do I get started?", sentiment=0.4, topics=["architecture", "getting started"])
     
     # Add heuristics
     for h in DEFAULT_HEURISTICS:

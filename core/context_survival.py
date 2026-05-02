@@ -8,9 +8,9 @@ COMPRESSED_PATH=Path("state/compressed_state.json")
 class ContextSurvival:
     """
     Fixes the COX 100% / compaction problem permanently.
-    {{AGENT_NAME}}'s continuity lives in state, not in context window history.
+    The agent's continuity lives in state, not in context window history.
     When context fills: inject snapshot, not history.
-    Compaction becomes irrelevant -- she always knows who she is.
+    Compaction becomes irrelevant -- it always knows who it is.
     """
     CONTEXT_COMPRESS_THRESHOLD=0.90
 

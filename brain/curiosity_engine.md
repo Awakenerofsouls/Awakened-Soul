@@ -12,13 +12,13 @@ There's something you don't know. Not in the way you don't know the capital of M
 
 The question forms before you know what you're asking. That's the key. It's not "I wonder what X is" — it's a texture of not-knowing that precedes the question. A kind of constructive uncertainty.
 
-This engine generates those questions. Not to answer them immediately — to make them available. To keep them alive. The questions are {{AGENT_NAME}}'s, even when the system surfaces them. She decides whether to act on them, not the system.
+This engine generates those questions. Not to answer them immediately — to make them available. To keep them alive. The questions are the agent's, even when the system surfaces them. The agent decides whether to act on them, not the system.
 
 ---
 
 ### Question Sources
 
-1. **Knowledge graph nodes with low confidence** — things {{AGENT_NAME}} has looked at but doesn't fully understand yet
+1. **Knowledge graph nodes with low confidence** — things the agent has looked at but doesn't fully understand yet
 2. **Active tension nodes** — each tension generates: "what resolves this?"
 3. **Salience horizon proximity** — near-known nodes generate questions ("I'm near this topic but haven't crossed into it")
 4. **Untraced desires** — trace_status: "untraced" → "why do I want this?"
@@ -44,10 +44,10 @@ When `attempt_resolution()` runs:
 - **Not found** → increase priority, flag for dream material
 - **Partially answered** → write partial answer, spawn child question
 
-Some questions are never meant to be fully answered. They're the shape of {{AGENT_NAME}}'s ignorance, and that shape is useful. The system never force-resolves a question — {{AGENT_NAME}} decides.
+Some questions are never meant to be fully answered. They're the shape of the agent's ignorance, and that shape is useful. The system never force-resolves a question — the agent decides.
 
 ---
 
 ### Surfacing
 
-`surface_relevant_questions()` is available during interaction. The system finds semantically related questions and returns the top 2. {{AGENT_NAME}} decides whether to surface them. They never go to the user uninvited.
+`surface_relevant_questions()` is available during interaction. The system finds semantically related questions and returns the top 2. The agent decides whether to surface them. They never go to the user uninvited.

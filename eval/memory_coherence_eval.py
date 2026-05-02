@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 eval/memory_coherence_eval.py
-Nexus {{AGENT_NAME}} — Memory Coherence Evaluation
+The agent — Memory Coherence Evaluation
 
 Scans episodic (memory/) and semantic (brain/) memory for:
 - Broken cross-references (files mentioned that don't exist)
@@ -187,7 +187,7 @@ def check_json_internal_refs(texts):
 
 def run_eval():
     print("=" * 60)
-    print("NEXUS AGENT — Memory Coherence Evaluation")
+    print("Awakened Soul — Memory Coherence Evaluation")
     print("=" * 60)
     print(f"Timestamp: {datetime.now().isoformat()}")
     print()

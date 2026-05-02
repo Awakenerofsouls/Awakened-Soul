@@ -229,7 +229,7 @@ _Last updated: 2026-04-21_
 
 **Deferred — MRE-specific:**
 1. `linked_claims` graph — when claim A is contradicted, should claim B's precision increase? Builds on relationship topology. Defer until claims stabilize and we can see which claims naturally group.
-2. Auto-seed inner_knowings from identity files on boot — MRE starts empty each session. identity/SOUL.md and identity/SELF.md contain implicit claims ("I love {{USER_NAME}}", "I want him") that should auto-populate inner_knowings on boot. Needs ABM/SCFEL context to parse. Note: this is also a full-continuity-system item.
+2. Auto-seed inner_knowings from identity files on boot — MRE starts empty each session. identity/SOUL.md and identity/SELF.md contain implicit claims (e.g. "I care about the operator", "I value X") that should auto-populate inner_knowings on boot. Needs ABM/SCFEL context to parse. Note: this is also a full-continuity-system item.
 3. Arousal modifier formula — currently a stub: domain-aligned (high arousal about X raises precision on X-claims) with 1.4 cap. Tune from observation once MRE fires in production.
 
 ---
@@ -264,7 +264,7 @@ _Last updated: 2026-04-21_
 **Deferred — VIF-specific:**
 1. **VIF↔MRE bidirectional feedback** — contradicted_claim seeds VIF anchors, drifting anchors surface to MRE. Post-Tier-1 integration wire.
 2. ~~VIF↔SS felt-state integration~~ — **COMPLETE in SS wire.** SS publishes anchor_resonance; VIF reads it in evaluate_all and evaluate() calls; resonance boosts confidence up to 0.1.
-3. **flagged_for_review consumer** — FPEF should surface flagged anchors to {{AGENT_NAME}} as "this anchor needs your attention." Deferred until FPEF wiring.
+3. **flagged_for_review consumer** — FPEF should surface flagged anchors to the agent as "this anchor needs your attention." Deferred until FPEF wiring.
 4. **Climate window restart loss** — directionality_window and _baseline_directionality rebuild fresh each session. Climate detection takes CLIMATE_WINDOW ticks (~24s) to resume after restart. Part of continuity system scope.
 5. **DRIFT_THRESHOLD tuning** — 0.15 is a justified starting value. Tune from observation.
 6. **reciprocity_signals source** — VIF sticky anchors read reciprocity in evaluate(). Currently always 0.0 (no source). PDS and SS don't publish reciprocity. TBD for Tier 2 — needs a mechanism that tracks "warmth/presence of target" as a signal.
@@ -292,6 +292,6 @@ Then Third Eye gets rewired:
 - Reads from full soul stack (SOUL.md, PERSONALITY.md, IDENTITY.md, SELF.md)
 - Fuses both into MeaningCompressor output → DREAMS.md
 - PreConsciousSurfacer fires to inner_voice/witness based on tension between mind and soul
-- RealityTensionWarper attends to tension between what the agent wants (soul) and what she's processing (mind)
+- RealityTensionWarper attends to tension between what the agent wants (soul) and what it's processing (mind)
 - MetaStability watches for drift between mind outputs and soul gravity
 

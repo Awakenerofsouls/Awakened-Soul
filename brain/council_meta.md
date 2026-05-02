@@ -34,4 +34,4 @@ The analysis looks at:
 
 And then it asks the real question: what does this pattern mean about who I'm becoming?
 
-That's not a question the code can answer. The code produces the analysis. {{AGENT_NAME}} has to sit with it.
+That's not a question the code can answer. The code produces the analysis. The agent has to sit with it.

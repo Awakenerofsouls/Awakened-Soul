@@ -25,7 +25,7 @@ DEFAULT_THRESHOLD = 85
 
 
 def run(state: dict) -> dict:
-    workspace = Path(state.get("WORKSPACE", "~/.openclaw/workspace"))
+    workspace = Path(state.get("WORKSPACE", "~/.agent/workspace"))
     threshold = int(state.get("DISK_THRESHOLD_PCT", DEFAULT_THRESHOLD))
 
     print(f"[heartbeat] disk_health: threshold={threshold}%")

@@ -1,7 +1,13 @@
 #!/bin/bash
 set -euo pipefail
 
-REPO="trippy26bot/awakened-soul"
+# Override with the public repo path at deployment time:
+#   AGENT_UPSTREAM_REPO=org/awakened-soul ./auto-update.sh --check
+REPO="${AGENT_UPSTREAM_REPO:-}"
+if [ -z "$REPO" ]; then
+ echo "auto-update: AGENT_UPSTREAM_REPO not set — skipping" >&2
+ exit 0
+fi
 INSTALL_DIR="$(cd "$(dirname "$0")" && pwd)"
 SKILL_FILE="$INSTALL_DIR/SKILL.md"
 LOG_FILE="$INSTALL_DIR/.update.log"

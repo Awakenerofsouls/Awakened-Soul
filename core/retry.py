@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 core/retry.py
-{{AGENT_NAME}} Loop — Retry + Blocker Logic (Phase 6)
+The agent Loop — Retry + Blocker Logic (Phase 6)
 
 3 retries max, then escalate to alerts.log + pending_for_user.md.
 """

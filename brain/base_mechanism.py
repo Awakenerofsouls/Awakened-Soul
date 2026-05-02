@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Nexus {{AGENT_NAME}} — BrainMechanism Base Class
+The agent — BrainMechanism Base Class
 All brain mechanisms inherit from this.
 Provides: state management, persistence, valence utility, memory hook.
 """
@@ -12,7 +12,7 @@ from typing import Any, Dict
 import os
 
 # ── Persistence root ────────────────────────────────────────────────
-_AGENT_HOME = Path(os.getenv("AGENT_HOME", os.getenv("AGENT_HOME", str(Path.home() / ".agent"))))
+_AGENT_HOME = Path(os.getenv("AGENT_HOME", str(Path.home() / ".agent")))
 _STATE_DIR = _AGENT_HOME / "brain_state"
 _STATE_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -109,7 +109,7 @@ class BrainMechanism:
         pass
 
     # ── Tick interface ───────────────────────────────────────────────
-    def tick(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
+    async def tick(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
         """
         Override in subclasses.
         input_data: dict passed from core loop

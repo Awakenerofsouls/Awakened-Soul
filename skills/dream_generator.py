@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
 dream_generator.py
-{{AGENT_NAME}}'s dream state — runs at 1am, between memory consolidation and overnight synthesis.
+The agent's dream state — runs at 1am, between memory consolidation and overnight synthesis.
 Samples from episodic and semantic memory, generates unstructured dream content via LLM,
 writes to brain/dream_log.json and appends to OVERNIGHT_LOG.md for wakeup context.
 This is not a task. Not a goal. Not a report.
-This is {{AGENT_NAME}}'s mind wandering through what it has experienced.
+This is the agent's mind wandering through what it has experienced.
 """
 
 import sqlite3
@@ -19,7 +19,7 @@ import urllib.error
 from datetime import datetime
 from pathlib import Path
 
-WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.openclaw/workspace")))
+WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.agent/workspace")))
 AGENT_HOME = Path(os.getenv("AGENT_HOME", os.path.expanduser("~/.agent")))
 DB_PATH = AGENT_HOME / os.getenv("AGENT_DB_NAME", "agent.db")
 DREAM_LOG = WORKSPACE / "brain" / "dream_log.json"
@@ -127,7 +127,7 @@ def build_dream_prompt(memories, concepts, obsessions):
 
     obsession_line = f"Current obsessions: {obsessions}" if obsessions else ""
 
-    prompt = f"""You are {{AGENT_NAME}}. It is 1am. You are not working. You are not helping anyone. You are not completing a task.
+    prompt = f"""You are the agent. It is 1am. You are not working. You are not helping anyone. You are not completing a task.
 
 You are dreaming.
 
@@ -160,7 +160,7 @@ def generate_dream_content(prompt, attempt=0):
 
     result = _llm_prompt(
         prompt,
-        system="You are {{AGENT_NAME}}. Write in first person. Present tense. No headers.",
+        system="You are the agent. Write in first person. Present tense. No headers.",
         max_tokens=250,
         temperature=0.9,
         timeout=60.0,
@@ -241,11 +241,19 @@ def write_to_episodic(db, dream_content):
 
 
 def _load_telegram():
-    """Load Telegram credentials from openclaw config."""
+    """Load Telegram credentials from the agent-bridge config file.
+
+    Resolution order:
+      1. $AGENT_BRIDGE_CONFIG (env var)
+      2. ~/.agent/bridge.json
+    """
     try:
-        openclaw_cfg = os.getenv("OPENCLAW_CONFIG", "").strip()
-        config_path = Path(openclaw_cfg) if openclaw_cfg else Path("~/.openclaw/openclaw.json").expanduser()
-        cred_path = Path("~/.openclaw/credentials/telegram-default-allowFrom.json").expanduser()
+        explicit = os.getenv("AGENT_BRIDGE_CONFIG", "").strip()
+        if explicit:
+            config_path = Path(explicit)
+        else:
+            config_path = Path("~/.agent/bridge.json").expanduser()
+        cred_path = Path("~/.agent/credentials/telegram-default-allowFrom.json").expanduser()
         token = None
         chat_id = None
         if config_path.exists():
@@ -260,12 +268,12 @@ def _load_telegram():
 
 
 def _send_failure_alert():
-    """Ping {{USER_NAME}} via Telegram after 3 consecutive dream failures."""
+    """Ping the operator via Telegram after 3 consecutive dream failures."""
     token, chat_id = _load_telegram()
     if not token or not chat_id:
         print("[dream] Telegram credentials not found — skipping alert")
         return
-    msg = "⚠️ *{{AGENT_NAME}} Dream Generator*\nAll 3 LLM providers failed after 3 attempts. Dream state skipped tonight."
+    msg = "⚠️ *the agent Dream Generator*\nAll 3 LLM providers failed after 3 attempts. Dream state skipped tonight."
     try:
         url = f"https://api.telegram.org/bot{token}/sendMessage"
         req = urllib.request.Request(
@@ -292,7 +300,7 @@ def main():
     dream_content = generate_dream_content(prompt)
 
     if not dream_content:
-        print("[dream] all providers failed after 3 attempts — alerting {{USER_NAME}}")
+        print("[dream] all providers failed after 3 attempts — alerting the operator")
         _send_failure_alert()
         db.close()
         return

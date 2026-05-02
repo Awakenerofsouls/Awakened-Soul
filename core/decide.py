@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 core/decide.py
-{{AGENT_NAME}} Loop — Decision Engine (Phase 4, updated)
+Awakened-soul loop — Decision Engine.
 
 Hardcoded prioritization. No dynamic scoring yet.
 Skips blocked subtasks. Returns next pending subtask.

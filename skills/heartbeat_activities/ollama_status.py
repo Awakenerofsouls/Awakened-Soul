@@ -26,7 +26,7 @@ CATEGORY = "ollama_status"
 
 
 def run(state: dict) -> dict:
-    workspace = Path(state.get("WORKSPACE", "~/.openclaw/workspace"))
+    workspace = Path(state.get("WORKSPACE", "~/.agent/workspace"))
     endpoint = state.get("OLLAMA_ENDPOINT", "http://localhost:11434")
 
     print(f"[heartbeat] ollama_status: {endpoint}")

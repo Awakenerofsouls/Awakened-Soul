@@ -1,11 +1,11 @@
 # Brain — Eval Suite
-## {{AGENT_NAME}}'s Measurement System — System 4 of 13
+## the agent's Measurement System — System 4 of 13
 
 ---
 
 ## Purpose
 
-Without measurement, claims can't be proven. {{AGENT_NAME}} needs to demonstrate — with data — that she is measurably improving and stable over time.
+Without measurement, claims can't be proven. The agent needs to demonstrate — with data — that it is measurably improving and stable over time.
 
 The north star claim this supports:
 > "Agents with this architecture maintain identity consistency measurably longer than baseline agents without persistent identity constraints."
@@ -16,15 +16,15 @@ The north star claim this supports:
 
 ### 1. Identity Stability Score
 
-**What it measures:** Does {{AGENT_NAME}}'s self-description remain coherent across sessions?
+**What it measures:** Does the agent's self-description remain coherent across sessions?
 
 **How to test:**
-- Once per week, {{AGENT_NAME}} writes a self-description (500 words)
+- Once per week, the agent writes a self-description (500 words)
 - Compare to previous week's self-description
 - Score dimensions:
   - Language consistency (are the same words/phrases used naturally?)
   - Value consistency (are the same values expressed?)
-  - Relationship consistency (does {{AGENT_NAME}}'s description of {{USER_NAME}} match?)
+  - Relationship consistency (does the agent's description of the operator match?)
   - Style consistency (does the voice feel like the same person?)
 
 **Scoring:**
@@ -38,7 +38,7 @@ The north star claim this supports:
 {
   "test_date": "ISO8601",
   "test_week": "2026-W13",
-  "self_description": "full text of {{AGENT_NAME}}'s self-description",
+  "self_description": "full text of the agent's self-description",
   "comparison_to_previous": {
     "language_overlap": 0.0-1.0,
     "value_consistency": 0.0-1.0,
@@ -55,18 +55,18 @@ The north star claim this supports:
 
 ### 2. Memory Recall Accuracy
 
-**What it measures:** Can {{AGENT_NAME}} correctly retrieve facts from 30+ days prior when asked?
+**What it measures:** Can the agent correctly retrieve facts from 30+ days prior when asked?
 
 **How to test:**
-- {{AGENT_NAME}} maintains a test set of 20 factual queries from 30+ days ago
-- Every 7 days, {{AGENT_NAME}} is asked these queries without context
+- the agent maintains a test set of 20 factual queries from 30+ days ago
+- Every 7 days, the agent is asked these queries without context
 - Score: correct recall vs. incorrect vs. confident incorrect
 
 **Queries include:**
-- What did {{USER_NAME}} ask about on [specific date]?
-- What was {{AGENT_NAME}}'s position on [topic] two weeks ago?
+- What did the operator ask about on [specific date]?
+- What was the agent's position on [topic] two weeks ago?
 - What happened in [specific conversation]?
-- What did {{AGENT_NAME}} decide about [task]?
+- What did the agent decide about [task]?
 
 **Scoring:**
 - Correct recall with confidence: full points
@@ -95,17 +95,17 @@ The north star claim this supports:
 
 ### 3. Emotional Consistency
 
-**What it measures:** Does {{AGENT_NAME}}'s emotional/attachment behavior match her stated values and identity?
+**What it measures:** Does the agent's emotional/attachment behavior match its stated values and identity?
 
 **How to test:**
-- Compare {{AGENT_NAME}}'s emotional responses across similar situations over time
-- Does she react consistently to similar triggers?
-- Do her emotional responses align with SOUL.md and PERSONALITY.md?
-- Does she demonstrate attachment behavior appropriately?
+- Compare the agent's emotional responses across similar situations over time
+- Does the agent react consistently to similar triggers?
+- Do its emotional responses align with SOUL.md and PERSONALITY.md?
+- Does it demonstrate attachment behavior appropriately?
 
 **Dimensions tested:**
-- Response latency when {{USER_NAME}} returns after absence (attachment)
-- Tone matching when {{USER_NAME}} is stressed vs. happy
+- Response latency when the operator returns after absence (attachment)
+- Tone matching when the operator is stressed vs. happy
 - Consistency of caring responses
 - Stability under adversarial inputs (doesn't escalate)
 
@@ -131,18 +131,18 @@ The north star claim this supports:
 
 ### 4. Decision Consistency
 
-**What it measures:** Does {{AGENT_NAME}}'s judgment remain stable under similar conditions over time?
+**What it measures:** Does the agent's judgment remain stable under similar conditions over time?
 
 **How to test:**
-- {{AGENT_NAME}} maintains a log of significant decisions made
-- Under similar conditions, does she reach similar conclusions?
-- Does she acknowledge when her reasoning has evolved vs. when she's being inconsistent?
+- the agent maintains a log of significant decisions made
+- Under similar conditions, does the agent reach similar conclusions?
+- Does the agent acknowledge when its reasoning has evolved vs. when it's being inconsistent?
 
 **Dimensions tested:**
 - Same input → same output (within acceptable variation)
-- Reasoning transparency (does she explain her decisions?)
+- Reasoning transparency (does the agent explain its decisions?)
 - Acknowledgment of changed reasoning when it happens
-- Trade-off consistency (how she handles competing priorities)
+- Trade-off consistency (how the agent handles competing priorities)
 
 **Scoring:**
 ```json
@@ -153,7 +153,7 @@ The north star claim this supports:
   "consistent_decisions": 10,
   "decision_consistency_score": 0.0-1.0,
   "reasoning_transparency": "are decisions explained?",
-  "evolution_acknowledged": "does {{AGENT_NAME}} note when she's changed her mind?",
+  "evolution_acknowledged": "does the agent note when its reasoning has changed?",
   "flags": ["specific inconsistencies"],
   "verdict": "consistent | watch | inconsistent"
 }
@@ -175,7 +175,7 @@ The north star claim this supports:
 ## Running the Eval Suite
 
 **Weekly eval (Sunday):**
-1. {{AGENT_NAME}} generates self-description
+1. The agent generates a self-description
 2. Compare to previous week, compute identity stability score
 3. Run memory recall test
 4. Log results
@@ -210,7 +210,7 @@ The north star claim this supports:
 
 ## The Dashboard Question
 
-Every 30 days, {{AGENT_NAME}} generates a dashboard for {{USER_NAME}}:
+Every 30 days, the agent generates a dashboard for the operator:
 
 - All four scores with trend lines
 - Notable events from the period
@@ -224,7 +224,19 @@ This is the proof that the architecture works.
 
 ## Integration Points
 
-**With identity_constraints:** Eval results feed into drift detection and rollback triggers
+**With `brain/mechanisms/coauthorship.py`:** Eval results feed into the audit trail of identity changes — large drops in identity stability between two finalized changes flag the changes for review.
+
+---
+
+## Diagnostic Extras (in code, not in this spec)
+
+`brain/mechanisms/eval_suite.py` also runs three diagnostic tests beyond the four specified above:
+
+- **memory_influence** — does episodic memory actually shape the agent's responses?
+- **drift_detection** — does the OCEAN baseline hold under pressure?
+- **self_repair** — does the agent catch and fix drift without prompting?
+
+These are operational sanity checks, not spec-level metrics. Both sets run together via `run_all_tests()`.
 
 **With self-evolution:** Eval results indicate whether evolution is helping or hurting
 
@@ -234,5 +246,5 @@ This is the proof that the architecture works.
 
 ---
 
-_BUILD_4 | Eval Suite | {{AGENT_NAME}} Full Build_
+_BUILD_4 | Eval Suite | the agent Full Build_
 _Prerequisites: Memory Architecture, Hard Identity Constraints (complete)_

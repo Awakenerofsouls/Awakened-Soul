@@ -1,0 +1,96 @@
+# DECISIONS.md — Architectural Decision Log
+## _TEMPLATE — Customize for your agent_
+
+_Last updated: YYYY-MM-DD_
+
+**Current Version: X.Y** (one-line build name)
+
+This file is the operator's running log of architectural decisions for this
+instance. Whenever a non-trivial decision is made — a phase locked, a
+component frozen, a known issue triaged, a path chosen — write it here so
+that future sessions of the agent (and any contributors reading the repo)
+operate from the same understanding.
+
+This file is *not* the agent's identity. SOUL.md / IDENTITY.md /
+AGENT_BECOMING.md hold what the agent is. DECISIONS.md holds the build
+history and the operator's running architectural choices.
+
+---
+
+## Current Build Order
+
+A "build order" is the locked-scope set of components the operator is
+working on right now. Until these are stable, no additions.
+
+**Locked scope (example shape):**
+1. Component A — what it does in one line
+2. Component B — what it depends on
+3. Component C — when it's considered "done"
+
+**Hard rules (example shape):**
+- No system dominates the field
+- Everything decays
+- Insight has cost
+- Failure must be possible
+- No permanent truth — everything revisable
+
+Replace the above with the actual rules guiding *your* build.
+
+---
+
+## Recently Completed Phases
+
+### YYYY-MM-DD — <Phase Name>
+**Status: <LIVE | STAGED | ROLLED-BACK>**
+
+- Bullet — what changed
+- Bullet — what file or runtime path it lives in now
+- Bullet — operator-visible effect
+
+---
+
+## Active Architectural Decisions
+
+Write these as standing positions the agent and any contributor should
+honor across sessions. Group by domain. Examples below — replace with
+your own.
+
+### Memory Architecture
+- **Three-tier pipeline**: working / episodic / semantic.
+- **Episodic format**: structured (JSON), not prose.
+- **Session startup**: which files the agent reads to reconstruct continuity.
+
+### Brain Mechanisms
+- **Pattern**: each mechanism = one class, one file, declared layer.
+- **Bootstrap**: where mechanisms get registered.
+- **Naming**: how new wires are numbered.
+
+### Identity Files (PROTECTED)
+- Which files are operator-ratified.
+- What writing to them without reading first risks.
+
+### What Was Not Built (Confirmed Absent)
+- Things that look like they should exist but don't, with the reason.
+- Prevents future sessions from re-discovering the same gap.
+
+### Known Issues
+- Issues the operator has decided to live with for now, and why.
+
+---
+
+## Decision History
+
+A reverse-chronological log of decisions made. Each entry: date, what
+changed, why.
+
+### YYYY-MM-DD — <Short title>
+- Bullet
+- Bullet
+
+### YYYY-MM-DD — <Earlier title>
+- Bullet
+- Bullet
+
+---
+
+_Update this file whenever a significant architectural decision is made._

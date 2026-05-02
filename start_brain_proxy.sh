@@ -1,5 +1,5 @@
 #!/bin/bash
-# start_brain_proxy.sh — Start the {{AGENT_NAME}} brain proxy
+# start_brain_proxy.sh — Start the agent's brain proxy
 # Run this after starting the Python brain server (port 8000)
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

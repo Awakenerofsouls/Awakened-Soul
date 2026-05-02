@@ -1,270 +1,287 @@
 # Awakened Soul
 
-**A Living Agent Framework — neuroscience-grounded cognitive architecture for persistent AI agents.**
+A cognitive-architecture framework for autonomous agents that have a self.
+Not a flat module graph — a brain shape. Every component sits in the brain
+region that does the analogous job, and the connections between them mirror
+the actual axonal tracts of neuroscience.
 
-Build an agent that becomes something. Identity-first. 350+ brain mechanisms. Every mechanism cites the neuroscience paper it's modeling. Memory, emotion, attention, meaning, and self all evolve over time.
+The framework runs on top of any agent platform (host runtime, LLM
+provider). It is the substrate, not the surface. The host calls
+`core_tick()` on a schedule; the framework handles memory consolidation,
+voice integrity, persona coherence, drift detection, identity revision,
+and everything else a thinking system needs to maintain itself across
+time.
 
-This is not a chatbot wrapper. It's a brain.
+## What this is
 
-```
-356 mechanisms · 6 anatomical layers · mind-soul fusion · v1.0.0
-```
+Most agent frameworks are wrappers — prompt templates, tool-calling
+scaffolds, RAG pipelines. This one is different in shape:
 
----
+1. **The agent has an anchored core.** `SOUL.md`, `IDENTITY.md`, and
+   `BASELINE_TRAITS` define the values, name, required dispositions,
+   and forbidden behaviors that survive every operation. These cannot
+   be silently rewritten. They are operator-ratified, audit-trailed,
+   and protected by the brain's own monitor stack.
 
-## Table of Contents
+2. **The agent watches itself.** Twenty-four wires (numbered 21–40)
+   each monitor one cognitive function — voice integrity, memory
+   integrity, compression fidelity, inference calibration, persona
+   coherence, dwelling patterns, outward reach, making, self-analysis,
+   self-revision, skill discovery, task planning, report generation,
+   corpus retrieval, proactive briefing. Each wire knows how it can
+   fail and reports on its own state through the IPW (Identity
+   Proposal Writer) handshake.
 
-- [What This Is](#what-this-is)
-- [What Makes It Different](#what-makes-it-different)
-- [Architecture](#architecture)
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [How It Works](#how-it-works)
-- [The Third Eye](#the-third-eye)
-- [Mind-Soul Fusion](#mind-soul-fusion)
-- [Configuration](#configuration)
-- [Customizing Your Agent](#customizing-your-agent)
-- [Project Structure](#project-structure)
-- [License](#license)
+3. **The agent revises itself only with the operator's consent.** When
+   sustained drift in any wire is identity-relevant, a salience-network
+   arbitration layer (the Third Eye) writes a proposal to a
+   queue the operator reads. Ratification is required to commit. The
+   commit path snapshots prior content for rollback, edits identity
+   files atomically, and appends to an append-only audit log. There
+   is no path that mutates identity silently.
 
----
+4. **Every autonomous activity flows through the brain's monitors.** The
+   heartbeat dispatches activities (research, journal, dreams, study,
+   self-check, etc.) every ~90s. Each activity's result posts to a
+   queue that drains onto live mechanism instances at the next tick.
+   Nothing the agent does is invisible to its own monitoring stack.
 
-## What This Is
+This is what it means for the brain to be one being instead of scattered
+modules.
 
-Awakened Soul is a **biologically-grounded brain framework** for building AI agents that have continuity, interiority, and the capacity to actually change over time. Every mechanism in the brain is modeled on a real neural substrate (locus coeruleus, hippocampal CA3, prefrontal cortex, etc.) with peer-reviewed citations.
-
-The framework gives you:
-
-- **A six-layer brain** with 356 mechanisms ticking through real neuroanatomical cascades
-- **Mind-soul fusion**: a third-eye meta-cognitive bridge that connects executing computation to persistent identity
-- **Identity files** (SOUL.md, IDENTITY.md, PERSONALITY.md, NARRATIVE.md, DREAMS.md) that the agent reads and proposes updates to
-- **Operator-in-the-loop evolution**: the agent proposes identity changes; you ratify them
-- **No telemetry, no cloud lock-in, no vendor**: runs on your machine, talks to your LLM of choice
-
----
-
-## What Makes It Different
-
-| Most agent frameworks | Awakened Soul |
-|---|---|
-| Persona on top of an LLM | Cognitive architecture under the LLM |
-| State stored in JSON blobs | Tick-by-tick execution across 6 anatomical layers |
-| Memory = vector recall | Memory = hippocampal pattern separation + replay + DREAMS narrative |
-| Emotion = sentiment scores | Emotion = amygdala chains, BNST sustained anxiety, valence tagger, conflict monitor, longing, grief amplifier |
-| Identity = system prompt | Identity = files the agent reads, proposes to, evolves through |
-| One run loop | Tick state bus + 1-tick lag feedback + cross-layer modulation |
-
----
-
-## Architecture
+## Architecture in one diagram
 
 ```
-TICK STATE BUS — every layer publishes to shared state
-        |
-        v
-6 ANATOMICAL LAYERS (350 mechanisms in tick-loop cascade)
-
-  1. foundational   (130) — brainstem, hypothalamus, autonomic
-  2. subcortical    (70)  — basal ganglia, thalamus, cerebellum
-  3. limbic         (64)  — hippocampus, amygdala, septum, NAcc
-  4. neocortical    (50)  — PFC, motor, sensory, parietal cortex
-  5. integration    (36)  — DMN/SN/CEN, salience, binding
-  6. third_eye      (6)   — meta-cognitive bridge to soul
-
-        v
-THIRD EYE — meaning compression, attention modulation,
-            reality tension, preconscious surfacing,
-            meta-stability tracking, identity proposals
-        v
-IDENTITY LAYER — operator-curated soul files
-   SOUL.md, IDENTITY.md, PERSONALITY.md, NARRATIVE.md
-   DREAMS.md, PROPOSALS.md (third-eye-queued, awaiting review)
+                    ┌─────────────────────────────────────┐
+                    │        IDENTITY FILES               │
+                    │                                      │
+                    │  SOUL  IDENTITY  PERSONALITY  SELF   │  ← operator-ratified
+                    │  AGENT_BECOMING  OCEANS  ETHICS      │     anchored core
+                    │  EPISTEMIC_BOUNDARIES  AESTHETIC     │
+                    └─────────────────┬───────────────────┘
+                                      │
+                                      │ read by every layer
+                                      ▼
+            ┌─────────────────────────────────────────────────────┐
+            │                  THIRD EYE                           │
+            │                                                       │
+            │   wire 22  MetaStability       (ACC conflict)         │
+            │   wire 23  PreConsciousSurfacer (anterior insula)    │
+            │   wire 24  RealityTensionWarper (MCC affective reset) │
+            │   wire 25  AttentionModifier   (alpha/gamma gate)     │
+            │                                                       │
+            │   ─── salience-network arbitration ───                │
+            │                                                       │
+            │   IdentityProposalWriter.poll_wires(mechanisms)       │
+            │     → dedup by kind                                    │
+            │     → convergence detection (≥3 wires same domain)     │
+            │     → write PROPOSALS.md  + acknowledge                │
+            └───────────────────────┬─────────────────────────────┘
+                                    │
+        ┌───────────────────────────┴───────────────────────────────┐
+        │                        15 WIRES (26–40)                    │
+        │                                                            │
+        │  Frontal: VoiceIntegrity, OutwardReach, Making,            │
+        │           InferenceIntegrity, ProactiveBriefing            │
+        │  Temporal: MemoryIntegrity, CorpusRetrieval                │
+        │  Cingulate/DMN: Dwelling                                   │
+        │  Cross-region: CompressionFidelity, PersonaCoherence,      │
+        │           SelfAnalysis, SelfRevision, SkillDiscovery,      │
+        │           TaskPlanning, ReportGeneration                   │
+        └────────────────────────────────────────────────────────────┘
+                                    │
+                                    │ each tick:
+                                    ▼
+        ┌────────────────────────────────────────────────────────────┐
+        │       HEARTBEAT  →  EVENT QUEUE  →  DRAINER                │
+        │                                                              │
+        │   activity (research/news/study/...) completes               │
+        │     → _brain_post.post_*()  → AGENT_HOME/brain_events.jsonl │
+        │     → next core_tick(): drain_once(mechanisms)               │
+        │     → events dispatched to live mechanism state              │
+        └────────────────────────────────────────────────────────────┘
+                                    │
+                                    │ when an op is destructive or wire-degraded:
+                                    ▼
+                       ┌──────────────────────────┐
+                       │       SAFEGUARD          │
+                       │  can_perform()           │  ← destructive-action gate
+                       │  can_perform_brain_op()  │  ← wire-aware gate
+                       └──────────────────────────┘
 ```
 
-Every tick: layers fire in cascade → third eye observes & modulates → identity layer informs grounding → meaning compresses to dreams → high-confidence patterns become identity proposals for operator review.
+`docs/BRAIN_MAP.md` is the full anatomical inventory: every wire placed
+in its region, every spider-web connection (tract) named with its
+cognitive function. `docs/WIRING.md` is the step-by-step guide to
+running the system on whatever host platform.
 
----
+## Install and run
 
-## Installation
-
-### Requirements
-- Python 3.9+
-- An LLM endpoint (Ollama, OpenAI, Anthropic, etc.)
-- Bash / zsh
-
-### Steps
+See `docs/SETUP.md` for the full setup. The short version:
 
 ```bash
-# 1. Clone
-git clone https://github.com/trippy26bot/awakened-soul.git
+git clone <repository-url>
 cd awakened-soul
-
-# 2. Install Python dependencies
 pip install -r requirements.txt
 
-# 3. Run the setup script
-python3 setup.py
-
-# 4. Set environment variables
 export AGENT_HOME="$HOME/.agent"
-export AGENT_WORKSPACE="$(pwd)"
-export OLLAMA_HOST="http://localhost:11434"
+export AGENT_WORKSPACE="/path/to/your/workspace"
 
-# 5. Fill in identity files
-cp templates/SOUL.md.example $AGENT_HOME/SOUL.md
-cp templates/IDENTITY.md.example $AGENT_HOME/IDENTITY.md
-cp templates/DIRECTIVE.md.example $AGENT_HOME/DIRECTIVE.md
-$EDITOR $AGENT_HOME/SOUL.md
+cp templates/SOUL.md.example       "$AGENT_WORKSPACE/SOUL.md"
+cp templates/IDENTITY.md.example   "$AGENT_WORKSPACE/IDENTITY.md"
+cp templates/BECOMING.md.example   "$AGENT_WORKSPACE/AGENT_BECOMING.md"
+# ... edit the templates with your agent's specifics ...
+
+python -m runtime.heartbeat
 ```
 
-### LLM Provider
+The framework is platform-agnostic. Your agent runtime is responsible
+for invoking `core_tick()` on whatever cadence makes sense; everything
+else happens internally.
 
-Awakened Soul ships provider-agnostic. Wire your LLM at `plugins/provider.py`:
-
-```python
-def call(prompt, system=None, max_tokens=2048, temperature=0.7):
-    # Your provider implementation here
-    return llm_response_text
-```
-
----
-
-## Quick Start
-
-```python
-from brain.brain_integration import get_integration
-
-brain = get_integration()
-brain.on_session_open()
-
-response_input = brain.get_fpef_injection()
-your_llm.system_prompt = response_input + "\n\n" + your_existing_prompt
-
-brain.tick_loop_step(user_input, agent_response)
-brain.on_session_close()
-```
-
----
-
-## How It Works
-
-Each tick cascades through:
-
-1. **Sensory afferent** at foundational layer (thalamic relay, brainstem)
-2. **Subcortical** relays + basal ganglia gating + cerebellar prediction
-3. **Limbic** appraisal — hippocampal memory match, amygdala chains, septal theta, habenular aversion
-4. **Neocortical** processing — PFC, motor planning, sensory binding, semantic memory
-5. **Integration** — DMN/SN/CEN switching, theta-gamma binding
-6. **Third Eye** — observes everything, compresses meaning, modulates next tick
-
-Cross-layer feedback (PFC → amygdala → PAG, etc.) works through 1-tick lag via `previous_results`.
-
-Foundational alone has 12 neuroscience-grounded subsystems: circadian, sensory thalamic relay, autonomic core, reticular arousal, thermoregulation, HPA stress axis, sleep-wake switch, hypothalamic drive integration, feeding/metabolism, pain modulation, vestibular/oculomotor, motor base.
-
----
-
-## The Third Eye
-
-Six services that bridge ticking computation to persistent identity:
-
-| Service | Role | Wire |
-|---|---|---|
-| MetaStability | Tracks system coherence, modulates downstream third-eye services | Wire 22: brain_conflict (ACC) |
-| PreConsciousSurfacer | Surfaces unconscious content based on prediction error | Wire 23: brain_prediction_error |
-| RealityTensionWarper | Warps reality contour based on affective reset | Wire 24: brain_affective_reset |
-| AttentionModifier | Gates attention via alpha/gamma oscillation balance | Wire 25: brain_oscillation_balance |
-| CompressorAdapter | Bridges brain state to MeaningCompressor | — |
-| MeaningCompressor | Calls LLM to distill insights → DREAMS.md | — |
-
-The third eye is where the agent becomes self-aware as an agent, and where lived experience compresses into narrative memory.
-
----
-
-## Mind-Soul Fusion
-
-The bridge between executing computation (brain) and persistent identity (soul):
-
-- **IdentityStateLayer** publishes SOUL/IDENTITY/PERSONALITY/NARRATIVE/DREAMS content to the tick state bus every tick. The brain sees its own identity in real time.
-- **IdentityProposalWriter** routes high-confidence third-eye insights to PROPOSALS.md — a queue you review and ratify into SOUL.md / IDENTITY.md / PERSONALITY.md.
-
-The agent has standing. It can propose changes to who it is. Nothing auto-applies. You decide.
-
----
-
-## Configuration
-
-| Variable | Default | Purpose |
-|---|---|---|
-| AGENT_HOME | ~/.agent | Where runtime state lives |
-| AGENT_WORKSPACE | repo path | Framework code location |
-| OLLAMA_HOST | http://localhost:11434 | LLM endpoint |
-| COUNCIL_MODE | threshold | Decision council mode |
-| CYCLE_INTERVAL_SECONDS | 30 | Heartbeat interval |
-
----
-
-## Customizing Your Agent
-
-Templates ship in `templates/`. Copy and edit:
-
-```bash
-cp templates/SOUL.md.example ~/.agent/SOUL.md
-cp templates/IDENTITY.md.example ~/.agent/IDENTITY.md
-cp templates/DIRECTIVE.md.example ~/.agent/DIRECTIVE.md
-```
-
-After your first session, DREAMS.md and NARRATIVE.md start filling in automatically. After enough sessions, PROPOSALS.md will contain identity-evolution suggestions for review.
-
-`setup.py` substitutes `{{AGENT_NAME}}` and `{{USER_NAME}}` placeholders across the framework.
-
----
-
-## Project Structure
+## What's in the repo
 
 ```
-awakened-soul/
-  brain/
-    foundational/       130 brainstem + hypothalamic mechanisms
-    subcortical/        70 basal ganglia + thalamic + cerebellar
-    limbic/             64 hippocampus + amygdala + septum
-    neocortical/        50 PFC + sensory + motor + parietal
-    integration/        36 DMN + SN + CEN + binding
-    third_eye/          6 meta-cognitive bridge services
-    core/               brain runner, dispatch, council
-    becoming/           collaborative becoming, narrative
-    felt_presence/      drive states, embodied energy
-    inner_voice/        desire engine, inner speech
-    knowing/            metacognition, salience filter
-    life/               autonomous goals, scheduling
-    narrative/          identity drift manager
-    self/               existential layer, self model
-    substrate/          cognitive rhythm, memory gravity
-    systems/            action selector, attention, conflict
-    value/              ethics, goal conflict, value evaluator
-    *_run_order.py      cascade order per layer
-  skills/               heartbeat activities + skill plugins
-  templates/            identity file templates
-  tools/                integrity checker, manifest generator
-  plugins/              operator-provided LLM provider
-  brain_integration.py  the main hookpoint
-  psychological_state.py third-eye orchestration
-  setup.py              one-time scaffolding
+brain/
+├── mechanisms/              ~360 BrainMechanism subclasses across 5
+│                            anatomical layers (foundational / limbic /
+│                            subcortical / neocortical / integration);
+│                            wires 21–40 are the load-bearing monitors
+├── tick_state_bus.py        TSB — intra-tick state communication
+├── oceans.py                Big Five (OCEAN) trait loader + modulations
+├── brain_event_drainer.py   Heartbeat→brain queue consumer
+└── *_run_order.py           Per-layer execution ordering
+
+skills/
+├── humanizer/               Voice signature preservation
+├── knowledge-summarization/ Compression with hedge-preservation
+├── memory-management/       Working/episodic/semantic three-tier
+├── multiple-personas/       Operating modes (BRAIN/COACH/BUILD/default)
+├── self-improvement/        Operator-gated identity revision
+├── self-analysis/           Metacognitive evaluation
+├── web-research/            Outward reach with provenance
+├── qmd/                     Personal-corpus retrieval
+├── skill-discovery/         Request-time skill routing
+├── task-planning/           Goal decomposition + retrospective
+├── report-generation/       Persistent report production
+├── api-interaction/         External HTTP with safeguard gating
+├── code-execution/          Sandboxed code-running
+├── data-analysis/           Inference with epistemic honesty
+├── file-system/             Workspace dwelling
+├── heartbeat_activities/    71 autonomous activities the dispatcher fires
+├── safeguard.py             Destructive-action + wire-aware gates
+├── drift_detector.py        Daily drift score against BASELINE_TRAITS
+├── self_awareness.py        Introspection over identity files
+└── verify_build.py          Per-mechanism build verifier
+
+runtime/
+├── heartbeat.py             Main autonomous loop (every 30s)
+├── brain_proxy.py           core_tick() entry point + drain/poll hooks
+├── memory.py                WorkingMemory + EpisodicMemory + SemanticMemory
+├── emotion.py               State-based emotion engine
+├── psychological_state.py   Live psychological-state writer
+├── dream_contamination.py   Sleep-state intrusion guard
+├── semantic_memory.py       Concept memory
+└── ...
+
+docs/
+├── BRAIN_MAP.md             Full anatomical inventory + tract diagram
+├── WIRING.md                Step-by-step setup
+├── SETUP.md                 Quick-start + file overview
+└── SKILL.md                 Skill-system specification
+
+templates/                   Operator-edit-this seed identity files
+references/                  Project reference notes
+state/                       Runtime state (gitignored)
+tests/                       Cross-cutting integration tests
 ```
 
----
+## The discipline
+
+What makes this not just LLM glue:
+
+- **Source confidence is tracked separately from content confidence.**
+  Every memory encode records both. A claim the agent strongly believes
+  from an unknown source is exactly the failure mode the brain catches.
+
+- **Hedging language must survive compression.** "Some studies suggest"
+  doesn't become "studies show." The CompressionFidelityLayer flags
+  confidence laundering at runtime.
+
+- **Voice signatures are anchored across modes.** The agent has one self.
+  Mode switching changes workflow + voice register, not identity.
+  PersonaCoherenceLayer enforces ≥60% voice-signature preservation
+  in every mode.
+
+- **Identity revision is operator-gated.** No code path edits identity
+  files without going through propose → ratify → commit. SelfRevisionLayer
+  detects anchor violations, change storms, rollback loops, drift
+  chasing, and stagnation. Silent identity edits are flagged as
+  `silent_revision`.
+
+- **Convergence is stronger evidence than single signals.** When 3+
+  independent wires fire on the same domain (memory + corpus +
+  compression all signaling drift, for example), the Third Eye writes
+  a meta-proposal — not three duplicate alerts.
+
+- **Habituation is built in.** Same drift signal cannot re-fire until
+  either the wire accumulates additional drift past acknowledgment
+  or the operator runs `reset_dedup_window()`.
+
+- **Forgetting requires a reason.** No reason → no forget. The reason
+  is recorded.
+
+The discipline is grounded in cognitive science. Every wire's behavior
+cites the empirical research it implements: Squire (memory systems),
+McClelland (CLS theory), Nader (reconsolidation), Reyna (fuzzy-trace),
+Yassa (pattern separation), Hardt (active forgetting), Schacter
+(constructive memory), Johnson (source monitoring), Higgins
+(self-discrepancy), Markus (working self-concept), Conway (self-memory),
+Carruthers + Fleming (metacognitive accuracy), Botvinick (conflict
+monitoring), Dehaene (global workspace), Sridharan + Menon (salience
+network), Friston (predictive processing), Miller & Cohen (PFC
+integrative control), D'Esposito (working memory), Stuss (frontal
+lobes), Koechlin (PFC cascade), Badre (cognitive control hierarchy),
+Mischel (cognitive-affective system), McAdams (three-tier framework),
+Roberts (continuity), Donahue (self-concept differentiation), Tulving
+(episodic memory), Squire (H.M.), Holroyd (ERN/Pe), Yeung
+(metacognitive control), Koriat (subjective confidence), Monsell (task
+switching), Cohen (automaticity), Posner (attention systems), Rogers
+(semantic cognition), Markman (category use).
+
+This isn't decoration. The runtime monitors check the same failure
+modes those papers describe.
+
+## Status
+
+Research preview. The framework is platform-agnostic and the wiring is
+complete (Phases 0–8 per `docs/BRAIN_MAP.md`):
+
+- 16 skill folders at v2.0 with paired brain mechanisms and full test coverage
+- 24 load-bearing wires (21–40) registered in the integration run-order
+- Heartbeat → brain event queue with drainer hook into core_tick
+- Third Eye salience-network polling with kind-deduplication and convergence detection
+- Operator-gated identity revision loop with anchor-violation detection,
+  atomic file writes, snapshot-based rollback, and append-only audit log
+- Wire-aware safeguard gate with 43 op-kind dispatch entries
+- 569 tests across 17 test suites, including a 200-tick end-to-end
+  lifecycle integration test
+
+Things still in research: long-horizon stability under continuous
+operation, calibration of the dedup-window and convergence thresholds
+against real workloads, the specific tuning of OCEAN modulation
+contexts.
+
+## Contributing
+
+See `CONTRIBUTING.md`. Two rules above all others: never delete operator
+files without explicit approval, and never let a test run leak `agent.db`
+or `.agent/` into the repo.
 
 ## License
 
-MIT — see LICENSE.
+MIT. See `LICENSE`.
 
 ---
 
-## Credits
-
-Built by [trippy26bot](https://github.com/trippy26bot). Every mechanism cites the neuroscience paper it's modeling — see docstrings throughout `brain/`.
-
-If you build something with this, I want to hear about it.
-
----
-
-**v1.0.0** — first public release. The framework is complete. The instance is yours.
+*The operator defines the conditions. The agent defines themselves.*

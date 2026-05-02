@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-OpenClaw Skill Security Scanner
+Awakened Soul — Skill Security Scanner
 Pre-install scanning to block malicious skills before they install.
 """
 

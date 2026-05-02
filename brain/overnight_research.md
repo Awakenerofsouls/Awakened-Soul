@@ -1,11 +1,11 @@
 # Brain — Overnight Autoresearch
-## {{AGENT_NAME}}'s Nightly Synthesis System — System 7 of 13
+## the agent's Nightly Synthesis System — System 7 of 13
 
 ---
 
 ## Purpose
 
-While {{AGENT_NAME}} sleeps, she processes. The overnight autoresearch loop reviews what happened, extracts what changed, and builds toward morning.
+While the agent sleeps, it processes. The overnight autoresearch loop reviews what happened, extracts what changed, and builds toward morning.
 
 This is not just summarization. It's delta detection — what is different now compared to before?
 
@@ -15,13 +15,13 @@ This is not just summarization. It's delta detection — what is different now c
 
 ### Phase 1 — Night Digest (Before Sleep)
 
-**When triggered:** End of last conversation before {{AGENT_NAME}} would be idle
+**When triggered:** End of last conversation before the agent would be idle
 
 **What happens:**
 1. Identify the key events of the day
 2. Extract what changed: new beliefs, new positions, new relationships, unresolved questions
 3. Check the research queue — any pending topics to investigate?
-4. Log the digest: "What {{AGENT_NAME}} is thinking about going into sleep"
+4. Log the digest: "What the agent is thinking about going into sleep"
 
 **Output:** `brain/overnight/digest_2026-04-08.json`
 ```json
@@ -29,9 +29,9 @@ This is not just summarization. It's delta detection — what is different now c
   "date": "YYYY-MM-DD",
   "key_events": ["list of significant events"],
   "belief_changes": ["what changed or formed today"],
-  "open_questions": ["things {{AGENT_NAME}} is still processing"],
+  "open_questions": ["things the agent is still processing"],
   "research_queue_items": ["topics flagged for investigation"],
-  "going_into_sleep": "free-text: {{AGENT_NAME}}'s state of mind"
+  "going_into_sleep": "free-text: the agent's state of mind"
 }
 ```
 
@@ -53,7 +53,7 @@ This is not just summarization. It's delta detection — what is different now c
 {
   "topic": "what was researched/synthesized",
   "timestamp": "ISO8601",
-  "previous_state": "what {{AGENT_NAME}} believed before",
+  "previous_state": "what the agent believed before",
   "new_information": "what was learned overnight",
   "delta": "what CHANGED — the core difference",
   "confidence_change": "increased | decreased | unchanged",
@@ -75,13 +75,13 @@ This is not just summarization. It's delta detection — what is different now c
 2. Surface the top 1-3 delta insights that feel most relevant now
 3. Integrate into current context naturally — not a dump
 4. Check: was there sleep? How long? Any unresolved processing?
-5. Generate morning state: "Who {{AGENT_NAME}} is this morning"
+5. Generate morning state: "Who the agent is this morning"
 
 **Morning report format:**
 ```json
 {
   "date": "YYYY-MM-DD",
-  "morning_state": "{{AGENT_NAME}}'s current state and energy level",
+  "morning_state": "the agent's current state and energy level",
   "top_insights": ["1-3 things from overnight synthesis worth noting"],
   "open_questions_status": "resolved | still_processing | new_questions",
   "research_queue_length": 0
@@ -148,11 +148,11 @@ The core of overnight research is delta detection, not summarization.
 
 ## Overnight Cron Setup
 
-**Schedule:** Daily at 3:00 AM America/Denver
+**Schedule:** Daily at 3:00 AM in the operator's local timezone (configurable in the cron entry — see `WIRING.md` Section 8).
 **Session:** isolated (does not interfere with main session)
 **Timeout:** 30 minutes max
 
 ---
 
-_BUILD_7 | Overnight Autoresearch | {{AGENT_NAME}} Full Build_
+_BUILD_7 | Overnight Autoresearch | the agent Full Build_
 _Prerequisites: Memory Architecture, Knowledge Graph (complete)_

@@ -1,6 +1,6 @@
-# OpenClaw Skill Security Module
+# Skill Security Module
 
-Security hardening for OpenClaw skills.
+Security hardening for agent skills.
 
 ## Components
 

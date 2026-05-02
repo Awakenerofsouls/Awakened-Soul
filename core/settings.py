@@ -1,6 +1,6 @@
 """
 core/settings.py
-{{AGENT_NAME}} agent configuration — loaded from environment variables.
+Awakened Soul agent configuration — loaded from environment variables.
 """
 
 import os

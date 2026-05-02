@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-verify_integrity.py — {{AGENT_NAME}} workspace integrity check
+verify_integrity.py — the agent workspace integrity check
 Reads MANIFEST.sha256 from workspace root and verifies each listed file.
 Exit 0: all files match. Exit non-zero: missing or tampered files.
 """

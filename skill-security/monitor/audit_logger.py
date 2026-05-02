@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-OpenClaw Skill Audit Logger
+Skill Audit Logger
 Runtime monitoring and logging for skill execution.
 """
 
@@ -18,8 +18,8 @@ from enum import Enum
 import threading
 
 # Configuration
-AUDIT_DB_PATH = Path(os.environ.get("OPENCLAW_AUDIT_DB", "~/.openclaw/audit.db"))
-LOG_DIR = Path(os.environ.get("OPENCLAW_LOG_DIR", "~/.openclaw/logs"))
+AUDIT_DB_PATH = Path(os.environ.get("AGENT_AUDIT_DB", "~/.agent/audit.db"))
+LOG_DIR = Path(os.environ.get("AGENT_LOG_DIR", "~/.agent/logs"))
 
 class EventType(Enum):
     """Types of audit events."""
@@ -74,10 +74,56 @@ class AuditLogger:
         
         self._init_db()
         self._setup_logger()
-        
-        # Circuit breaker state
+
+        # Circuit breaker state — in-memory mirror of the circuit_breaker
+        # table, loaded on init so state survives process restarts.
         self.failure_counts: Dict[str, int] = {}
         self.blocked_counts: Dict[str, int] = {}
+        self._cooldown_seconds = int(os.environ.get("AGENT_CIRCUIT_COOLDOWN_S", "300"))
+        self._load_circuit_state()
+
+    def _load_circuit_state(self):
+        """Restore circuit breaker counts from the DB into memory."""
+        try:
+            conn = sqlite3.connect(self.db_path)
+            c = conn.cursor()
+            for row in c.execute(
+                "SELECT skill_id, failure_count, blocked_count FROM circuit_breaker"
+            ).fetchall():
+                self.failure_counts[row[0]] = int(row[1] or 0)
+                self.blocked_counts[row[0]] = int(row[2] or 0)
+            conn.close()
+        except sqlite3.Error:
+            # Schema may be from an older version; counts simply start at 0.
+            pass
+
+    def _persist_circuit_state(self, skill_id: str, *, set_cooldown: bool = False):
+        """Write the current count + (optionally) cooldown for skill_id to the DB."""
+        from datetime import timedelta
+        conn = sqlite3.connect(self.db_path)
+        c = conn.cursor()
+        cooldown_until = None
+        if set_cooldown:
+            cooldown_until = (datetime.now() + timedelta(seconds=self._cooldown_seconds)).isoformat()
+        c.execute(
+            """INSERT INTO circuit_breaker
+                  (skill_id, failure_count, blocked_count, last_failure, cooldown_until)
+               VALUES (?, ?, ?, ?, ?)
+               ON CONFLICT(skill_id) DO UPDATE SET
+                  failure_count=excluded.failure_count,
+                  blocked_count=excluded.blocked_count,
+                  last_failure=excluded.last_failure,
+                  cooldown_until=COALESCE(excluded.cooldown_until, circuit_breaker.cooldown_until)""",
+            (
+                skill_id,
+                self.failure_counts.get(skill_id, 0),
+                self.blocked_counts.get(skill_id, 0),
+                datetime.now().isoformat(),
+                cooldown_until,
+            ),
+        )
+        conn.commit()
+        conn.close()
     
     def _init_db(self):
         """Initialize audit database."""
@@ -115,7 +161,7 @@ class AuditLogger:
         """Setup file logger."""
         log_file = self.log_dir / f"skill-audit-{datetime.now().strftime('%Y-%m-%d')}.log"
         
-        self.logger = logging.getLogger("openclaw-audit")
+        self.logger = logging.getLogger("agent-audit")
         self.logger.setLevel(logging.INFO)
         
         handler = logging.FileHandler(log_file)
@@ -125,7 +171,7 @@ class AuditLogger:
         self.logger.addHandler(handler)
         
         # Also log to console in debug mode
-        if os.environ.get("OPENCLAW_DEBUG"):
+        if os.environ.get("AGENT_AUDIT_DEBUG"):
             console = logging.StreamHandler()
             console.setFormatter(logging.Formatter('%(asctime)s | %(message)s'))
             self.logger.addHandler(console)
@@ -190,30 +236,69 @@ class AuditLogger:
         conn.commit()
         conn.close()
     
-    def _track_event(self, skill_id: str, event_type: EventType, 
+    def _track_event(self, skill_id: str, event_type: EventType,
                      alert_level: AlertLevel):
-        """Track events for circuit breaker."""
-        
+        """Track events for circuit breaker — increments counts in memory
+        and persists them so state survives process restarts."""
+        changed = False
         if alert_level == AlertLevel.CRITICAL or event_type == EventType.ERROR:
             self.failure_counts[skill_id] = self.failure_counts.get(skill_id, 0) + 1
-        
+            changed = True
+
         if event_type == EventType.BLOCKED:
             self.blocked_counts[skill_id] = self.blocked_counts.get(skill_id, 0) + 1
-    
-    def should_circuit_break(self, skill_id: str, 
+            changed = True
+
+        if changed:
+            self._persist_circuit_state(skill_id)
+
+    def should_circuit_break(self, skill_id: str,
                               failure_threshold: int = 5,
                               blocked_threshold: int = 10) -> bool:
-        """Check if circuit breaker should trip."""
-        
+        """Check if circuit breaker should trip.
+
+        Honors `cooldown_until` from the DB: if a cooldown is active for
+        this skill, return True until the cooldown expires regardless of
+        the current counts. If thresholds are newly exceeded, set a
+        cooldown so callers can recover after `AGENT_CIRCUIT_COOLDOWN_S`.
+        """
+        # Active cooldown overrides everything.
+        try:
+            conn = sqlite3.connect(self.db_path)
+            row = conn.execute(
+                "SELECT cooldown_until FROM circuit_breaker WHERE skill_id = ?",
+                (skill_id,),
+            ).fetchone()
+            conn.close()
+            if row and row[0]:
+                if datetime.fromisoformat(row[0]) > datetime.now():
+                    return True
+        except (sqlite3.Error, ValueError):
+            pass
+
         failures = self.failure_counts.get(skill_id, 0)
         blocks = self.blocked_counts.get(skill_id, 0)
-        
-        return failures >= failure_threshold or blocks >= blocked_threshold
-    
+        tripped = failures >= failure_threshold or blocks >= blocked_threshold
+
+        if tripped:
+            # Latch a cooldown window so a flapping caller doesn't keep
+            # re-evaluating against the same already-exceeded counts.
+            self._persist_circuit_state(skill_id, set_cooldown=True)
+
+        return tripped
+
     def reset_circuit(self, skill_id: str):
-        """Reset circuit breaker for a skill."""
+        """Reset circuit breaker for a skill — clears in-memory counts AND
+        the persisted row (including any active cooldown)."""
         self.failure_counts[skill_id] = 0
         self.blocked_counts[skill_id] = 0
+        try:
+            conn = sqlite3.connect(self.db_path)
+            conn.execute("DELETE FROM circuit_breaker WHERE skill_id = ?", (skill_id,))
+            conn.commit()
+            conn.close()
+        except sqlite3.Error:
+            pass
     
     def get_skill_events(self, skill_id: str, limit: int = 100) -> List[Dict]:
         """Get recent events for a skill."""

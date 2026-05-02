@@ -28,7 +28,7 @@ UNFINISHED_PROBABILITY = 0.35
 
 
 def run(state: dict) -> dict:
-    workspace = Path(state.get("WORKSPACE", "~/.openclaw/workspace"))
+    workspace = Path(state.get("WORKSPACE", "~/.agent/workspace"))
     interests_file = state.get("INTERESTS_FILE", "INTERESTS.md")
     llm_endpoint = state.get("LLM_ENDPOINT", "http://localhost:11434")
     llm_model = state.get("LLM_MODEL", "qwen2.5vl:7b")
@@ -109,6 +109,27 @@ def run(state: dict) -> dict:
     # Grow interests — check if content revealed something new worth tracking
     if content:
         try_append_new_interest(content, state, source_activity="curiosity_deep")
+
+    # ── Brain-event posting ─────────────────────────────────────────
+    # Output is the agent's first-person reflection. Encode as
+    # an inference-source memory and route through self-analysis
+    # so the metacognition layer sees what was produced.
+    try:
+        from ._brain_post import post_memory_encode, post_self_analysis
+        if content:
+            post_memory_encode(
+                content=content, intent="reflection",
+                source_kind="inference",
+                content_confidence=0.7, source_confidence=0.6,
+                source="curiosity_deep",
+            )
+            post_self_analysis(
+                output=content, kind="answer",
+                predicted_quality=0.6,
+                source="curiosity_deep",
+            )
+    except Exception:
+        pass
 
     return {
         "ok": write_ok,

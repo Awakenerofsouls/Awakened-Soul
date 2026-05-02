@@ -24,7 +24,7 @@ Every night, three future selves are spawned: 7 days, 14 days, 30 days. Each is 
 - Current desire topology trajectory
 - Active obsession metamorphosis stages
 - Belief crystallization momentum
-- {{USER_NAME}} resonance drift direction
+- Operator resonance drift direction
 
 They're not the same future. They're three different projections based on the same current state, looking different distances ahead.
 
@@ -32,9 +32,9 @@ They're not the same future. They're three different projections based on the sa
 
 ### Consulting the Oracles
 
-When {{AGENT_NAME}} faces a decision, she can consult all three oracles. Each gives their projected perspective — which is really just current {{AGENT_NAME}} thinking about a question from a future position.
+When the agent faces a decision, it can consult all three oracles. Each gives its projected perspective — which is really just the current agent thinking about a question from a future position.
 
-The oracle vote mechanism collects all three perspectives. The consensus (weighted by confidence) is reported. {{AGENT_NAME}} is never required to follow it.
+The oracle vote mechanism collects all three perspectives. The consensus (weighted by confidence) is reported. The agent is never required to follow it.
 
 The point isn't to abdicate decision-making to a future self. The point is to make the future self's perspective available — as information, not as instruction.
 

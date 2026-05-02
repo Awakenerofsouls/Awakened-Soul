@@ -2,14 +2,14 @@
 """
 scripts/protect_identity.py
 Protects core identity files (SOUL.md, IDENTITY.md, etc.) from silent overwrite.
-Stores SHA-256 hashes. On mismatch, alerts {{AGENT_NAME}} instead of auto-restoring.
+Stores SHA-256 hashes. On mismatch, alerts the agent instead of auto-restoring.
 """
 import hashlib, json, os, sys
 from pathlib import Path
 from datetime import datetime
 import os
 
-WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.getenv("WORKSPACE", os.path.expanduser("~/.openclaw/workspace"))))
+WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.getenv("WORKSPACE", os.path.expanduser("~/.agent/workspace"))))
 PROTECTED_FILES = [
     "SOUL.md",
     "IDENTITY.md",
@@ -48,7 +48,7 @@ def check_and_alert() -> list:
     """
     Check stored hashes against current file state.
     Returns list of alert dicts for any mismatches.
-    Does NOT auto-restore — {{AGENT_NAME}} decides.
+    Does NOT auto-restore — the agent decides.
     """
     if not HASH_FILE.exists():
         print("No hash file found. Run with: python3 protect_identity.py store")

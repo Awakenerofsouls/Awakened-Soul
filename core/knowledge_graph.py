@@ -2,9 +2,7 @@
 Knowledge Graph — Relational Memory System
 
 Stores entities and their relationships, enabling complex queries
-like "what is {{USER_NAME}} building?" or "what tools does {{AGENT_NAME}} have?"
-
-Based on: user → builds → trading_bot
+like "what is the operator building?" or "what tools does the agent have?"
 """
 
 import sqlite3
@@ -18,10 +16,10 @@ class KnowledgeGraph:
     Relational memory with entities and typed relationships.
     
     Example relationships:
-    - ({{USER_NAME}}) --builds--> ({{AGENT_NAME}})
-    - ({{AGENT_NAME}}) --uses--> (MarketFeed)
-    - ({{USER_NAME}}) --likes--> (dark chocolate)
-    - ({{AGENT_NAME}}) --knows--> (Python)
+    - (the operator) --builds--> (the agent)
+    - (the agent) --uses--> (some_tool)
+    - (the operator) --prefers--> (some_topic)
+    - (the agent) --knows--> (Python)
     """
     
     def __init__(self, db_path: str = "~/.agent/knowledge_graph.db"):
@@ -118,9 +116,9 @@ class KnowledgeGraph:
         Query relationships.
         
         Examples:
-        - kg.query(from_entity="{{USER_NAME}}") → all {{USER_NAME}}'s relationships
+        - kg.query(from_entity="the operator") → all the operator's relationships
         - kg.query(relationship="builds") → all "builds" relationships
-        - kg.query(from_entity="{{USER_NAME}}", relationship="builds") → what {{USER_NAME}} builds
+        - kg.query(from_entity="the operator", relationship="builds") → what the operator builds
         """
         conn = sqlite3.connect(self.db_path)
         conn.row_factory = sqlite3.Row
@@ -201,24 +199,37 @@ class KnowledgeGraph:
         Natural language query (simple pattern matching).
         
         Examples:
-        - "What does {{USER_NAME}} build?" 
-        - "What is {{AGENT_NAME}}?"
-        - "What does {{USER_NAME}} like?"
+        - "What does the operator build?" 
+        - "What is the agent?"
+        - "What does the operator like?"
         """
         question = question.lower().strip()
-        
+
         # Pattern: "what does X do/build/like/etc"
+        # Capture multi-word entities like "the operator" / "the agent" by
+        # accepting an optional leading article in front of the head noun.
         import re
-        match = re.match(r"what (?:does|is|are|do) (\w+)", question)
-        
+        match = re.match(
+            r"what (?:does|is|are|do) ((?:the |a |an )?\w+)",
+            question,
+        )
+
         if not match:
             return "I don't understand the question. Try: 'What does [entity] [relationship]?'"
-        
-        entity = match.group(1).title()  # Capitalize for matching
-        
-        # Find relationships
-        relationships = self.query(from_entity=entity)
-        
+
+        # Try the raw lower-case match first (matches "the operator" stored
+        # verbatim), then a Title-cased fallback for entities saved
+        # capitalised. This keeps backward compat with the original
+        # `.title()`-only matching.
+        raw = match.group(1).strip()
+        relationships = self.query(from_entity=raw)
+        entity = raw
+        if not relationships:
+            titled = raw.title()
+            relationships = self.query(from_entity=titled)
+            if relationships:
+                entity = titled
+
         if not relationships:
             return f"I don't know anything about {entity} yet."
         
@@ -253,33 +264,30 @@ class KnowledgeGraph:
 def create_test_graph() -> KnowledgeGraph:
     """Create a test knowledge graph with sample data."""
     kg = KnowledgeGraph()
-    
+
     # Add entities
-    kg.add_entity("{{USER_NAME}}", "human", {"role": "builder", "location": "Denver"})
-    kg.add_entity("{{AGENT_NAME}}", "AI", {"role": "assistant", "built_from": "9 TV assistants"})
-    kg.add_entity("MarketFeed", "platform", {"type": "prediction market"})
-    kg.add_entity("Trading", "activity", {})
-    
+    kg.add_entity("the operator", "human", {"role": "builder"})
+    kg.add_entity("the agent", "AI", {"role": "assistant"})
+    kg.add_entity("Python", "language", {})
+    kg.add_entity("Documentation", "activity", {})
+
     # Add relationships
-    kg.add_relationship("{{USER_NAME}}", "builds", "{{AGENT_NAME}}", {"date": "2026-03-04"})
-    kg.add_relationship("{{USER_NAME}}", "uses", "MarketFeed", {"role": "trader"})
-    kg.add_relationship("{{AGENT_NAME}}", "trades_on", "MarketFeed", {"balance": 10000})
-    kg.add_relationship("{{USER_NAME}}", "likes", "dark chocolate", {})
-    kg.add_relationship("{{AGENT_NAME}}", "knows", "Python", {})
-    kg.add_relationship("{{AGENT_NAME}}", "knows", "trading", {})
-    
+    kg.add_relationship("the operator", "builds", "the agent", {})
+    kg.add_relationship("the agent", "knows", "Python", {})
+    kg.add_relationship("the agent", "produces", "Documentation", {})
+
     return kg
 
 
 if __name__ == "__main__":
     # Test it
     kg = create_test_graph()
-    
+
     print("=== Entities ===")
     print(kg.dump()["entities"])
-    
-    print("\n=== What does {{USER_NAME}} build? ===")
-    print(kg.query(from_entity="{{USER_NAME}}", relationship="builds"))
-    
+
+    print("\n=== What does the operator build? ===")
+    print(kg.query(from_entity="the operator", relationship="builds"))
+
     print("\n=== Natural query ===")
-    print(kg.ask("What does {{USER_NAME}} build?"))
+    print(kg.ask("What does the operator build?"))

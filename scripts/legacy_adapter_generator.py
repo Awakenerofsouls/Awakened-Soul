@@ -144,7 +144,7 @@ from legacy.{legacy_module} import {legacy_class}
 
 _DB_PATH = str(
     Path(os.getenv("AGENT_WORKSPACE",
-                       str(Path.home() / ".openclaw" / "workspace")))
+                       str(Path.home() / ".agent" / "workspace")))
     / "brain" / "agent.db"
 )
 

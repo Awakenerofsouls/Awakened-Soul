@@ -34,7 +34,7 @@ def log_activity(
         if state:
             workspace = Path(state.get("WORKSPACE", ""))
         if not workspace or not workspace.exists():
-            workspace = Path("~/.openclaw/workspace")
+            workspace = Path("~/.agent/workspace")
 
         log_path = workspace / state.get("ACTIVITY_LOG", "activity_log.jsonl") if state else workspace / "activity_log.jsonl"
 

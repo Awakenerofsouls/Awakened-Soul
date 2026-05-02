@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 core/loop.py
-{{AGENT_NAME}} Loop — Full Implementation (Phase 7)
+The agent Loop — Full Implementation (Phase 7)
 
 7 layers:
   1. Goals        → brain/goals.json
@@ -175,5 +175,5 @@ def run_loop():
 
 
 if __name__ == "__main__":
-    print("{{AGENT_NAME}} Loop starting (Phase 7)...")
+    print("the agent Loop starting (Phase 7)...")
     run_loop()

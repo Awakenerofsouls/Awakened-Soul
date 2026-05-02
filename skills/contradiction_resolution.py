@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """
-Contradiction Resolution — {{AGENT_NAME}}'s Nightly Conflict Resolver
-Runs at 5:00 AM America/Denver
+Contradiction Resolution — the agent's Nightly Conflict Resolver
+Scheduled via cron / launchd; the timezone is read from $AGENT_TZ
+(defaults to UTC). Pick whatever overnight slot fits your schedule.
 
 Reads memory/contradictions.json,
 resolves resolvable conflicts via LLM,
-flags unresolvable ones for {{USER_NAME}}.
+flags unresolvable ones for the operator.
 Writes summary to OVERNIGHT_LOG.md.
 """
 
@@ -15,7 +16,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.openclaw/workspace")))
+WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.agent/workspace")))
 OVERNIGHT_LOG = WORKSPACE / "OVERNIGHT_LOG.md"
 CONTRADICTIONS_FILE = WORKSPACE / "memory" / "contradictions.json"
 PENDING_FOR_USER = WORKSPACE / "memory" / "pending_for_user.md"
@@ -104,13 +105,13 @@ def record_sleep_run(duration_sec, completed, findings, flags=None):
 
 # ── Resolution prompt ─────────────────────────────────────────────────────────
 
-RESOLUTION_SYSTEM = """You are {{AGENT_NAME}}'s contradiction resolution engine. Two beliefs or facts conflict. Your job is to determine:
+RESOLUTION_SYSTEM = """You are the agent's contradiction resolution engine. Two beliefs or facts conflict. Your job is to determine:
 
 1. Which one is more likely correct based on: recency, specificity, emotional weight, source reliability
 2. Whether the conflict is RESOLVABLE (you can pick a winner or synthesize a new version) or UNRESOLVABLE (genuinely ambiguous, needs human judgment)
 3. If resolvable: provide the RESOLVED VERSION — a rewritten belief/fact that supersedes both
 
-Be direct. Don't waffle. If you can't decide, say so and flag for {{USER_NAME}}.
+Be direct. Don't waffle. If you can't decide, say so and flag for the operator.
 If both could be true in different contexts, say so and note the context split.
 
 Format:
@@ -125,12 +126,12 @@ def resolve_contradiction(contradiction_entry: dict) -> dict:
     c_text = contradiction_entry.get("contradiction", "")
     source = contradiction_entry.get("source", "unknown")
 
-    prompt = f"""Resolve this contradiction detected in {{AGENT_NAME}}'s memory:
+    prompt = f"""Resolve this contradiction detected in the agent's memory:
 
 Contradiction: {c_text}
 Detected in: {source}
 
-Two beliefs or facts from {{AGENT_NAME}}'s memory conflict. Determine which wins or if this needs human input."""
+Two beliefs or facts from the agent's memory conflict. Determine which wins or if this needs human input."""
 
     try:
         result_text = llm_extract(prompt, system=RESOLUTION_SYSTEM, max_tokens=512)
@@ -197,7 +198,7 @@ def append_pending_for_user(entry: dict):
     if PENDING_FOR_USER.exists():
         content = PENDING_FOR_USER.read_text()
     else:
-        content = "# Pending for {{USER_NAME}}\n\nContradictions and decisions requiring human judgment.\n\n---\n"
+        content = "# Pending for the operator\n\nContradictions and decisions requiring human judgment.\n\n---\n"
 
     content = content + section
     PENDING_FOR_USER.write_text(content)
@@ -219,7 +220,7 @@ def run_resolution():
     if not unresolved:
         output = (
             "No unresolved contradictions. "
-            "{{AGENT_NAME}}'s beliefs are consistent — or at least, no conflicts have been flagged."
+            "the agent's beliefs are consistent — or at least, no conflicts have been flagged."
         )
         carry_forward = "Nothing to carry forward."
         status = "skipped"
@@ -246,37 +247,37 @@ def run_resolution():
                 except Exception as e:
                     print(f"    Warning: could not write resolved belief: {e}")
 
-                resolved_ids.append(c.get("id", c.get("矛盾_id")))
+                resolved_ids.append(c.get("id"))
                 changes.append(f"resolved: '{c.get('contradiction', '')[:60]}' → semantic memory updated")
                 findings.append(f"Resolved: {c.get('id', 'unknown')}")
 
             elif result.get("for_user"):
                 append_pending_for_user(result)
-                pending_user_ids.append(c.get("id", c.get("矛盾_id")))
-                changes.append(f"flagged for {{USER_NAME}}: '{c.get('contradiction', '')[:60]}'")
-                findings.append(f"Flagged for {{USER_NAME}}: {c.get('id', 'unknown')}")
+                pending_user_ids.append(c.get("id"))
+                changes.append(f"flagged for the operator: '{c.get('contradiction', '')[:60]}'")
+                findings.append(f"Flagged for the operator: {c.get('id', 'unknown')}")
 
         # Remove resolved items from contradictions.json
-        remaining = [c for c in contradictions if c.get("id", c.get("矛盾_id")) not in resolved_ids]
+        remaining = [c for c in contradictions if c.get("id") not in resolved_ids]
         data["contradictions"] = remaining
         save_json(CONTRADICTIONS_FILE, data)
 
         output_lines = [
             f"Processed {len(unresolved)} contradiction(s):",
             f"  Resolved: {len(resolved_ids)}",
-            f"  Flagged for {{USER_NAME}}: {len(pending_user_ids)}",
+            f"  Flagged for the operator: {len(pending_user_ids)}",
             "",
             f"Remaining unresolved in contradictions.json: {len(remaining)}",
         ]
         output = "\n".join(output_lines)
         carry_forward = (
             f"{len(resolved_ids)} contradiction(s) resolved and written to semantic memory. "
-            f"{len(pending_user_ids)} sent to pending_for_user.md for {{USER_NAME}} to decide."
+            f"{len(pending_user_ids)} sent to pending_for_user.md for the operator to decide."
         )
         status = "completed"
 
         if pending_user_ids:
-            flags.append(f"{len(pending_user_ids)} contradiction(s) need {{USER_NAME}}'s judgment")
+            flags.append(f"{len(pending_user_ids)} contradiction(s) need the operator's judgment")
 
     duration = (datetime.now() - start).total_seconds()
     duration_str = f"{duration:.1f}s"

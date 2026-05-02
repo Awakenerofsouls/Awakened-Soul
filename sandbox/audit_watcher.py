@@ -8,7 +8,7 @@ from pathlib import Path
 from collections import deque
 from datetime import datetime
 
-LOG_FILE = Path('/var/log/openclaw/skill-audit.log')
+LOG_FILE = Path('/var/log/agent/skill-audit.log')
 WINDOW = 120
 NETWORK_THRESHOLD = 10
 

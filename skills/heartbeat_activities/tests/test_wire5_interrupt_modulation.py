@@ -24,7 +24,7 @@ import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from brain.tick_state_bus import TickStateBus
-from brain.first_person_execution_frame import FirstPersonExecutionFrame
+from brain.mechanisms.first_person_execution_frame import FirstPersonExecutionFrame
 
 
 # ─── TSB recovery_turn_count lifecycle ────────────────────────────────────────

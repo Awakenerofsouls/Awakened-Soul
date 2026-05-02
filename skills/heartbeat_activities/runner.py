@@ -1,5 +1,5 @@
 """
-{{AGENT_NAME}} heartbeat runner.
+The agent heartbeat runner.
 
 Boot:    load state → load operator plugins → log registered activities
 Loop:    tick → dispatch activity → if proactive, send to dashboard
@@ -8,7 +8,7 @@ Shutdown: save state on SIGTERM/SIGINT
 
 Tick structure:
   TICK_INTERVAL = 30s
-  Activity every 3 ticks (90s between activities) — matches {{AGENT_NAME}}'s historical cadence
+  Activity every 3 ticks (90s between activities) — matches the agent's historical cadence
   State saved every 10 ticks (5 min)
   Status logged every 60 ticks (30 min)
 """
@@ -27,8 +27,8 @@ from pathlib import Path
 # brain_proxy lives at workspace/brain_proxy.py
 # heartbeat_activities lives at workspace/skills/heartbeat_activities/
 # Need BOTH workspace/skills/ AND workspace/ on the path
-_SKILLS_ROOT = os.path.expanduser("~/.openclaw/workspace/skills")
-_WORKSPACE_ROOT = os.path.expanduser("~/.openclaw/workspace")
+_SKILLS_ROOT = os.path.expanduser("~/.agent/workspace/skills")
+_WORKSPACE_ROOT = os.path.expanduser("~/.agent/workspace")
 for _p in (_SKILLS_ROOT, _WORKSPACE_ROOT):
     if _p not in sys.path:
         sys.path.insert(0, _p)
@@ -38,7 +38,7 @@ from heartbeat_activities.plugin_loader import load_operator_plugins
 from heartbeat_activities.proactive import send_proactive
 
 # Brain integration — runs registered mechanisms every tick
-from brain_proxy import core_tick as _brain_core_tick
+from runtime.brain_proxy import core_tick as _brain_core_tick
 
 
 # ── Configuration ────────────────────────────────────────────
@@ -48,7 +48,7 @@ ACTIVITY_EVERY = 3          # fire activity every N ticks
 STATE_SAVE_EVERY = 10       # save state every N ticks
 STATUS_LOG_EVERY = 60       # log status every N ticks
 
-WORKSPACE = os.environ.get("AGENT_WORKSPACE", "~/.openclaw/workspace")
+WORKSPACE = os.environ.get("AGENT_WORKSPACE", "~/.agent/workspace")
 STATE_FILE = os.environ.get("AGENT_STATE_FILE", "~/.agent/heartbeat_state.json")
 OPERATOR_PLUGIN_DIR = os.environ.get("AGENT_PLUGIN_DIR", "~/.agent/activities")
 
@@ -129,7 +129,7 @@ class HeartbeatRunner:
 
     def boot(self) -> None:
         """Initialize: load state, load plugins, register with dispatcher."""
-        log.info("{{AGENT_NAME}} heartbeat starting...")
+        log.info("the agent heartbeat starting...")
         log.info("Workspace: %s", WORKSPACE)
 
         self.state = load_state(STATE_FILE)

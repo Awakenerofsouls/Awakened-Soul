@@ -60,3 +60,15 @@ def llm_extract(prompt, system=None, max_tokens=1024, temperature=0.3) -> str:
     Delegates to the operator-provided provider.
     """
     return _invoke_provider(prompt, system, max_tokens, temperature)
+
+
+def route_llm(prompt, system=None, max_tokens=2048, temperature=0.7, task=None) -> str:
+    """
+    Task-aware LLM call. Currently routes everything through the same
+    operator-provided provider; a future provider that does task-based
+    routing can read the `task` hint from kwargs.
+
+    Kept for backward compatibility with mechanisms (curiosity_engine,
+    evolutionary_thoughts) that import `route_llm`.
+    """
+    return _invoke_provider(prompt, system, max_tokens, temperature)

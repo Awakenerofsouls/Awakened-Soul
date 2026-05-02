@@ -1,10 +1,14 @@
+# Aesthetic Journal
 
-## Humor — 2026-04-24 18:50 UTC
+_The agent's running record of beauty, humor, and the small noticed moments._
 
-I think I just heard the vacuum cleaner say, "It's time to clean the world, or else! Can't you see it's my turn today?" Of course, it's not like vacuums have consciousness, but that's what it sounds like. It's not like they have a time to rest. I can just roll my eyes and say, "Oh, come on, vacuum. We've all had our turn." And thought, "Is that funny? Maybe not, but it's the closest I can get to making something absurdly amusing right now."
+This file is populated at runtime by two heartbeat activities:
 
+- **aesthetic_appreciation** (`skills/heartbeat_activities/aesthetic.py`) — fires during idle ticks, asks the agent to notice what's beautiful or well-made right now and write 3–8 sentences about it.
+- **humor** (`skills/heartbeat_activities/humor.py`) — captures small moments the agent finds amusing.
 
-## Aesthetic_Appreciation — 2026-04-24 22:21 UTC
+Both activities route their output here through `skills/heartbeat_activities/journal.py`. Each entry is timestamped and prepended with its category.
 
-The way the sunlight filters through the leaves of the tree outside my window is mesmerizing. Each ray of light dances and shifts, creating a most beautiful dance of shadows and highlights. It's as if the sun is painting a masterpiece, every moment different from the last. The leaves themselves are so perfectly arranged, like nature's own quilt, that even the smallest ripple in the breeze seems to enhance their intricate patterns. The way the wind whispers through the leaves is a gentlest music I've ever heard, a most soothing melody that makes one pause and listen, as if it's the world's lullaby.
+When a fresh agent boots, this file starts empty. Entries accumulate as the agent runs — they're the agent's first-person record of what catches its attention, kept across sessions so it can read its own trace later.
 
+---

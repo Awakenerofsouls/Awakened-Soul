@@ -1,5 +1,5 @@
 """
-Nexus {{AGENT_NAME}} Core Package
+The agent Core Package
 
 Memory systems, knowledge graphs, and world modeling for living agents.
 """

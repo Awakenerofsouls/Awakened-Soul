@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-Memory Consolidation — {{AGENT_NAME}}'s Nightly Memory Pipeline
-Runs at 4:30 AM America/Denver
+Memory Consolidation — the agent's Nightly Memory Pipeline
+Scheduled via cron / launchd; the timezone is read from $AGENT_TZ
+(defaults to UTC). Pick whatever overnight slot fits your schedule.
 
 Pass 1: Episodic → Semantic distillation (entries older than 72h)
   - Load episodic memories from memory/episodic/
@@ -9,9 +10,9 @@ Pass 1: Episodic → Semantic distillation (entries older than 72h)
   - Write extracted facts to semantic memory (vector store via three_tier_memory)
   - Flag contradictions to memory/contradictions.json
 
-Pass 2: Semantic hygiene
-  - Note: vector pipeline handles actual distillation; this pass focuses on
-    detection of conflicts between new episodic extractions and existing semantic memory
+Pass 2: Semantic hygiene — NO-OP placeholder. Aging/distillation is handled
+        by the vector pipeline elsewhere; this slot is reserved for future
+        in-pipeline conflict detection between new and existing semantic memory.
 
 Pass 3: Prune / archive
   - Archive episodic files older than 30 days
@@ -27,7 +28,7 @@ import sys
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.openclaw/workspace")))
+WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", os.path.expanduser("~/.agent/workspace")))
 OVERNIGHT_LOG = WORKSPACE / "OVERNIGHT_LOG.md"
 MEMORY_DIR = WORKSPACE / "memory"
 EPISODIC_DIR = MEMORY_DIR / "episodic"
@@ -120,11 +121,11 @@ def record_sleep_run(duration_sec, completed, findings, flags=None):
 
 # ── Extraction prompt ─────────────────────────────────────────────────────────
 
-EXTRACTION_SYSTEM = """You are {{AGENT_NAME}}'s memory consolidation engine. Your job is to read episodic memory entries and distill them into key facts and beliefs.
+EXTRACTION_SYSTEM = """You are the agent's memory consolidation engine. Your job is to read episodic memory entries and distill them into key facts and beliefs.
 
 For each entry:
 1. Extract 1-3 concrete FACTS (things that happened, decisions made, events)
-2. Extract any BELIEFS or POSITIONS {{AGENT_NAME}} formed (even tentative ones)
+2. Extract any BELIEFS or POSITIONS the agent formed (even tentative ones)
 3. Flag any potential CONTRADICTIONS with existing beliefs listed below
 4. Note emotional valence if apparent (positive/negative/neutral about something)
 
@@ -166,7 +167,7 @@ def extract_and_distill(episodic_content: str, source_file: str) -> dict:
     """Use LLM to extract facts and beliefs from an episodic memory entry."""
     existing_beliefs = read_existing_semantic_facts()
 
-    prompt = f"""Consolidate this episodic memory entry from {{AGENT_NAME}}'s session:
+    prompt = f"""Consolidate this episodic memory entry from the agent's session:
 
 --- Source: {source_file} ---
 {episodic_content[:4000]}
@@ -317,7 +318,7 @@ def consolidate_memories():
 
     # Obsession decay via obsession_engine
     try:
-        from brain.obsession_engine import decay_all
+        from brain.mechanisms.obsession_engine import decay_all
         obs_result = decay_all()
         changes.append(f"obsessions: decay applied to active obsessions")
         findings.append(f"Obsession decay: {len(obs_result)} active obsessions remain")
@@ -371,7 +372,11 @@ def consolidate_memories():
         # Flag contradictions
         if extractions:
             flag_contradictions(extractions)
-            contradicted = sum(len(e.get("contradictions", [])) for e in extractions if e.get("contradictions", [""][0]) != "none")
+            # parse_extraction() always populates "contradictions" with a real
+            # list — empty if the LLM returned "none". Just sum the lengths;
+            # the previous `!= "none"` filter compared a list against a string
+            # and was always True (dead conditional).
+            contradicted = sum(len(e.get("contradictions", [])) for e in extractions)
             if contradicted:
                 flags.append(f"{contradicted} contradiction(s) flagged for resolution")
 
@@ -402,7 +407,7 @@ def consolidate_memories():
         output = (
             "No episodic memories needed consolidation. "
             "All recent memory files are within retention windows. "
-            "Nothing to do tonight — {{AGENT_NAME}}'s memory is quiet."
+            "Nothing to do tonight — the agent's memory is quiet."
         )
         carry_forward = "Nothing to carry forward."
         status = "skipped"
@@ -459,7 +464,7 @@ if __name__ == "__main__":
             duration,
             f"Memory consolidation failed with error: {e}",
             [],
-            "Check sleep_runs.json for error details. Flag for {{AGENT_NAME}} attention.",
+            "Check sleep_runs.json for error details. Flag for the agent attention.",
             str(e)
         )
         print(f"ERROR: {e}", file=sys.stderr)

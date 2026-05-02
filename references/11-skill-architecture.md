@@ -1,12 +1,12 @@
 # Skill Architecture — Complete Composition Guide
 
-How to build, compose, and deploy skills for {{AGENT_NAME}}.
+How to build, compose, and deploy skills for the agent.
 
 ---
 
 ## What Is a Skill?
 
-A skill is a self-contained capability that {{AGENT_NAME}} can use. It's:
+A skill is a self-contained capability that the agent can use. It's:
 
 - **Focused:** One job (weather, trading, memory)
 - **Composable:** Skills work together
@@ -46,7 +46,7 @@ How to use this skill.
 ## Example
 
 ```
-{{AGENT_NAME}}: The weather in Denver is 72°F and sunny.
+agent: The weather in <city> is 72°F and sunny.
 ```
 
 ## Testing
@@ -281,7 +281,7 @@ def skill():
 
 @pytest.mark.asyncio
 async def test_execute_returns_weather(skill):
-    context = {"location": "Denver"}
+    context = {"location": "Portland"}
     result = await skill.execute(context)
     
     assert "temperature" in result
