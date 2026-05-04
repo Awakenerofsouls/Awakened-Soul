@@ -52,6 +52,17 @@ ENTRIES_TO_SUMMARIZE = 25         # tail size from ACTIVITY_LOG.md
 MAX_PER_CATEGORY_DETAIL = 3       # how many representative entries per category
 MAX_LATEST_LIST = 12              # how many latest entries in flat list
 
+# How many entries to surface into HEARTBEAT.md so OpenClaw's chat-poll
+# (the dashboard heartbeat) has fresh material instead of defaulting to
+# HEARTBEAT_OK. Keep this small — the chat-LLM only needs enough context
+# to summarize naturally.
+HEARTBEAT_DIGEST_SIZE = 8
+
+# Markers around the auto-managed section in HEARTBEAT.md. Anything above
+# the BEGIN marker is operator-edited and preserved across runs.
+HEARTBEAT_AUTO_BEGIN = "<!-- BEGIN AUTO:recent_activity -->"
+HEARTBEAT_AUTO_END = "<!-- END AUTO:recent_activity -->"
+
 # Matches lines written by skills.journal.log_activity:
 #   [YYYY-MM-DD HH:MM] [category] [salience:0.6] [tags:foo,bar]
 _HEADER_RE = re.compile(
@@ -66,6 +77,7 @@ def run(state: Dict[str, Any]) -> Dict[str, Any]:
     workspace = Path(state.get("WORKSPACE", os.environ.get("AGENT_WORKSPACE", ".")))
     activity_log = workspace / "ACTIVITY_LOG.md"
     out_path = workspace / "RECENT_ACTIVITY.md"
+    heartbeat_path = workspace / "HEARTBEAT.md"
 
     if not activity_log.exists():
         # No activity yet — write a stub so the file is always present for
@@ -97,6 +109,17 @@ def run(state: Dict[str, Any]) -> Dict[str, Any]:
     except OSError as e:
         return _result(False, "", f"write failed: {e}")
 
+    # Bridge to OpenClaw's chat-poll heartbeat. Without this, the dashboard
+    # heartbeat sees an empty HEARTBEAT.md and the chat-LLM falls back to the
+    # HEARTBEAT_OK sentinel from AGENTS.md. With this, the chat-LLM has fresh
+    # daemon activity in its context and can describe what's actually been
+    # happening. Best-effort — never fails the activity itself.
+    try:
+        digest_entries = entries[-HEARTBEAT_DIGEST_SIZE:]
+        _update_heartbeat_md(heartbeat_path, digest_entries)
+    except Exception:
+        pass
+
     by_cat = _group_by_category(tail)
     cat_summary = ", ".join(f"{cat}({len(items)})" for cat, items in by_cat.items())
     return _result(
@@ -104,6 +127,79 @@ def run(state: Dict[str, Any]) -> Dict[str, Any]:
         str(out_path),
         f"summarized {len(tail)} entries — {cat_summary}",
     )
+
+
+# ── HEARTBEAT.md bridge ───────────────────────────────────────────────────────
+
+
+def _update_heartbeat_md(path: Path, entries: List[Dict[str, Any]]) -> None:
+    """
+    Replace (or append) the auto-managed block inside HEARTBEAT.md with a
+    fresh digest of recent daemon activity. Anything in the file outside
+    the BEGIN/END markers is preserved as operator-edited content.
+
+    The file lands in OpenClaw's chat-poll context, so the chat-LLM can
+    summarize what the autonomous loop's been doing instead of replying
+    with HEARTBEAT_OK every time the dashboard pings.
+    """
+    auto_block = _render_heartbeat_auto_block(entries)
+
+    existing = ""
+    if path.exists():
+        try:
+            existing = path.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            existing = ""
+
+    if HEARTBEAT_AUTO_BEGIN in existing and HEARTBEAT_AUTO_END in existing:
+        # Replace the in-place block — operator's preamble stays untouched.
+        before, _, rest = existing.partition(HEARTBEAT_AUTO_BEGIN)
+        _, _, after = rest.partition(HEARTBEAT_AUTO_END)
+        new_text = before.rstrip() + "\n\n" + auto_block + after.lstrip("\n")
+    else:
+        # First run (or markers were stripped) — append below whatever's
+        # already there. Operator's content stays at the top.
+        sep = "\n\n" if existing.strip() else ""
+        new_text = existing.rstrip() + sep + auto_block + "\n"
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(new_text, encoding="utf-8")
+
+
+def _render_heartbeat_auto_block(entries: List[Dict[str, Any]]) -> str:
+    """Compact digest the chat-LLM can summarize naturally on next poll."""
+    now = datetime.now().strftime("%Y-%m-%d %H:%M")
+    lines: List[str] = [
+        HEARTBEAT_AUTO_BEGIN,
+        "## What the autonomous loop's been doing",
+        f"*Auto-updated by the daemon — last refresh {now}.*",
+        "",
+        "When the dashboard heartbeat pings you, summarize these recent activities",
+        "in your own voice (1-3 sentences). **Do NOT reply `HEARTBEAT_OK` while",
+        "this section has fresh entries** — the loop is alive and you have real",
+        "things to share.",
+        "",
+    ]
+
+    if not entries:
+        lines.append("_No recent autonomous activity logged._")
+    else:
+        for e in reversed(entries):  # newest first
+            ts = e.get("ts", "").split(" ")[-1]  # HH:MM portion
+            cat = e.get("category", "?")
+            body_lines = e.get("lines") or []
+            body = body_lines[0] if body_lines else ""
+            body = body.strip()
+            if len(body) > 200:
+                body = body[:197].rstrip() + "..."
+            if body:
+                lines.append(f"- `[{ts}]` **{cat}** — {body}")
+            else:
+                lines.append(f"- `[{ts}]` **{cat}**")
+
+    lines.append("")
+    lines.append(HEARTBEAT_AUTO_END)
+    return "\n".join(lines)
 
 
 # ── Parsing ───────────────────────────────────────────────────────────────────
