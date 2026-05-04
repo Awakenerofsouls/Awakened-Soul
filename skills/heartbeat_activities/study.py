@@ -30,7 +30,7 @@ def run(state: dict) -> dict:
     workspace = Path(state.get("WORKSPACE", "~/.agent/workspace"))
     interests_file = state.get("INTERESTS_FILE", "INTERESTS.md")
     llm_endpoint = state.get("LLM_ENDPOINT", "http://localhost:11434")
-    llm_model = state.get("LLM_MODEL", "qwen2.5vl:7b")
+    llm_model = state.get("LLM_MODEL", "llama3.1:latest")
     tick = state.get("tick_count", 0)
 
     interests_path = workspace / interests_file
@@ -140,8 +140,9 @@ def run(state: dict) -> dict:
         state=state,
     )
 
-    # Track last_studied
-    state["last_studied"][topic] = tick
+    # Track last_studied — setdefault keeps this safe under parallel dispatch
+    # when state file didn't pre-initialize last_studied.
+    state.setdefault("last_studied", {})[topic] = tick
     state["prior_study_content"] = content  # for continuation
 
     if content:

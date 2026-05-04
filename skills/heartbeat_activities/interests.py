@@ -31,7 +31,7 @@ def extract_new_interest(content: str, source_category: str) -> str | None:
     try:
         import urllib.request
         payload = json.dumps({
-            "model": "qwen2.5vl:7b",
+            "model": "llama3.1:latest",
             "prompt": prompt,
             "stream": False,
             "options": {"temperature": 0.3, "num_predict": 30},

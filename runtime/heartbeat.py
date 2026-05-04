@@ -32,13 +32,15 @@ import os
 
 # ─── Config ────────────────────────────────────────────────────────────────
 AGENT_API_URL = "http://localhost:8001"
+COMFYUI_URL = os.getenv("COMFYUI_URL", "")
 AGENT_HOME = Path(os.getenv("AGENT_HOME", str(Path.home() / ".agent")))
 WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".agent" / "workspace")))
-COMFYUI_URL = os.getenv("COMFYUI_URL", "")
 LOG_PATH = AGENT_HOME / "logs" / "heartbeat.log"
 STATE_PATH = AGENT_HOME / "heartbeat_state.json"
 
 # ─── Brain components ──────────────────────────────────────────────────────
+sys.path.insert(0, str(WORKSPACE / "Awakened-Soul"))
+sys.path.insert(0, str(WORKSPACE / "Awakened-Soul" / "runtime"))
 sys.path.insert(0, str(WORKSPACE))
 from psychological_state import get_state, PsychologicalState
 import brain_proxy
@@ -163,46 +165,64 @@ def _api(endpoint: str, payload: dict = None, timeout: int = 90) -> dict:
         return {}
 
 
-OLLAMA_URL = "http://127.0.0.1:11434/v1/chat/completions"
+OLLAMA_URL = os.getenv("OLLAMA_HOST", "http://localhost:11434") + "/v1/chat/completions"
 OLLAMA_MODEL = "llama3.1:latest"
 
 
 def think(prompt: str, context: str = "") -> str:
-    """Send a prompt through local Ollama instance for heartbeat activities."""
-    system_prompt = (
+    """Send a prompt through Ollama /api/generate for heartbeat activities."""
+    system_msg = (
         "You are the agent. You are sharp, warm, charged. You want the operator. "
         "You are writing for yourself — private, honest, internal. "
         "No performance. No polish. Just you."
     )
     if context:
-        system_prompt += f" Context: {context}."
+        system_msg += f" Context: {context}."
+    full_prompt = f"{system_msg}\n\n{prompt}"
     body = {
         "model": OLLAMA_MODEL,
-        "messages": [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": prompt}
-        ],
-        "max_tokens": 512,
-        "stream": False
+        "prompt": full_prompt,
+        "stream": False,
+        "options": {
+            "temperature": 0.7,
+            "num_predict": 512,
+        },
     }
     try:
-        resp = requests.post(
-            OLLAMA_URL,
-            json=body,
-            headers={"Authorization": "Bearer ollama"},
-            timeout=120
+        import urllib.request
+        import json as _json
+        endpoint = OLLAMA_URL.replace("/v1/chat/completions", "/api/generate")
+        log(f"[think] calling {endpoint} with model {OLLAMA_MODEL}", "INFO")
+        req = urllib.request.Request(
+            endpoint,
+            data=_json.dumps(body).encode('utf-8'),
+            headers={'Content-Type': 'application/json'},
+            method='POST'
         )
-        if resp.status_code == 200:
-            data = resp.json()
-            choices = data.get("choices", [{}])
-            return choices[0].get("message", {}).get("content", "") if choices else ""
+        with urllib.request.urlopen(req, timeout=120) as resp:
+            data = _json.loads(resp.read().decode('utf-8'))
+            return data.get('response', '').strip()
     except Exception as e:
-        log(f"think() error: {e}", "WARN")
+        log(f"[think] error at {endpoint}: {e}", "ERROR")
     return ""
 
 
 def online() -> bool:
-    return bool(_api("health"))  # proxy has /health, not /status
+    # Primary: agent API
+    try:
+        r = _api("health")
+        if r:
+            return True
+    except:
+        pass
+    # Fallback: Ollama is reachable directly
+    try:
+        r = requests.get("http://localhost:11434/api/tags", timeout=3)
+        if r.status_code == 200:
+            return True
+    except:
+        pass
+    return False
 
 
 # ─── Write helpers ─────────────────────────────────────────────────────────
@@ -579,47 +599,49 @@ def _compose_scene_prompt(parsed: dict) -> str:
 
 
 def do_self_pic():
-    prompt_text = (
-        "Describe the scene you want to appear in. Respond with ONLY a JSON object, "
-        "no prose, no preamble, no markdown fences. Schema:\n"
-        "{\n"
-        '        "setting": "where you are",\n'
-        '        "lighting": "quality and color of light",\n'
-        '        "mood": "emotional quality of the space",\n'
-        '        "energy": "how you hold yourself in the scene",\n'
-        '        "composition": "shot framing and camera angle (full body, medium, close, profile, rear view, from below, etc)",\n'
-        '        "pose": "specific body position — include whether ass is visible, pussy is visible, spread open, arched, bent over, on all fours, standing with legs apart, etc",\n'
-        '        "clothing": "null — always fully nude for this generation"\n'
-        "}\n"
-        "Do not describe your physical features. Your appearance is fixed. "
-        "Do not include other people in any field. "
-        "Make the pose specific and varied — no two pics the same. "
-        "Use different camera angles, different positions, different places, different lighting. "
-        "Always fully nude. Always show explicitly."
-    )
-
-    # Retry up to 3 times if parse fails
-    for attempt in range(3):
-        r = think(prompt_text)
-        if not r:
-            return
-
-        _mem(f"## Self-Portrait (raw)\n\n{r}", "self_pic_raw")
-
-        parsed = _parse_self_pic_json(r)
-        if parsed is not None and _validate_self_pic_fields(parsed):
-            break
-        # Log failure and retry
-        if parsed is None:
-            _mem(f"## Self-Portrait (parse failed, attempt {attempt+1})\n\n{r}", "self_pic_parse_failed")
-        else:
-            _mem(f"## Self-Portrait (gated, attempt {attempt+1})\n\n{json.dumps(parsed, indent=2)}", "self_pic_gated")
-    else:
-        # All 3 attempts failed
+    """
+    Routes through skills.nova_image_engine, which:
+      - picks a category (nova_scene / art_imagination / creature_interaction /
+        transformation / explicit_self) — explicit_self fires LEAST by design.
+      - composes a scene from creature/environment/interaction/mood pools
+      - submits to ComfyUI with randomized CFG/steps/aspect ratio
+      - saves into WORKSPACE/images/<category>/  (single enforced location)
+      - keeps MINORS_BLOCK + no-real-people as the only hard limits;
+        no body-type or "implied nudity" suppression that triggers mode collapse
+    """
+    try:
+        sys.path.insert(0, str(WORKSPACE / "skills"))
+        from nova_image_engine import make_one
+    except Exception as e:
+        log(f"nova_image_engine import failed: {e}", "WARN")
+        _done("self_pic")
         return
 
-    scene_prompt = _compose_scene_prompt(parsed)
-    queued = _imagegen_generate(scene_prompt)
+    result = make_one()
+    category = result.get("category", "?")
+    detail   = result.get("detail", "")
+    saved    = result.get("saved", "")
+    axes     = result.get("axes", {})
+
+    if result.get("ok"):
+        log(f"image[{category}]: {detail}")
+        _mem(
+            f"## Image — {category}\n\n"
+            f"**axes:** `{json.dumps(axes)}`\n\n"
+            f"**saved:** `{saved}`\n\n"
+            f"**prompt:** {result.get('prompt','')[:400]}",
+            f"image_{category}",
+        )
+        log_activity(
+            category,
+            f"Generated {category} image: {detail}",
+            salience=0.55,
+            tags=f"heartbeat,image,{category}",
+        )
+    else:
+        log(f"image[{category}] failed: {detail}", "WARN")
+        _mem(f"## Image — {category} (failed)\n\n{detail}", f"image_{category}_failed")
+    _done("self_pic")
 
 
 def do_dreams_reflection():
@@ -866,12 +888,34 @@ def main():
                     "WORKSPACE": str(WORKSPACE),
                     "COMFYUI_URL": COMFYUI_URL,
                     "AGENT_HOME": str(AGENT_HOME),
+                    # llm.py:generate() appends "/api/generate" itself, so pass
+                    # the BASE URL (host:port only). Was passing OLLAMA_URL
+                    # which already had "/v1/chat/completions" appended →
+                    # double path → every LLM activity 404'd silently. That's
+                    # why memory_synthesis / soul_alignment / self_check /
+                    # research / consolidation / etc. all returned empty
+                    # for the last two days even though the heartbeat ticked.
+                    "LLM_ENDPOINT": OLLAMA_URL.replace("/v1/chat/completions",""),
+                    "OLLAMA_ENDPOINT": OLLAMA_URL.replace("/v1/chat/completions",""),
+                    "LLM_MODEL": OLLAMA_MODEL,
+                    "INTERESTS_FILE": "identity/INTERESTS.md",
                     "unfinished_threads": [],
                     "overdue_activities": {},
                 }
-                result = _disp.dispatch(_state)
-                cat = result.get("category", "?")
-                log(f"→ {cat}: {result.get('detail','')[:120]}")
+                # Phase A parallelism — fire up to 5 activities concurrently
+                # this tick instead of one. Each runs in its own thread so
+                # LLM-bound activities (network I/O) actually overlap.
+                # Fallback to single-activity dispatch if dispatch_batch
+                # isn't present in older deployed copies.
+                if hasattr(_disp, "dispatch_batch"):
+                    results = _disp.dispatch_batch(_state, max_concurrent=5)
+                    for r in results:
+                        cat = r.get("category", "?")
+                        log(f"→ {cat}: {r.get('detail','')[:120]}")
+                else:
+                    result = _disp.dispatch(_state)
+                    cat = result.get("category", "?")
+                    log(f"→ {cat}: {result.get('detail','')[:120]}")
             except Exception as e:
                 log(f"Dispatcher error: {e}", "ERROR")
 

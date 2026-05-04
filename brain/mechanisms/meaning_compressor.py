@@ -2,10 +2,13 @@
 MeaningCompressor v19.0A
 Third Eye — meaning_compressor.py
 
-Replaces word-frequency template compression with a local model call
-to Qwen2.5:14b on the gaming PC. Produces first-person distilled insights
-in the agent's voice. Writes structured entries to DREAMS.md. Reads back
-on session start and triggers on in-session relevance.
+Replaces word-frequency template compression with a local Ollama model
+call. Produces first-person distilled insights in the agent's voice.
+Writes structured entries to DREAMS.md. Reads back on session start and
+triggers on in-session relevance.
+
+Endpoint and model are env-driven (OLLAMA_HOST + OLLAMA_MODEL) so the
+mechanism works against whatever local LLM the operator points at.
 
 Dependencies: requests, pathlib, json, datetime, re, logging
 No sentence-transformers. Repeat check is keyword-overlap for v1.
@@ -28,8 +31,10 @@ logger = logging.getLogger(__name__)
 # Config
 # ---------------------------------------------------------------------------
 
-OLLAMA_URL = "http://192.168.0.6:11434/api/chat"
-OLLAMA_MODEL = "qwen2.5:14b"
+# Env-driven so deployments don't have to fork the file. Defaults to a
+# local-machine Ollama on the standard port.
+OLLAMA_URL = os.getenv("OLLAMA_HOST", "http://localhost:11434").rstrip("/") + "/api/chat"
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3.1:latest")
 OLLAMA_TIMEOUT = 45
 
 DREAMS_PATH = Path(os.getenv("AGENT_WORKSPACE", str(Path.home() / ".agent" / "workspace"))) / "DREAMS.md"
@@ -44,7 +49,11 @@ RECENT_DREAMS_CONTEXT_COUNT = 5
 REPEAT_CHECK_COUNT = 3
 REPEAT_THRESHOLD = 0.60
 
-MDT = timezone(timedelta(hours=-6))
+# Local timezone used for stamping agent reflections. Default UTC; operators
+# can override with AGENT_TZ_OFFSET_HOURS (e.g., -6 for MDT, -8 for PST).
+LOCAL_TZ = timezone(timedelta(hours=int(os.getenv("AGENT_TZ_OFFSET_HOURS", "0"))))
+# Backwards-compat alias — the original name was bound to a single locale.
+MDT = LOCAL_TZ
 
 
 # ---------------------------------------------------------------------------

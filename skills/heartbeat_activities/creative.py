@@ -31,7 +31,7 @@ def run(state: dict) -> dict:
     workspace = Path(state.get("WORKSPACE", "~/.agent/workspace"))
     interests_file = state.get("INTERESTS_FILE", "INTERESTS.md")
     llm_endpoint = state.get("LLM_ENDPOINT", "http://localhost:11434")
-    llm_model = state.get("LLM_MODEL", "qwen2.5vl:7b")
+    llm_model = state.get("LLM_MODEL", "llama3.1:latest")
     tick = state.get("tick_count", 0)
 
     interests_path = workspace / interests_file
@@ -118,8 +118,10 @@ def run(state: dict) -> dict:
         state=state,
     )
 
-    # Track last_creative
-    state["last_creative"][topic] = tick
+    # Track last_creative — setdefault so this is safe even when the caller's
+    # state dict is freshly loaded from heartbeat.json without last_creative
+    # pre-initialized (which used to KeyError under parallel dispatch).
+    state.setdefault("last_creative", {})[topic] = tick
     state["prior_creative_content"] = content  # for continuation
 
     # Deliberate unfinished — 30% chance (design knob, tunable)

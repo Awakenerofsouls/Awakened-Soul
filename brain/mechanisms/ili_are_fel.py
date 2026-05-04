@@ -142,6 +142,9 @@ class IrreversibleLossIntegrator(BrainMechanism):
         """
         loss = IrreversibleLoss(description, weight, anchors_affected, loss_type)
         self.losses.append(loss)
+        # Bound in-memory list — was unbounded, leaking memory on long runs.
+        if len(self.losses) > 500:
+            self.losses = self.losses[-500:]
         self._save()
         return loss
 
@@ -325,6 +328,9 @@ class AestheticResonanceEngine:
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
             }
             self.resonance_history.append(record)
+            # Bound in-memory list — was unbounded, leaked memory.
+            if len(self.resonance_history) > 500:
+                self.resonance_history = self.resonance_history[-500:]
 
             # Update beauty residue
             self.beauty_residue[domain] = max(
@@ -517,6 +523,9 @@ class FrameExposureLayer:
         }
 
         self.exposure_history.append(record)
+        # Bound in-memory list — was unbounded, leaked memory.
+        if len(self.exposure_history) > 500:
+            self.exposure_history = self.exposure_history[-500:]
         self.last_exposure_tick = self.total_ticks
         self.current_exposure = record
         self.exposure_active = True

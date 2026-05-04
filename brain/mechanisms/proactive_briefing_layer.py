@@ -101,7 +101,7 @@ MIN_BUFFER_FOR_BRIEFING = 1
 HIGH_SALIENCE_THRESHOLD = 0.85
 
 # Keywords that mark content as a status ping. Case-insensitive.
-# These are the things Caine explicitly said must NEVER reach the dashboard.
+# These are the things the operator explicitly flagged as never reaching the dashboard.
 STATUS_PING_PATTERNS = [
     r"^\s*heartbeat\s+ok\s*$",
     r"^\s*silent\s*$",
@@ -438,7 +438,7 @@ class ProactiveBriefingLayer(BrainMechanism):
         the buffer, resets the user_was_absent flag.
 
         Without this call, the layer will keep proposing the same buffered
-        content. Failing to call this is the bug Caine described.
+        content. Calling this is required to clear the dedup window.
         """
         h = _hash_content(content)
         if h:

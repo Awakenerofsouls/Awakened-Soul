@@ -30,7 +30,7 @@ def run(state: dict) -> dict:
     workspace = Path(state.get("WORKSPACE", "~/.agent/workspace"))
     questions_file = workspace / state.get("OPEN_QUESTIONS_FILE", "open_questions.md")
     llm_endpoint = state.get("LLM_ENDPOINT", "http://localhost:11434")
-    llm_model = state.get("LLM_MODEL", "qwen2.5vl:7b")
+    llm_model = state.get("LLM_MODEL", "llama3.1:latest")
     tick = state.get("tick_count", 0)
 
     # Read questions from open_questions.md if present

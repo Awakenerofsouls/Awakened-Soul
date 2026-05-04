@@ -38,7 +38,19 @@ def get_api_key(service: str) -> Optional[str]:
     """
     Get api_key for a service. Returns None if service not configured.
     Does not raise.
+
+    Resolution order:
+      1. Env var <SERVICE>_API_KEY  (uppercase, e.g. TAVILY_API_KEY)
+      2. keys.json entry under "<service>" (string or {"api_key": "..."})
+
+    Env wins so that operators who export creds in their shell or in a
+    launchd plist don't need to also maintain keys.json.
     """
+    env_name = f"{service.upper()}_API_KEY"
+    env_val = os.environ.get(env_name)
+    if env_val:
+        return env_val
+
     keys = load_keys()
     cfg = keys.get(service, {})
     if isinstance(cfg, str):

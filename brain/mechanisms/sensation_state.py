@@ -85,7 +85,12 @@ class Sensation:
         self.mapping_status = mapping_status
         self.source = source
         self.timestamp = timestamp or time.time()
-        self.history: List[Dict] = []  # how this sensation has evolved
+        # Bounded history — was unbounded list which grew across thousands of
+        # logs per active sensation. With many active Sensations × ticks this
+        # was a major in-memory leak. Cap to last 100 evolution records;
+        # older drops automatically when the list is full.
+        self.history: List[Dict] = []  # how this sensation has evolved (capped at HISTORY_MAX)
+        self.HISTORY_MAX = 100
         self.valence = valence  # Wire: positive/negative/ambiguous/None
         self.salience = salience  # Wire 17: gating priority (low = suppressed when alpha-dominant)
 
@@ -264,6 +269,9 @@ class SensationState(BrainMechanism):
                 "mapping_status": s.mapping_status,
                 "timestamp": s.timestamp,
             })
+            # Bound in-memory growth — keep only last HISTORY_MAX records.
+            if len(s.history) > getattr(s, "HISTORY_MAX", 100):
+                s.history = s.history[-getattr(s, "HISTORY_MAX", 100):]
             s.signal = signal
             if texture:
                 s.texture = texture

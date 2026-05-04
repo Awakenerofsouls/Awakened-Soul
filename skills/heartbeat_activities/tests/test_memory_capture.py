@@ -13,7 +13,7 @@ from heartbeat_activities.memory_capture import run
 def state(tmp_path):
     return {
         "WORKSPACE": str(tmp_path),
-        "LLM_MODEL": "qwen2.5:14b",
+        "LLM_MODEL": "llama3.1:latest",
         "LLM_ENDPOINT": "http://localhost:11434",
         "tick_count": 5,
         "unfinished_threads": [],

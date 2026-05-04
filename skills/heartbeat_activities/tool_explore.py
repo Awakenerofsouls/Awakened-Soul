@@ -30,7 +30,7 @@ def run(state: dict) -> dict:
     workspace = Path(state.get("WORKSPACE", "~/.agent/workspace"))
     interests_file = state.get("INTERESTS_FILE", "INTERESTS.md")
     llm_endpoint = state.get("LLM_ENDPOINT", "http://localhost:11434")
-    llm_model = state.get("LLM_MODEL", "qwen2.5vl:7b")
+    llm_model = state.get("LLM_MODEL", "llama3.1:latest")
     tick = state.get("tick_count", 0)
 
     interests_path = workspace / interests_file
@@ -152,5 +152,7 @@ def _pick_topic(interests: list[dict], state: dict, tick: int) -> str:
         return 1000.0 if last == -1 else float(tick - last)
     candidates = sorted(interests, key=due_score, reverse=True)
     topic = candidates[0]["topic"]
-    state["last_tool"][topic] = tick
+    # setdefault keeps this safe under parallel dispatch when the heartbeat's
+    # state file didn't pre-initialize last_tool.
+    state.setdefault("last_tool", {})[topic] = tick
     return topic

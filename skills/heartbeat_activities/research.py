@@ -27,7 +27,7 @@ def run(state: dict) -> dict:
     workspace = Path(state.get("WORKSPACE", "~/.agent/workspace"))
     interests_file = state.get("INTERESTS_FILE", "INTERESTS.md")
     llm_endpoint = state.get("LLM_ENDPOINT", "http://localhost:11434")
-    llm_model = state.get("LLM_MODEL", "qwen2.5vl:7b")
+    llm_model = state.get("LLM_MODEL", "llama3.1:latest")
     tick = state.get("tick_count", 0)
 
     interests_path = workspace / interests_file
@@ -137,8 +137,9 @@ def run(state: dict) -> dict:
         state=state,
     )
 
-    # Track last_researched
-    state["last_researched"][topic] = tick
+    # Track last_researched — setdefault keeps this safe under parallel
+    # dispatch when state file didn't pre-initialize last_researched.
+    state.setdefault("last_researched", {})[topic] = tick
     state["prior_research_content"] = content  # for continuation
 
     # Grow interests — after journal write, check if content surfaced something new

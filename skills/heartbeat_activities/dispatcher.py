@@ -9,15 +9,25 @@ Priority each tick:
 
 Wire 20 — neutral activity pool framework.
 Signal Wiring — brain signal-driven softmax dispatch (April 24, 2026).
+Parallel firing — dispatch_batch() runs N activities concurrently via
+ThreadPoolExecutor (Phase A of brain-mechanism parallelism — 2026-05-04).
 """
 
 import math
 import random
 import sys
+import threading
+from concurrent.futures import ThreadPoolExecutor, as_completed, TimeoutError as FutureTimeoutError
 from pathlib import Path
 from typing import Dict, List, Optional
 
 from . import brain_signals
+
+# Lock around state mutations performed by activities running in parallel.
+# log_activity / journal writes append to files — Python's GIL makes the
+# append() syscall atomic on POSIX, but state-dict mutations (e.g.
+# overdue_activities, unfinished_threads) need an explicit guard.
+_PARALLEL_STATE_LOCK = threading.RLock()
 
 # Each activity is a module in this package with a run(state) → dict function.
 # Stub modules are replaced one-by-one as they get ported.
@@ -367,6 +377,145 @@ def _run_activity(category: str, state: dict, is_continuation: bool = False) -> 
         state.setdefault("unfinished_threads", []).append(thread)
 
     return result
+
+
+# ── Parallel dispatch — Phase A of mechanism parallelism ──────────────────────
+#
+# dispatch() picks ONE activity per call. With heartbeat firing once per ~90s,
+# that means 1 activity every 90s. dispatch_batch() picks up to N due
+# activities and fires them concurrently in a thread pool, so a single
+# heartbeat tick can drive multiple Nova-thoughts in parallel.
+#
+# Why threads (not asyncio): the activity runners are sync; their LLM/HTTP
+# calls release the GIL during network wait, so threads ARE genuinely
+# parallel for the I/O-bound bulk of an activity's runtime.
+#
+# Returns the list of result dicts in completion order.
+
+def dispatch_batch(state: dict, max_concurrent: int = 5, per_activity_timeout: int = 120) -> List[dict]:
+    """
+    Run up to `max_concurrent` activities simultaneously this tick.
+
+    Selection mirrors dispatch(): followup_due first, then continuations,
+    then softmax-picked novel categories. Each activity runs in its own
+    thread with its own shallow-copy state; mutations that need to bubble
+    up (unfinished_threads, overdue_activities) are merged back into the
+    caller's `state` under _PARALLEL_STATE_LOCK.
+    """
+    if max_concurrent < 1:
+        max_concurrent = 1
+
+    tick = state.get("tick_count", 0)
+    threads = state.get("unfinished_threads", []) or []
+
+    # Build the queue: list of (category, is_continuation) tuples
+    queue: List[tuple] = []
+    seen: set = set()
+
+    # 1. followup_due — every one whose offset has arrived
+    followups = [t for t in threads if t.get("followup_due") == tick]
+    for f in followups[:max_concurrent]:
+        cat = f.get("category")
+        if cat and cat not in seen:
+            queue.append((cat, True))
+            seen.add(cat)
+    state["unfinished_threads"] = [t for t in threads if t not in followups]
+
+    # 2. Continuations — fill up to half the remaining slots
+    remaining_threads = state.get("unfinished_threads", []) or []
+    if remaining_threads and len(queue) < max_concurrent:
+        slots = max(1, (max_concurrent - len(queue)) // 2)
+        # Take from the most recent end first
+        for t in remaining_threads[-slots:]:
+            cat = t.get("category")
+            if cat and cat not in seen:
+                queue.append((cat, True))
+                seen.add(cat)
+                state["unfinished_threads"].remove(t)
+
+    # 3. Softmax-picked novel categories — fill remaining
+    if len(queue) < max_concurrent:
+        try:
+            signals = brain_signals.read_brain_signals(state)
+            temperature = brain_signals.compute_temperature(
+                signals,
+                arousal_signal_name=state.get("AROUSAL_SIGNAL", "oscillation_balance"),
+                temp_range=tuple(state.get("TEMPERATURE_RANGE", (0.7, 2.0))),
+            )
+        except Exception:
+            signals, temperature = {}, 1.0
+
+        candidates = [c for c in ACTIVITY_REGISTRY if c not in seen]
+        while len(queue) < max_concurrent and candidates:
+            try:
+                cat = softmax_pick(candidates, signals, temperature, state)
+            except Exception:
+                cat = random.choice(candidates) if candidates else None
+            if not cat:
+                break
+            queue.append((cat, False))
+            seen.add(cat)
+            if cat in candidates:
+                candidates.remove(cat)
+
+    if not queue:
+        return []
+
+    # Fire concurrently. Each activity gets a shallow copy of state so its
+    # write-backs (overdue_activities, unfinished_threads) don't race; we
+    # merge them under the lock after each future completes.
+    results: List[dict] = []
+
+    def _run_locked(category: str, is_continuation: bool, base_state: dict) -> dict:
+        local_state = dict(base_state)
+        # Pre-mark as continuation so the runner sees it
+        if is_continuation:
+            local_state["continuation_of"] = category
+        try:
+            result = _run_activity(category, local_state, is_continuation=is_continuation)
+        except Exception as e:
+            result = {
+                "ok": False, "status": "complete", "content": "",
+                "category": category, "proactive": False,
+                "detail": f"parallel-run exception: {e}",
+            }
+        # Merge state mutations from this activity back to the shared state
+        with _PARALLEL_STATE_LOCK:
+            # Merge new unfinished threads (only ones added by this activity)
+            for t in local_state.get("unfinished_threads", []):
+                if t not in (base_state.get("unfinished_threads") or []):
+                    base_state.setdefault("unfinished_threads", []).append(t)
+            # Reset overdue counter for any category that ran
+            overdue = dict(base_state.get("overdue_activities", {}) or {})
+            overdue[category] = 0
+            base_state["overdue_activities"] = overdue
+        return result
+
+    workers = min(len(queue), max_concurrent)
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        futures = {
+            ex.submit(_run_locked, cat, is_cont, state): cat
+            for cat, is_cont in queue
+        }
+        for fut in as_completed(futures, timeout=per_activity_timeout * 2):
+            cat = futures[fut]
+            try:
+                result = fut.result(timeout=per_activity_timeout)
+            except FutureTimeoutError:
+                result = {
+                    "ok": False, "status": "complete", "content": "",
+                    "category": cat, "proactive": False,
+                    "detail": f"parallel-run timeout >{per_activity_timeout}s",
+                }
+            except Exception as e:
+                result = {
+                    "ok": False, "status": "complete", "content": "",
+                    "category": cat, "proactive": False,
+                    "detail": f"parallel-run error: {e}",
+                }
+            results.append(result)
+
+    return results
 
 
 _PLUGIN_MODULES: dict[str, object] = {}  # category → loaded module object

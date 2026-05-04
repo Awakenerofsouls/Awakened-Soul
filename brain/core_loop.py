@@ -324,28 +324,61 @@ class AgentBrainCore:
                 "recovery_state": frame_recovery_state,
             }
             STATE_DIR.mkdir(parents=True, exist_ok=True)
-            # Cycle-tolerant encoder: state_out can include nested objects
-            # that reference each other (e.g. components holding back-refs to
-            # the core). default=str handles non-serializable leaves but not
-            # cycles. Walk the structure, swap any object we've already seen
-            # with the marker "<circular>", and emit string fallbacks for
-            # anything else json can't serialize.
+            # Cycle-tolerant encoder. state_out can include nested objects
+            # that reference each other (e.g. components holding back-refs
+            # to the core, TSB shared state shared across components).
+            #
+            # The previous version of _safe added id(obj) to _seen but never
+            # removed it. That meant _seen accumulated globally across the
+            # entire walk, so a non-cyclic *repeat* of the same dict (legit
+            # case: two components publishing the same shared sub-state)
+            # got marked "<circular>" from the second visit onward. Worse,
+            # the implementation still let some custom-class cycles through
+            # and json.dumps failed with "Circular reference detected".
+            #
+            # This version uses try/finally + _seen.discard on exit so a
+            # subtree's id is only "in-flight" while we're inside it.
+            # Genuine cycles (an ancestor referencing itself) still hit the
+            # _seen check and get replaced with "<circular>". Sets and
+            # frozensets are now handled explicitly. Anything else (custom
+            # objects, bytes, etc.) is stringified with a length cap and a
+            # broad except so a misbehaving __str__ can't blow up the write.
             def _safe(obj, _seen=None):
                 if _seen is None:
                     _seen = set()
                 oid = id(obj)
                 if oid in _seen:
                     return "<circular>"
+                if obj is None or isinstance(obj, (bool, int, float, str)):
+                    return obj
                 if isinstance(obj, dict):
                     _seen.add(oid)
-                    return {k: _safe(v, _seen) for k, v in obj.items()}
-                if isinstance(obj, (list, tuple)):
+                    try:
+                        return {
+                            (k if isinstance(k, (str, int, float, bool)) or k is None else str(k)):
+                                _safe(v, _seen)
+                            for k, v in obj.items()
+                        }
+                    finally:
+                        _seen.discard(oid)
+                if isinstance(obj, (list, tuple, set, frozenset)):
                     _seen.add(oid)
-                    return [_safe(v, _seen) for v in obj]
-                if isinstance(obj, (str, int, float, bool)) or obj is None:
-                    return obj
-                return str(obj)[:240]
-            STATE_PATH.write_text(json.dumps(_safe(state_out)))
+                    try:
+                        return [_safe(v, _seen) for v in obj]
+                    finally:
+                        _seen.discard(oid)
+                # Fallback for everything else (custom objects, bytes, ...).
+                # Defensive try/except: a recursive __str__ on a self-
+                # referential dataclass could otherwise raise RecursionError.
+                try:
+                    return str(obj)[:240]
+                except Exception:
+                    return f"<unrepr {type(obj).__name__}>"
+            # default=str is belt-and-suspenders for any leaf type that
+            # somehow still slipped through (e.g. numpy scalar). It only
+            # runs on otherwise-non-serializable atoms; cycles are already
+            # broken by _safe above so json.dumps shouldn't see one.
+            STATE_PATH.write_text(json.dumps(_safe(state_out), default=str))
         except Exception as e:
             print(f"[STATE WRITE ERROR] {e}")
 

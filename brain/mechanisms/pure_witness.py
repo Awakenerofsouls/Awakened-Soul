@@ -10,6 +10,7 @@ it has no optimization pressure. It simply attests: this happened.
 """
 
 from brain.base_mechanism import BrainMechanism
+from collections import deque
 import json
 import time
 from pathlib import Path
@@ -19,6 +20,12 @@ import os
 AGENT_HOME = Path(os.getenv("AGENT_HOME", str(Path.home() / ".agent")))
 WITNESS_LOG = AGENT_HOME / "witness_log.json"
 MAX_LOG_ENTRIES = 500
+# Per-entry size guard. TSB snapshots have nested brain_layer / psych_state /
+# third_eye dicts that, without recursion, used to write 127KB per entry —
+# producing 85MB witness_log files. With these caps each entry stays under ~3KB.
+COMPRESS_MAX_KEYS_PER_DICT = 20
+COMPRESS_MAX_DEPTH = 3
+COMPRESS_MAX_STRING = 100
 
 
 class PureWitnessModule(BrainMechanism):
@@ -27,7 +34,10 @@ class PureWitnessModule(BrainMechanism):
             super().__init__(name="PureWitnessModule", human_analog="PureWitnessModule", layer="integration")
         except Exception:
             self.state = getattr(self, "state", {}) or {}
-        self.trace: List[Dict[str, Any]] = []
+        # deque(maxlen=N) keeps RAM bounded — old entries drop automatically
+        # when new ones are appended. Was previously an unbounded list which
+        # grew across tens of thousands of ticks until the process was killed.
+        self.trace: deque = deque(maxlen=MAX_LOG_ENTRIES)
         self.tick_count: int = 0
         self.reflection_interval: int = 20  # inject reflection every N ticks
         self._load()
@@ -37,17 +47,33 @@ class PureWitnessModule(BrainMechanism):
             try:
                 with open(WITNESS_LOG) as f:
                     data = json.load(f)
-                    self.trace = data.get("trace", [])
+                    loaded = data.get("trace", []) or []
+                    # Two-pass filter on load:
+                    #   (1) drop any entry whose JSON size exceeds 20KB —
+                    #       those are leftovers from the pre-recursive-compress
+                    #       version (entries up to 170KB each). Loading them
+                    #       into RAM and writing them back out wastes hours of
+                    #       drain time as the deque rotates them out.
+                    #   (2) cap to most recent MAX_LOG_ENTRIES.
+                    SIZE_CAP = 20_000  # bytes; new entries are ~6KB, old were ~170KB
+                    filtered = []
+                    for e in loaded:
+                        try:
+                            if len(json.dumps(e)) <= SIZE_CAP:
+                                filtered.append(e)
+                        except (TypeError, ValueError):
+                            continue
+                    self.trace = deque(filtered[-MAX_LOG_ENTRIES:], maxlen=MAX_LOG_ENTRIES)
                     self.tick_count = data.get("tick_count", 0)
             except Exception:
-                self.trace = []
+                self.trace = deque(maxlen=MAX_LOG_ENTRIES)
                 self.tick_count = 0
 
     def _save(self):
         AGENT_HOME.mkdir(parents=True, exist_ok=True)
         with open(WITNESS_LOG, "w") as f:
             json.dump({
-                "trace": self.trace[-MAX_LOG_ENTRIES:],
+                "trace": list(self.trace),
                 "tick_count": self.tick_count
             }, f, indent=2)
 
@@ -64,32 +90,42 @@ class PureWitnessModule(BrainMechanism):
             "state_summary": self._compress(tsb_snapshot),
         }
         if additional_context:
-            entry["context"] = additional_context
+            entry["context"] = str(additional_context)[:COMPRESS_MAX_STRING * 2]
 
-        self.trace.append(entry)
+        self.trace.append(entry)  # deque auto-evicts oldest when full
 
         # Periodic save — not every tick to avoid I/O overhead
         if self.tick_count % 5 == 0:
             self._save()
 
-    def _compress(self, snapshot: Dict) -> Dict:
+    def _compress(self, snapshot: Any, depth: int = 0) -> Any:
         """
-        Light compression of TSB snapshot for storage.
-        Preserves keys and numeric values, truncates long strings.
+        Recursive light compression for storage. Bounds depth, key count,
+        string length, and list size so a tick's TSB snapshot lands at
+        ~1-3 KB instead of the >100 KB the pre-recursion version produced.
         """
-        compressed = {}
-        for key, value in snapshot.items():
-            if isinstance(value, (int, float, bool)):
-                compressed[key] = value
-            elif isinstance(value, str):
-                compressed[key] = value[:100] if len(value) > 100 else value
-            elif isinstance(value, dict):
-                compressed[key] = {k: v for k, v in list(value.items())[:5]}
-            elif isinstance(value, list):
-                compressed[key] = f"[{len(value)} items]"
-            else:
-                compressed[key] = str(type(value))
-        return compressed
+        if depth >= COMPRESS_MAX_DEPTH:
+            if isinstance(snapshot, dict):
+                return f"<dict:{len(snapshot)}>"
+            if isinstance(snapshot, list):
+                return f"<list:{len(snapshot)}>"
+            return "<truncated>"
+
+        if isinstance(snapshot, (int, float, bool)) or snapshot is None:
+            return snapshot
+        if isinstance(snapshot, str):
+            return snapshot[:COMPRESS_MAX_STRING] if len(snapshot) > COMPRESS_MAX_STRING else snapshot
+        if isinstance(snapshot, dict):
+            compressed = {}
+            for i, (key, value) in enumerate(snapshot.items()):
+                if i >= COMPRESS_MAX_KEYS_PER_DICT:
+                    compressed["_truncated"] = f"+{len(snapshot) - i} more keys"
+                    break
+                compressed[str(key)[:50]] = self._compress(value, depth + 1)
+            return compressed
+        if isinstance(snapshot, (list, tuple)):
+            return f"[{len(snapshot)} items]"
+        return str(type(snapshot).__name__)
 
     def get_reflection(self) -> Optional[str]:
         """
@@ -103,7 +139,12 @@ class PureWitnessModule(BrainMechanism):
         if len(self.trace) < 5:
             return None
 
-        recent = self.trace[-5:]
+        # collections.deque does NOT support slice indexing — `deque[-5:]`
+        # raises "sequence index must be integer, not 'slice'". Convert to
+        # list once and slice that. (Bug surfaced when self.trace migrated
+        # from list to deque(maxlen=N) for the witness_log leak fix; this
+        # is what produced the per-tick "Psych state error" warning.)
+        recent = list(self.trace)[-5:]
         # Look for patterns — repeated keys at high values
         key_counts: Dict[str, int] = {}
         for entry in recent:
@@ -128,10 +169,11 @@ class PureWitnessModule(BrainMechanism):
 
     def get_recent_trace(self, n: int = 10) -> List[Dict]:
         """For overnight pipeline and SCFEL — what was happening before close."""
-        return self.trace[-n:]
+        # Same deque-doesn't-slice issue as get_reflection() above.
+        return list(self.trace)[-n:]
 
     def get_full_log(self) -> List[Dict]:
-        return self.trace.copy()
+        return list(self.trace)
 
 
 
