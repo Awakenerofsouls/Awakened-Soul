@@ -6,10 +6,8 @@ order, runs async tick() from sync context, injects results back into pirp_conte
 """
 
 import asyncio
-import concurrent.futures
 import importlib
 import inspect
-import os
 import signal
 import threading
 import time
@@ -22,22 +20,6 @@ from typing import Dict, Any, List, Optional
 # blowing the 30s heartbeat interval. With it, a misbehaving mechanism gets
 # logged and dropped, and the tick still completes in time.
 TICK_BUDGET_SECONDS = 0.5
-
-# Per-layer parallel firing. Within each anatomical layer, mechanisms fire
-# CONCURRENTLY rather than one-by-one — this matches biological neural firing
-# where, say, all ~200 limbic mechanisms activate together within a tick rather
-# than waiting in a queue. Layer order itself stays sequential because
-# downstream layers need foundational neuromodulator state already published.
-#
-# Worker count tuning: most ticks are I/O-bound (sqlite writes, json saves,
-# small network calls), and Python releases the GIL during I/O — so threads
-# scale well here. 32 workers keeps memory modest while letting an entire
-# layer's worth of mechanisms run truly concurrently most of the time.
-#
-# Kill switch: set BRAIN_LAYER_PARALLEL=0 to fall back to sequential firing
-# (useful for debugging if a mechanism turns out to be thread-unsafe).
-LAYER_PARALLEL_WORKERS = int(os.getenv("BRAIN_LAYER_WORKERS", "32"))
-LAYER_PARALLEL_ENABLED = os.getenv("BRAIN_LAYER_PARALLEL", "1") != "0"
 
 
 class _SyncTickBudget:
@@ -700,91 +682,10 @@ class BrainLayerRunner:
 
         return enrichments
 
-    def _run_one_mechanism(self, name: str, mech, pirp_context: dict,
-                           prior_results_snapshot: dict) -> tuple:
-        """
-        Run a single mechanism's tick. Designed to be safely callable from a
-        worker thread inside the layer-level ThreadPoolExecutor. Returns
-        (name, result_dict). All exceptions are caught here so a single bad
-        mechanism cannot poison the whole layer.
-
-        Note: each call gets its own asyncio event loop because asyncio loops
-        are NOT thread-safe — sharing the runner-level loop across threads
-        races on the loop's internal state. Loop creation is ~ms; cheap.
-        """
-        try:
-            input_data = {
-                "pirp_context": pirp_context,
-                "prior_results": prior_results_snapshot,
-                "previous_results": self._previous_prior_results,
-            }
-            started = time.monotonic()
-
-            # _SyncTickBudget degrades to a no-op off the main thread (which
-            # is where this runs under the executor) — kept for the rare
-            # main-thread call path. Hard cap on threaded sync ticks comes
-            # from the Future.result(timeout=) at the layer level.
-            with _SyncTickBudget(TICK_BUDGET_SECONDS):
-                try:
-                    out = mech.tick(input_data)
-                except TypeError:
-                    # Wire-style: pass pirp_context as keyword.
-                    out = mech.tick(pirp_context=pirp_context)
-
-            if inspect.iscoroutine(out):
-                budget = TICK_BUDGET_SECONDS - (time.monotonic() - started)
-                if budget <= 0:
-                    out.close()
-                    return name, {"error": "pre-budget", "mechanism": name}
-                # Per-thread loop: avoid sharing the runner-level loop across
-                # workers (asyncio loop state is not thread-safe).
-                worker_loop = asyncio.new_event_loop()
-                try:
-                    out = worker_loop.run_until_complete(
-                        asyncio.wait_for(out, timeout=budget)
-                    )
-                finally:
-                    try:
-                        worker_loop.close()
-                    except Exception:
-                        pass
-
-            return name, (out if isinstance(out, dict) else {"result": out})
-        except (asyncio.TimeoutError, TimeoutError):
-            return name, {"error": "tick_budget_exceeded", "mechanism": name}
-        except Exception as e:
-            return name, {"error": str(e), "mechanism": name}
-
-    def _get_layer_pool(self) -> "concurrent.futures.ThreadPoolExecutor":
-        """Lazy-initialized class-level executor reused across ticks.
-        Sized for the largest layer (subcortical/neocortical run a couple
-        hundred mechanisms) but capped to keep memory predictable."""
-        pool = getattr(self, "_layer_pool", None)
-        if pool is None:
-            pool = concurrent.futures.ThreadPoolExecutor(
-                max_workers=LAYER_PARALLEL_WORKERS,
-                thread_name_prefix="brain-layer",
-            )
-            self._layer_pool = pool
-        return pool
-
     def run(self, pirp_context: dict) -> dict:
         """
         Synchronous entry point. Runs all loaded mechanisms, chains prior_results,
         injects enrichments back into pirp_context. Returns enriched pirp_context.
-
-        PARALLEL FIRING (2026-05-04): within each anatomical layer, mechanisms
-        now fire CONCURRENTLY via a ThreadPoolExecutor — matching biological
-        neural firing where, e.g., all limbic mechanisms activate together
-        within a tick rather than one-by-one. Layer order itself stays
-        sequential (foundational → ... → narrative) because downstream layers
-        depend on enrichments published by upstream ones.
-
-        Trade-off: mechanisms inside the same layer all see the SAME
-        prior_results snapshot (taken at layer start). They cannot read
-        each-other's outputs mid-layer. This is the right behavior — co-firing
-        peers in a real neural layer don't see each other's spikes either,
-        the cross-talk happens at the next layer.
         """
         if not self.mechanisms:
             return pirp_context
@@ -802,54 +703,48 @@ class BrainLayerRunner:
                 name for name in self.run_order
                 if name in self.mechanisms and self.mechanisms[name]._layer == layer
             ]
-            if not layer_mechanisms:
-                continue
-
-            if not LAYER_PARALLEL_ENABLED:
-                # Sequential fallback (kill switch). Preserves the original
-                # one-by-one behavior for debugging or thread-unsafety.
-                for name in layer_mechanisms:
-                    mech = self.mechanisms[name]
-                    n, result = self._run_one_mechanism(
-                        name, mech, pirp_context, prior_results
-                    )
-                    prior_results[n] = result
-                continue
-
-            # PARALLEL PATH — all mechanisms in this layer fire together.
-            # Snapshot prior_results so every co-firing mechanism sees the
-            # same input from upstream layers (no race on a moving dict, no
-            # accidental peer-reading inside the layer).
-            layer_input_priors = dict(prior_results)
-            pool = self._get_layer_pool()
-
-            futures = {}
             for name in layer_mechanisms:
                 mech = self.mechanisms[name]
-                fut = pool.submit(
-                    self._run_one_mechanism,
-                    name, mech, pirp_context, layer_input_priors,
-                )
-                futures[fut] = name
-
-            # Per-future timeout is a few × the per-mech budget — gives the
-            # worker time to wrap up its own asyncio.wait_for cleanly. If a
-            # sync tick truly hangs, Future.result(timeout=) returns but the
-            # worker thread keeps running (Python can't preempt threads). The
-            # _SyncTickBudget SIGALRM that used to protect this only worked
-            # on the main thread; we accept the same thread-leak risk the
-            # heartbeat-from-non-main-thread path already had.
-            future_timeout = max(TICK_BUDGET_SECONDS * 4, 2.0)
-            for fut in concurrent.futures.as_completed(futures):
-                name = futures[fut]
                 try:
-                    n, result = fut.result(timeout=future_timeout)
-                    prior_results[n] = result
-                except concurrent.futures.TimeoutError:
-                    prior_results[name] = {
-                        "error": "tick_budget_exceeded",
-                        "mechanism": name,
-                    }
+                    input_data = self._build_input_data(pirp_context, prior_results)
+                    started = time.monotonic()
+
+                    # Mechanisms in this codebase have several tick shapes:
+                    #   (a) async tick(input_data) — modern adapter pattern
+                    #   (b) sync tick(input_data) — discovery adapter / older
+                    #   (c) sync tick(pirp_context=, third_eye_state=, brain_layer=)
+                    #       — the new wire layers (VoiceIntegrityLayer etc.)
+                    # Run sync ticks under a hard SIGALRM cap so a slow
+                    # mechanism cannot stall the whole heartbeat. Async ticks
+                    # use asyncio.wait_for instead (signal cap can't see
+                    # inside the asyncio loop's iteration).
+                    with _SyncTickBudget(TICK_BUDGET_SECONDS):
+                        try:
+                            out = mech.tick(input_data)
+                        except TypeError:
+                            # Wire-style: pass pirp_context as keyword, leave
+                            # the other optional args at their defaults.
+                            out = mech.tick(pirp_context=pirp_context)
+
+                    if inspect.iscoroutine(out):
+                        budget = TICK_BUDGET_SECONDS - (time.monotonic() - started)
+                        if budget <= 0:
+                            out.close()
+                            prior_results[name] = {"error": "pre-budget", "mechanism": name}
+                            continue
+                        # asyncio.wait_for can't preempt sync code inside an
+                        # async function (no await points). The discovery-tick
+                        # adapter is exactly that — a sync loop wrapped in
+                        # async def. So pair wait_for (graceful path for
+                        # well-behaved coroutines) with SIGALRM (hard cap for
+                        # the sync-loop case) by running run_until_complete
+                        # under the same _SyncTickBudget.
+                        with _SyncTickBudget(budget):
+                            out = loop.run_until_complete(asyncio.wait_for(out, timeout=budget))
+
+                    prior_results[name] = out if isinstance(out, dict) else {"result": out}
+                except (asyncio.TimeoutError, TimeoutError):
+                    prior_results[name] = {"error": "tick_budget_exceeded", "mechanism": name}
                 except Exception as e:
                     prior_results[name] = {"error": str(e), "mechanism": name}
 

@@ -62,8 +62,17 @@ class VolitionalAttentionDirector(BrainMechanism):
             except Exception:
                 existing = {}
 
+        # In-memory trim so RSS doesn't grow even if step() falls behind.
+        # The autoscaffold tick() invokes direct() every tick which appends
+        # one entry per tick — without these caps vad_state.json went to
+        # 11 MB+ and self.attention_history grew unbounded in RAM.
+        if len(self.attention_history) > 50:
+            self.attention_history = self.attention_history[-50:]
+        if len(self.directives) > 50:
+            self.directives = self.directives[-50:]
+
         existing["directives"] = self.directives
-        existing["attention_history"] = self.attention_history[-50:]
+        existing["attention_history"] = self.attention_history
         existing["last_updated"] = time.strftime("%Y-%m-%d %H:%M:%S")
 
         with open(VAD_PATH, "w") as f:
@@ -83,7 +92,14 @@ class VolitionalAttentionDirector(BrainMechanism):
         intensity: how strongly to foreground it (modulates energy bid)
 
         Only the agent calls this. Not triggered by any mechanism.
+
+        Guard: the autoscaffold tick() calls every public method with
+        annotation-default args. For this signature it would inject
+        target="", which produces blank-target directives every tick and
+        leaks vad_state.json out to multi-MB. Reject empty/None target.
         """
+        if not target or not isinstance(target, str) or not target.strip():
+            return
         directive = {
             "target": target,
             "duration_remaining": duration_ticks,

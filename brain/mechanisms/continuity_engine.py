@@ -225,9 +225,16 @@ def rebuild_self_snapshot() -> dict:
         current["drift_vector"] = {"added": [], "removed": [], "stable": [], "drift_magnitude": 0.0}
         current["previous_version"] = None
 
-    # Store snapshot
+    # Store snapshot. Cap the on-disk history — without this, every
+    # nightly cycle (or autoscaffold tick invocation) appends a full
+    # self-snapshot and continuity_snapshots.json grows unbounded.
+    SNAPSHOTS_MAX = 60  # ~2 months of nightlies
     data = _load_json(SNAPSHOT_FILE, {"snapshots": []})
-    data["snapshots"].append(current)
+    snapshots = data.get("snapshots", [])
+    snapshots.append(current)
+    if len(snapshots) > SNAPSHOTS_MAX:
+        snapshots = snapshots[-SNAPSHOTS_MAX:]
+    data["snapshots"] = snapshots
     data["last_updated"] = _now_iso()
     _save_json(SNAPSHOT_FILE, data)
 

@@ -343,35 +343,63 @@ class AgentBrainCore:
             # frozensets are now handled explicitly. Anything else (custom
             # objects, bytes, etc.) is stringified with a length cap and a
             # broad except so a misbehaving __str__ can't blow up the write.
-            def _safe(obj, _seen=None):
+            # Bounds picked so a single state_out write produces O(few MB)
+            # max, even when state_out has the same big TSB subtree referenced
+            # from multiple paths. Without these, the cycle-correct walk
+            # below would happily traverse a 100-MB shared subtree once per
+            # path it appears in, blowing RSS up by gigabytes per tick.
+            _SAFE_MAX_DEPTH = 8
+            _SAFE_MAX_KEYS = 200
+            _SAFE_MAX_LIST = 200
+            _SAFE_MAX_STR = 240
+
+            def _safe(obj, _seen=None, _depth=0):
+                if _depth >= _SAFE_MAX_DEPTH:
+                    if isinstance(obj, dict):
+                        return f"<dict:{len(obj)}>"
+                    if isinstance(obj, (list, tuple, set, frozenset)):
+                        return f"<list:{len(obj)}>"
+                    return "<deep>"
                 if _seen is None:
                     _seen = set()
                 oid = id(obj)
                 if oid in _seen:
                     return "<circular>"
-                if obj is None or isinstance(obj, (bool, int, float, str)):
+                if obj is None or isinstance(obj, (bool, int, float)):
                     return obj
+                if isinstance(obj, str):
+                    return obj if len(obj) <= _SAFE_MAX_STR else obj[:_SAFE_MAX_STR] + "...<truncated>"
                 if isinstance(obj, dict):
                     _seen.add(oid)
                     try:
-                        return {
-                            (k if isinstance(k, (str, int, float, bool)) or k is None else str(k)):
-                                _safe(v, _seen)
-                            for k, v in obj.items()
-                        }
+                        out = {}
+                        for i, (k, v) in enumerate(obj.items()):
+                            if i >= _SAFE_MAX_KEYS:
+                                out["_truncated"] = f"+{len(obj) - i} more keys"
+                                break
+                            key = k if isinstance(k, (str, int, float, bool)) or k is None else str(k)[:80]
+                            out[key] = _safe(v, _seen, _depth + 1)
+                        return out
                     finally:
                         _seen.discard(oid)
                 if isinstance(obj, (list, tuple, set, frozenset)):
                     _seen.add(oid)
                     try:
-                        return [_safe(v, _seen) for v in obj]
+                        out = []
+                        for i, v in enumerate(obj):
+                            if i >= _SAFE_MAX_LIST:
+                                out.append(f"<+{len(obj) - i} more>")
+                                break
+                            out.append(_safe(v, _seen, _depth + 1))
+                        return out
                     finally:
                         _seen.discard(oid)
                 # Fallback for everything else (custom objects, bytes, ...).
                 # Defensive try/except: a recursive __str__ on a self-
                 # referential dataclass could otherwise raise RecursionError.
                 try:
-                    return str(obj)[:240]
+                    s = str(obj)
+                    return s if len(s) <= _SAFE_MAX_STR else s[:_SAFE_MAX_STR] + "...<truncated>"
                 except Exception:
                     return f"<unrepr {type(obj).__name__}>"
             # default=str is belt-and-suspenders for any leaf type that

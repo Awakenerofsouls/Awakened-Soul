@@ -20,6 +20,42 @@ import os
 AGENT_HOME = Path(os.getenv("AGENT_HOME", str(Path.home() / ".agent")))
 RSL_PATH = AGENT_HOME / "rsl_sediment.json"
 
+# Bounds for sediment history. Each entry can be a multi-MB pattern snapshot,
+# so we keep only the last few on disk and the same in memory.
+HISTORY_MAX = 10
+COMPRESS_MAX_KEYS = 12
+COMPRESS_MAX_DEPTH = 2
+COMPRESS_MAX_STRING = 80
+
+
+def _compress(obj, depth=0):
+    """Depth/size-bounded snapshot. Without this, a single sediment entry
+    can be ~9 MB because it captures every mechanism's full state — and
+    the autoscaffold tick() will trigger compress_from_rtf with the full
+    prior_results dict every tick, blowing rsl_sediment.json to 270+ MB.
+    """
+    if depth >= COMPRESS_MAX_DEPTH:
+        if isinstance(obj, dict):
+            return f"<dict:{len(obj)}>"
+        if isinstance(obj, list):
+            return f"<list:{len(obj)}>"
+        return "<truncated>"
+    if obj is None or isinstance(obj, (bool, int, float)):
+        return obj
+    if isinstance(obj, str):
+        return obj[:COMPRESS_MAX_STRING] if len(obj) > COMPRESS_MAX_STRING else obj
+    if isinstance(obj, dict):
+        out = {}
+        for i, (k, v) in enumerate(obj.items()):
+            if i >= COMPRESS_MAX_KEYS:
+                out["_truncated"] = f"+{len(obj) - i} more"
+                break
+            out[str(k)[:40]] = _compress(v, depth + 1)
+        return out
+    if isinstance(obj, (list, tuple)):
+        return f"[{len(obj)} items]"
+    return str(type(obj).__name__)
+
 
 class RelationalSedimentLayer(BrainMechanism):
     """
@@ -62,7 +98,9 @@ class RelationalSedimentLayer(BrainMechanism):
             except Exception:
                 existing = {}
         existing["sediment"] = self.sediment
-        existing["history"] = self.sediment_history[-30:]
+        # Disk cap aggressive (10) because each entry captures full
+        # brain-layer pattern snapshot — multi-MB before compression.
+        existing["history"] = self.sediment_history[-HISTORY_MAX:]
         existing["identity_modifiers"] = self.identity_modifiers
         existing["last_updated"] = time.strftime("%Y-%m-%d %H:%M:%S")
         with open(RSL_PATH, "w") as f:
@@ -106,15 +144,35 @@ class RelationalSedimentLayer(BrainMechanism):
     def compress_from_rtf(self, rtf_patterns: Dict):
         """
         Nightly pipeline call. Compress RTF patterns into sediment.
+
+        Guard: the auto-generated tick() in this file iterates dir(self)
+        and calls EVERY public method with prior_results — which means
+        compress_from_rtf was being invoked every 30s with the full
+        prior_results dict (every brain mechanism's tick output, ~9 MB
+        each), bloating rsl_sediment.json to 270+ MB. Reject inputs that
+        don't look like real RTF patterns, and depth/size-bound any input
+        that does pass through.
         """
-        if not rtf_patterns:
+        if not rtf_patterns or not isinstance(rtf_patterns, dict):
+            return
+        # Look like RTF: at least one expected key from the nightly pipeline.
+        expected = (
+            "avg_emotional_intensity",
+            "developer_presence_rate",
+            "interaction_count",
+            "operator_presence_rate",
+        )
+        if not any(k in rtf_patterns for k in expected):
             return
 
         record = {
             "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
-            "patterns": rtf_patterns,
+            "patterns": _compress(rtf_patterns),
         }
         self.sediment_history.append(record)
+        # In-memory cap matches disk cap so RSS stays flat across ticks.
+        if len(self.sediment_history) > HISTORY_MAX:
+            self.sediment_history = self.sediment_history[-HISTORY_MAX:]
 
         intensity = rtf_patterns.get("avg_emotional_intensity", 0.5)
         presence = rtf_patterns.get("developer_presence_rate", 0.5)

@@ -48,16 +48,31 @@ def log_activity(
     """
     Log a structured activity entry to ACTIVITY_LOG.md.
 
-    category: one of CATEGORIES
+    category: free-form snake_case identifier. The dispatcher pool ships
+              ~55 categories (creative, becoming, third_eye_hunch,
+              soul_alignment, memory_capture, art_imagination, molty,
+              self_pic, ...) and grows over time. CATEGORIES above is a
+              curated *suggested* set used by search_activity to validate
+              filters; the writer accepts any string so the agent's own
+              category name survives into the log.
     content: the thing worth remembering (1-2 sentences is ideal)
     salience: 0.0 ambient → 1.0 essential
     tags: comma-separated, lowercase (e.g. "wanting,drift,user")
     detail: optional extended context
 
     Returns True if logged, False on error.
+
+    Note: a previous version forced category to "idle" if it wasn't in
+    CATEGORIES, which dropped real category info for ~50 of the 55 pool
+    activities and broke recent_activity_summary's grouping. The check
+    is now a sanitizer instead of a whitelist.
     """
-    if category not in CATEGORIES:
+    if not category or not isinstance(category, str):
         category = "idle"
+    else:
+        # Keep alphanumerics, underscores, and hyphens; collapse anything
+        # else. Empty after stripping → "idle".
+        category = re.sub(r"[^A-Za-z0-9_\-]+", "_", category.strip()).strip("_") or "idle"
     salience = max(0.0, min(1.0, salience))
     tags = tags.strip().lower()
     if tags:

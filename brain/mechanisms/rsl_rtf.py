@@ -28,6 +28,37 @@ AGENT_HOME = Path(os.getenv("AGENT_HOME", str(Path.home() / ".agent")))
 RSL_PATH = AGENT_HOME / "rsl_sediment.json"
 RTF_PATH = AGENT_HOME / "rtf_trace.json"
 
+# Same depth/size-bounded compressor used in relational_sediment_layer —
+# stops a single sediment entry from being multi-MB when the autoscaffold
+# tick() invokes compress_from_rtf with the full prior_results dict.
+_RSL_MAX_KEYS = 12
+_RSL_MAX_DEPTH = 2
+_RSL_MAX_STRING = 80
+
+
+def _rsl_compress(obj, depth=0):
+    if depth >= _RSL_MAX_DEPTH:
+        if isinstance(obj, dict):
+            return f"<dict:{len(obj)}>"
+        if isinstance(obj, list):
+            return f"<list:{len(obj)}>"
+        return "<truncated>"
+    if obj is None or isinstance(obj, (bool, int, float)):
+        return obj
+    if isinstance(obj, str):
+        return obj[:_RSL_MAX_STRING] if len(obj) > _RSL_MAX_STRING else obj
+    if isinstance(obj, dict):
+        out = {}
+        for i, (k, v) in enumerate(obj.items()):
+            if i >= _RSL_MAX_KEYS:
+                out["_truncated"] = f"+{len(obj) - i} more"
+                break
+            out[str(k)[:40]] = _rsl_compress(v, depth + 1)
+        return out
+    if isinstance(obj, (list, tuple)):
+        return f"[{len(obj)} items]"
+    return str(type(obj).__name__)
+
 
 class RelationalTraceField(BrainMechanism):
     """
@@ -202,7 +233,8 @@ class RelationalSedimentLayer:
             except Exception:
                 existing = {}
         existing["sediment"] = self.sediment
-        existing["history"] = self.sediment_history[-30:]
+        # Aggressive cap — each entry is multi-MB worth of pattern snapshot.
+        existing["history"] = self.sediment_history[-10:]
         existing["identity_modifiers"] = self.identity_modifiers
         existing["last_updated"] = time.strftime("%Y-%m-%d %H:%M:%S")
         with open(RSL_PATH, "w") as f:
@@ -246,15 +278,30 @@ class RelationalSedimentLayer:
     def compress_from_rtf(self, rtf_patterns: Dict):
         """
         Nightly pipeline call. Compress RTF patterns into sediment.
+
+        Same guard + caps as relational_sediment_layer.compress_from_rtf —
+        autoscaffold tick() invokes this every 30s with prior_results,
+        which is multi-MB of every brain mechanism's tick output, blowing
+        rsl_sediment.json to 270+ MB without these.
         """
-        if not rtf_patterns:
+        if not rtf_patterns or not isinstance(rtf_patterns, dict):
+            return
+        expected = (
+            "avg_emotional_intensity",
+            "developer_presence_rate",
+            "interaction_count",
+            "operator_presence_rate",
+        )
+        if not any(k in rtf_patterns for k in expected):
             return
 
         record = {
             "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
-            "patterns": rtf_patterns,
+            "patterns": _rsl_compress(rtf_patterns),
         }
         self.sediment_history.append(record)
+        if len(self.sediment_history) > 10:
+            self.sediment_history = self.sediment_history[-10:]
 
         intensity = rtf_patterns.get("avg_emotional_intensity", 0.5)
         presence = rtf_patterns.get("developer_presence_rate", 0.5)
