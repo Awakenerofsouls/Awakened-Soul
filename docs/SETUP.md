@@ -13,7 +13,7 @@ framework handles the rest.
   defaults to `~/.agent`)
 - An LLM provider — Ollama running locally is the documented default,
   but any provider works once registered with `brain/llm_router.py`.
-  For Ollama: `ollama pull llama3.1` or `ollama pull qwen2.5:7b`
+  For Ollama: `ollama pull llama3.1` or `ollama pull llama3.1:latest`
 
 ## Quick Setup
 
@@ -45,7 +45,7 @@ and define the agent's anchored core:
 ```bash
 cp templates/SOUL.md.example       "$AGENT_WORKSPACE/SOUL.md"
 cp templates/IDENTITY.md.example   "$AGENT_WORKSPACE/IDENTITY.md"
-cp templates/BECOMING.md.example   "$AGENT_WORKSPACE/AGENT_BECOMING.md"
+cp templates/AGENT_BECOMING.md.example "$AGENT_WORKSPACE/AGENT_BECOMING.md"
 cp templates/IDLE_DRIVES.md.example "$AGENT_WORKSPACE/IDLE_DRIVES.md"
 cp templates/VISUAL_IDENTITY.md.example "$AGENT_WORKSPACE/VISUAL_IDENTITY.md"
 ```

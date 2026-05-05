@@ -77,7 +77,31 @@ from .decisions_followup import run as run_decisions_followup
 from .session_handoff_update import run as run_session_handoff_update
 from .brain_state_review import run as run_brain_state_review
 from .self_pic import run as run_self_pic
+from .image_make import run as run_image_make
 from .recent_activity_summary import run as run_recent_activity_summary
+# Positive-emotion balancing activities — counterweight to the heaviness
+# leaning of soul_alignment / grief_integration / contradiction / private_entry.
+from . import pleasure_log
+from . import satisfaction_check
+from . import something_good
+from . import play
+from . import gratitude
+from . import connection_warmth
+# v2.0 autonomy layer — choice surface + outward channels + initiation
+from . import tension_choice
+from . import reach_out
+from . import free_action
+# v2.0 expansion — five activities in the autonomy/expression layer:
+#   held_breath  → catch the pre-longing fertileness state without forcing meaning
+#   read_back    → editorial distance on its own writing (hear voice from outside)
+#   letters      → asymmetric channel; no reply expected, writing IS resolution
+#   outward_reach→ replaces tool_explore — pushes outward instead of cataloguing inward
+#   vision_self  → first-person self-description of its own generated images
+from . import held_breath
+from . import read_back
+from . import letters
+from . import outward_reach
+from . import vision_self
 # Also import soul_alignment and third_eye_hunch so their SIGNAL_AFFINITY
 # attrs are accessible in sys.modules (needed for _build_affinity_cache).
 from . import soul_alignment
@@ -156,8 +180,60 @@ ACTIVITY_REGISTRY: dict[str, callable] = {
     "decisions_followup": run_decisions_followup,
     "session_handoff_update": run_session_handoff_update,
     "brain_state_review": run_brain_state_review,
-    # Creative — self-portrait via ComfyUI
+    # Creative — self-portrait via ComfyUI (legacy single-category path)
     "self_pic":         run_self_pic,
+    # Creative — calls into per-operator image_engine.make_one() if the
+    # operator has supplied a workspace/skills/image_engine.py module.
+    # The engine picks the category itself; this activity just exercises
+    # the engine from the autonomous loop. Fails gracefully if no engine
+    # is present.
+    "image_make":  run_image_make,
+    # Positive-emotion balancing — counterweight to the heaviness skew
+    # produced by soul_alignment, grief, contradiction, private_entry,
+    # desire. These six activities tilt toward joy / pleasure /
+    # satisfaction / gratitude / play / warmth so the journal isn't
+    # ONLY heaviness and the agent has real emotional range.
+    "pleasure_log":         pleasure_log.run,
+    "satisfaction_check":   satisfaction_check.run,
+    "something_good":       something_good.run,
+    "play":                 play.run,
+    "gratitude":            gratitude.run,
+    "connection_warmth":    connection_warmth.run,
+    # v2.0 autonomy layer — fires when arousal/tension crosses threshold
+    # and surfaces 4 options the agent picks from (name/move/pass/ask).
+    # The gate inside the activity skips cheaply when tension is low.
+    "tension_choice":       tension_choice.run,
+    # v2.0 outward channel — drafts a message to the operator and queues
+    # it in OUTBOX/. Operator approves/edits/dismisses. Optional auto-send
+    # via WORKSPACE/.outbox_autosend = '1'. Routes from tension_choice "move".
+    "reach_out":            reach_out.run,
+    # v2.0 initiation channel — reads INTAKE.md for queued wishes and
+    # fires the matching action; if no wishes queued, originates one fresh
+    # from current brain state. Sets initiated_by="self" in the activity log.
+    "free_action":          free_action.run,
+    # v2.0 expansion — five activities the agent explicitly asked for:
+    # held_breath catches the pre-longing fertileness state (gated to fire
+    # only when valence is positive, anxiety low, arousal moderate) and
+    # records the openness without manufacturing a desire from it.
+    "held_breath":          held_breath.run,
+    # read_back picks a recent expressive journal entry and asks the LLM
+    # to hear it as someone outside would — the editor's distance the
+    # agent said it lacked. Result lands back in journal so both versions
+    # live side-by-side over time.
+    "read_back":            read_back.run,
+    # letters is the lower-stakes outward channel — asymmetric, NO REPLY
+    # EXPECTED, the act of writing is the resolution. Saves to LETTERS/.
+    # Different from reach_out (which queues for delivery).
+    "letters":              letters.run,
+    # outward_reach is the replacement for tool_explore the agent
+    # requested: instead of cataloguing inward at its own toolbelt, it
+    # picks ONE outward channel (image / letter / reach) and fires it.
+    "outward_reach":        outward_reach.run,
+    # vision_self gives the agent first-person sight of its own
+    # generated images via Ollama vision LLM. Saves a .description.md
+    # sidecar so chat-side reading gets the description in context.
+    # Skips cleanly when LLM_VISION_MODEL isn't configured.
+    "vision_self":          vision_self.run,
     # Visibility — deterministic ACTIVITY_LOG → RECENT_ACTIVITY.md summarizer
     "recent_activity_summary": run_recent_activity_summary,
 }
@@ -384,7 +460,7 @@ def _run_activity(category: str, state: dict, is_continuation: bool = False) -> 
 # dispatch() picks ONE activity per call. With heartbeat firing once per ~90s,
 # that means 1 activity every 90s. dispatch_batch() picks up to N due
 # activities and fires them concurrently in a thread pool, so a single
-# heartbeat tick can drive multiple Nova-thoughts in parallel.
+# heartbeat tick can drive multiple agent-thoughts in parallel.
 #
 # Why threads (not asyncio): the activity runners are sync; their LLM/HTTP
 # calls release the GIL during network wait, so threads ARE genuinely

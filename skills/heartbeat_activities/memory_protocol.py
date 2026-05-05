@@ -28,7 +28,7 @@ UNFINISHED_PROBABILITY = 0.25
 def run(state: dict) -> dict:
     workspace = Path(state.get("WORKSPACE", "~/.agent/workspace"))
     llm_endpoint = state.get("LLM_ENDPOINT", "http://localhost:11434")
-    llm_model = state.get("LLM_MODEL", "qwen2.5vl:7b")
+    llm_model = state.get("LLM_MODEL", "llama3.1:latest")
     tick = state.get("tick_count", 0)
 
     print(f"[heartbeat] Memory protocol review — tick {tick}")

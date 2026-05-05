@@ -352,7 +352,7 @@ class TestDispatchIntegration(unittest.TestCase):
                 "AROUSAL_SIGNAL": "oscillation_balance",
                 "TEMPERATURE_RANGE": [0.7, 2.0],
                 "LLM_ENDPOINT": "http://localhost:11434",
-                "LLM_MODEL": "qwen2.5vl:7b",
+                "LLM_MODEL": "llama3.1:latest",
             }
 
             invalidate_affinity_cache()

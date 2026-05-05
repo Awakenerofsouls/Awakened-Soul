@@ -12,7 +12,7 @@ Not philosophy. Not architecture overview. Step by step, file by file.
 - **Python packages:** See `requirements.txt` — install with `pip install -r requirements.txt`
 - **Home directory:** `$AGENT_HOME/` for database, keys, and logs — never goes in the repo
 - **Agent platform:** operator-defined integration target. The framework is platform-agnostic — it expects to run alongside any agent runtime that exposes a workspace directory (set `$AGENT_WORKSPACE` to point there). The runtime is responsible for invoking `core_tick()` from `runtime/brain_proxy.py` on whatever schedule it chooses
-- **LLM:** [Ollama](https://ollama.ai) running locally is the default — free, private, no API costs. Endpoint: `http://localhost:11434`. Pull a model with `ollama pull llama3.1` or `ollama pull qwen2.5:7b`. Any other provider works as long as it's wired into `brain/llm_router.py`'s registration hooks
+- **LLM:** [Ollama](https://ollama.ai) running locally is the default — free, private, no API costs. Endpoint: `http://localhost:11434`. Pull a model with `ollama pull llama3.1` or `ollama pull llama3.1:latest`. Any other provider works as long as it's wired into `brain/llm_router.py`'s registration hooks
 
 ---
 

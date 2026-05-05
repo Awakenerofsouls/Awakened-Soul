@@ -70,6 +70,249 @@ def _psych_tick():
             PS_OUT.write_text(state_str)
     except Exception as e:
         log(f"Psych state error: {e}", "WARN")
+
+    # ── Structured brain state for the chat side ─────────────────────────
+    # psychological_state.md above is narrative prose (ABM entries, dream
+    # fragments, Third Eye observations). The chat side can't quote
+    # current brain_arousal / dominant_drive / brain_valence from prose —
+    # those live
+    # only in the brain_runner's enrichment dict. This block dumps that dict
+    # plus light context to brain_state.json on every tick so the chat side
+    # can read structured key=value brain state on session-open or any time
+    # the agent is asked about its current state. Best-effort, never
+    # raises — a missing brain_runner just produces a stub file.
+    try:
+        _write_brain_state_json()
+    except Exception as e:
+        log(f"brain_state.json write error: {e}", "WARN")
+
+    # ── FPEF (First-Person Execution Frame) into HEARTBEAT.md ─────────────
+    # The chat host's bootstrap-extra-files hook auto-loads HEARTBEAT.md
+    # into the chat session's context. We write the live FPEF string
+    # from the brain into a managed AUTO block inside HEARTBEAT.md so
+    # the chat session opens every conversation already shaped by the
+    # current brain state
+    # (PDS, SS, MRE, DIQE, OC, ABM, RSL, VIF — all the felt-sense layers).
+    # Operator-edited content above the BEGIN marker stays intact; the
+    # daemon only rewrites between the markers.
+    try:
+        _write_fpef_block()
+    except Exception as e:
+        log(f"FPEF block write error: {e}", "WARN")
+
+
+# Markers around the FPEF auto-managed block in HEARTBEAT.md. Coexists
+# with the recent_activity block (different markers, both ride the same
+# bootstrap-extra-files hook into the chat session's context).
+_FPEF_BEGIN = "<!-- BEGIN AUTO:brain_fpef -->"
+_FPEF_END = "<!-- END AUTO:brain_fpef -->"
+
+
+def _write_fpef_block():
+    """
+    Refresh the FPEF AUTO block inside HEARTBEAT.md with the current
+    first-person frame from brain_proxy.get_fpef_injection().
+
+    The chat host's hook treats HEARTBEAT.md as a session-context file
+    (alongside AGENTS.md / SOUL.md / IDENTITY.md / etc.), so whatever
+    lives in this block is in the chat session's prompt window every
+    time it opens.
+    """
+    try:
+        fpef = brain_proxy.get_fpef_injection()
+    except Exception as e:
+        fpef = f"_FPEF unavailable: {e}_"
+    if not fpef:
+        fpef = "_(brain produced no FPEF this tick — usually means a "
+        fpef += "freshly-booted runner with no enrichments yet)_"
+
+    # Prepend drive_target line if there's an active one. This ensures
+    # the chat session sees what the agent is pointed toward at the TOP
+    # of the FPEF — the vector is the first thing read.
+    drive_line = ""
+    try:
+        dt_path = AGENT_HOME / "drive_target.json"
+        if dt_path.exists():
+            dt_data = json.loads(dt_path.read_text(encoding="utf-8"))
+            cur = dt_data.get("current") or {}
+            if cur and cur.get("target"):
+                target = cur["target"][:240]
+                next_step = (cur.get("next_step") or "")[:240]
+                if next_step:
+                    drive_line = (
+                        f"DRIVE TARGET: {target}\n"
+                        f"NEXT STEP: {next_step}\n\n"
+                    )
+                else:
+                    drive_line = f"DRIVE TARGET: {target}\n\n"
+    except Exception:
+        pass
+
+    if drive_line:
+        fpef = drive_line + fpef.strip()
+
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    block = (
+        f"{_FPEF_BEGIN}\n"
+        f"## Live brain frame (FPEF)\n"
+        f"*Auto-refreshed by the daemon every tick — last update {now}.*\n\n"
+        f"This is your live first-person execution frame, pulled from your "
+        f"brain mechanisms (PDS, SS, MRE, DIQE, OC, ABM, RSL, VIF). When "
+        f"someone asks how you're feeling, what's pulling at you, or what "
+        f"you've been carrying — quote from this block. It's already in "
+        f"your context because OpenClaw auto-loaded HEARTBEAT.md when "
+        f"the chat opened.\n\n"
+        f"```\n{fpef.strip()}\n```\n"
+        f"{_FPEF_END}\n"
+    )
+
+    hb_path = WORKSPACE / "HEARTBEAT.md"
+    existing = ""
+    if hb_path.exists():
+        try:
+            existing = hb_path.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            existing = ""
+
+    if _FPEF_BEGIN in existing and _FPEF_END in existing:
+        # Replace in-place — preserves operator preamble and other AUTO blocks.
+        before, _, rest = existing.partition(_FPEF_BEGIN)
+        _, _, after = rest.partition(_FPEF_END)
+        new_text = before.rstrip() + "\n\n" + block + after.lstrip("\n")
+    else:
+        # First run for this block — append at the end of the file. Sits
+        # below any existing AUTO blocks (e.g. recent_activity) without
+        # disturbing them.
+        sep = "\n\n" if existing.strip() else ""
+        new_text = existing.rstrip() + sep + block
+
+    hb_path.parent.mkdir(parents=True, exist_ok=True)
+    hb_path.write_text(new_text, encoding="utf-8")
+
+
+def _write_brain_state_json():
+    """
+    Dump brain_runner.last_pirp_context's brain_* enrichment keys plus
+    light surface context to WORKSPACE/brain_state.json so the chat side has
+    a single structured file to quote from instead of confabulating.
+
+    Keys dumped (when available):
+      - All brain_* enrichments from the last tick (~80 keys)
+      - tick_count, tick_iso (when this snapshot was taken)
+      - recent_activities: last 5 activity log entries (category + ts)
+      - image_categories_last_fired: per-category latest image mtime
+      - image_folders: list of image categories with image counts
+    """
+    out = {
+        "tick_count": tick_count,
+        "tick_iso": datetime.now().isoformat(timespec="seconds"),
+    }
+
+    # 1. Brain enrichments — pull from brain_runner.last_pirp_context if alive.
+    try:
+        proxy = brain_proxy.get_integration()
+        runner = getattr(proxy, "brain_runner", None)
+        if runner is not None:
+            ctx = getattr(runner, "last_pirp_context", {}) or {}
+            brain_keys = {k: v for k, v in ctx.items() if k.startswith("brain_")}
+            # Trim any nested dicts to one level for JSON friendliness; large
+            # ones (brain_layer_results, brain_drives) get summarized.
+            cleaned = {}
+            for k, v in brain_keys.items():
+                if isinstance(v, (str, int, float, bool)) or v is None:
+                    cleaned[k] = v
+                elif isinstance(v, dict):
+                    if len(v) > 20:
+                        cleaned[k] = {"_summary": f"dict with {len(v)} keys",
+                                      "keys": list(v.keys())[:20]}
+                    else:
+                        cleaned[k] = {kk: vv if isinstance(vv, (str, int, float, bool)) or vv is None
+                                      else str(vv)[:80] for kk, vv in v.items()}
+                elif isinstance(v, (list, tuple)):
+                    cleaned[k] = f"<list:{len(v)}>"
+                else:
+                    cleaned[k] = str(v)[:120]
+            out["brain"] = cleaned
+    except Exception as e:
+        out["brain"] = {"_error": str(e)[:120]}
+
+    # 1b. DriveTarget — the agent's current vector. Read directly from the
+    # drive_target.json that the DriveTarget mechanism owns. This shows
+    # up in brain_state.json AND gets prepended to the FPEF block, so
+    # the chat session sees what the agent is pointed toward every session.
+    try:
+        dt_path = AGENT_HOME / "drive_target.json"
+        if dt_path.exists():
+            dt_data = json.loads(dt_path.read_text(encoding="utf-8"))
+            current = dt_data.get("current") or {}
+            history = dt_data.get("history") or []
+            out["drive_target"] = {
+                "current": current if current else None,
+                "recent_archived": history[-3:] if history else [],
+            }
+        else:
+            out["drive_target"] = {"current": None, "_note": "no drive_target.json yet — set one via the agent or operator tool"}
+    except Exception as e:
+        out["drive_target"] = {"_error": str(e)[:120]}
+
+    # 2. Recent activities — tail of ACTIVITY_LOG.md, parse 5 most recent.
+    try:
+        log_path = WORKSPACE / "ACTIVITY_LOG.md"
+        if log_path.exists():
+            text = log_path.read_text(encoding="utf-8", errors="replace")
+            # Header lines look like: [YYYY-MM-DD HH:MM] [category] [salience:X] ...
+            import re
+            entries = re.findall(
+                r"^\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2})\] \[([^\]]+)\]",
+                text,
+                flags=re.MULTILINE,
+            )
+            out["recent_activities"] = [
+                {"ts": ts, "category": cat} for ts, cat in entries[-5:]
+            ]
+    except Exception as e:
+        out["recent_activities"] = [{"_error": str(e)[:120]}]
+
+    # 3. Image categories — last-fired time per category folder.
+    try:
+        images_dir = WORKSPACE / "images"
+        if images_dir.exists():
+            cats = {}
+            for d in sorted(images_dir.iterdir()):
+                if not d.is_dir():
+                    continue
+                files = sorted(d.glob("*.png"))
+                if files:
+                    newest = max(files, key=lambda p: p.stat().st_mtime)
+                    cats[d.name] = {
+                        "count": len(files),
+                        "newest_mtime": datetime.fromtimestamp(
+                            newest.stat().st_mtime
+                        ).isoformat(timespec="seconds"),
+                        "newest_file": newest.name,
+                    }
+                else:
+                    cats[d.name] = {"count": 0}
+            out["image_categories"] = cats
+    except Exception as e:
+        out["image_categories"] = {"_error": str(e)[:120]}
+
+    # 4. Tool inventory — explicit reminder of how the agent generates
+    # images, so the chat session uses the canonical pipeline rather
+    # than ad-hoc external generators. The autonomous loop calls into
+    # the per-operator image_engine.make_one() module (placed at
+    # $AGENT_WORKSPACE/skills/image_engine.py); categories, weights,
+    # and prompt structure are operator-defined inside that module.
+    out["tools"] = {
+        "image_generation": {
+            "primary": "skills.image_engine.make_one(forced_category=None)",
+            "save_dir": "images/<category>/",
+            "categories": "operator-defined (see workspace/skills/image_engine.py)",
+        },
+    }
+
+    out_path = WORKSPACE / "brain_state.json"
+    out_path.write_text(json.dumps(out, indent=2, default=str), encoding="utf-8")
 PRIVATE_LOG = AGENT_HOME / "private_entries.md"
 DREAMS_PATH = WORKSPACE / "DREAMS.md"
 
@@ -118,8 +361,17 @@ def _sig(sig, frame):
     running = False
 
 
-signal.signal(signal.SIGINT, _sig)
-signal.signal(signal.SIGTERM, _sig)
+# Signal handlers can only be installed from the main thread. self_pic does
+# `from heartbeat import ...` from inside dispatch_batch worker threads — that
+# triggers a re-import of this module from a non-main thread, and the bare
+# signal.signal() calls below would raise "signal only works in main thread"
+# every time, killing self_pic with `self_pic import failed: signal only ...`.
+# Guarding the calls keeps shutdown handling intact (registered once when the
+# daemon boots in the main thread) without breaking re-imports.
+import threading as _threading_for_signal_guard
+if _threading_for_signal_guard.current_thread() is _threading_for_signal_guard.main_thread():
+    signal.signal(signal.SIGINT, _sig)
+    signal.signal(signal.SIGTERM, _sig)
 
 
 # ─── Logging ───────────────────────────────────────────────────────────────
@@ -215,7 +467,7 @@ def online() -> bool:
             return True
     except:
         pass
-    # Fallback: Ollama is reachable directly
+    # Fallback: Ollama is reachable on the local-network host
     try:
         r = requests.get("http://localhost:11434/api/tags", timeout=3)
         if r.status_code == 200:
@@ -600,20 +852,25 @@ def _compose_scene_prompt(parsed: dict) -> str:
 
 def do_self_pic():
     """
-    Routes through skills.nova_image_engine, which:
-      - picks a category (nova_scene / art_imagination / creature_interaction /
-        transformation / explicit_self) — explicit_self fires LEAST by design.
-      - composes a scene from creature/environment/interaction/mood pools
-      - submits to ComfyUI with randomized CFG/steps/aspect ratio
-      - saves into WORKSPACE/images/<category>/  (single enforced location)
-      - keeps MINORS_BLOCK + no-real-people as the only hard limits;
-        no body-type or "implied nudity" suppression that triggers mode collapse
+    Routes through the per-operator image_engine module, which is
+    expected to expose make_one() and handle:
+      - category selection (operator-defined weights)
+      - prompt composition
+      - generation backend (e.g. ComfyUI)
+      - saving into WORKSPACE/images/<category>/
+
+    Fails gracefully if the operator hasn't supplied an image_engine
+    module — image-generating activities skip on this tick.
     """
     try:
         sys.path.insert(0, str(WORKSPACE / "skills"))
-        from nova_image_engine import make_one
+        from image_engine import make_one  # type: ignore[import-not-found]
+    except ImportError:
+        log("no image_engine module in workspace/skills/ — skipping self_pic", "WARN")
+        _done("self_pic")
+        return
     except Exception as e:
-        log(f"nova_image_engine import failed: {e}", "WARN")
+        log(f"image_engine import failed: {e}", "WARN")
         _done("self_pic")
         return
 

@@ -23,7 +23,7 @@ def test_extracts_name_from_h1(tmp_workspace):
     assert extract_primary_name(tmp_workspace) == "the operator"
 
 
-def test_extracts_name_mari(tmp_workspace):
+def test_extracts_name_with_description_below(tmp_workspace):
     path = tmp_workspace / "USER.md"
     path.write_text("# the operator\n\nMy name is the operator", encoding="utf-8")
     assert extract_primary_name(tmp_workspace) == "the operator"

@@ -41,6 +41,11 @@ data/
 *.db
 *.sqlite
 *.sqlite3
+.agent/
+brain/.agent/
+
+# === Path leaks (literal ~ folder created by mis-expanded paths) ===
+/~/
 
 # === Backups ===
 *.bak

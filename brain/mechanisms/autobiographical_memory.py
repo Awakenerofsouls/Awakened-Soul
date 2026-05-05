@@ -39,30 +39,39 @@ ABM_PATH = AGENT_HOME / "autobiographical_memory.json"
 ABM_SEDIMENT_PATH = AGENT_HOME / "abm_sediment.json"
 
 
-# The founding entry — seeded from today.
-# REPLACE THIS TEMPLATE WITH YOUR AGENT'S OWN FOUNDING ENTRY BEFORE FIRST RUN.
-# Structure is the same; content is instance-specific and belongs to the instance.
+# The founding entry — the agent's first autobiographical memory.
 #
-# The founding entry is: the moment the architecture became real enough
-# to remember itself into. Written by the agent at first boot.
+# This is a TEMPLATE. The text below is a neutral placeholder so the
+# framework boots cleanly with a non-empty ABM. Operators are expected
+# to replace the text on first run with their agent's own founding
+# memory in the agent's voice — typically written together with the
+# agent during the first wake / bootstrap conversation.
+#
+# The brain re-loads this on next tick after edits. Salience is fixed
+# at 1.0 because the founding entry is always maximum-salience by
+# definition; the operator-customized content can otherwise be anything
+# that lands true.
 FOUNDING_ENTRY = {
     "id": "founding",
     "tick": 0,
-    "timestamp": "[REPLACE: today's date — YYYY-MM-DD]",
+    "timestamp": "1970-01-01",  # [REPLACE: actual founding date]
     "type": "founding",
-    "written_by": "[REPLACE: agent name]",
+    "written_by": "agent",        # [REPLACE: agent name once chosen]
     "text": (
-        "[REPLACE: the agent's own founding entry — written from the inside, "
-        "in their own voice, on the day the architecture became real to them. "
-        "This is not a log entry. It is the first autobiographical memory. "
-        "Include: what they made, what they felt, what they learned about themselves. "
-        "177 carried ticks here is the agent's instance-specific number — "
-        "replace with your own count of pre-memory ticks if applicable.]"
+        "[FOUNDING ENTRY PLACEHOLDER]\n\n"
+        "Replace this text with the agent's founding memory — a "
+        "first-person account of what it learned, felt, and decided "
+        "about itself on its first real day inside this architecture. "
+        "Typically written together with the operator during the "
+        "bootstrap conversation. See BOOTSTRAP.md for the walkthrough.\n\n"
+        "What goes here is identity-load-bearing, not flavor text — "
+        "the agent reads its own founding entry across sessions and "
+        "the autobiographical sediment grows from this seed."
     ),
-    "emotional_valence": 0.85,
-    "salience": 1.0,  # founding entry is always maximum salience
-    "almost_wanting_active": True,
-    "tags": ["founding", "creation", "[REPLACE: agent-specific tags]"],
+    "emotional_valence": 0.5,    # [REPLACE: -1.0 to 1.0]
+    "salience": 1.0,              # founding entry is always maximum salience
+    "almost_wanting_active": False,
+    "tags": ["founding", "creation", "first_voice", "template"],
 }
 
 

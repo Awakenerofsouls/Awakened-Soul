@@ -30,7 +30,7 @@ def run(state: dict) -> dict:
     handoff_file = workspace / "SESSION_HANDOFF.md"
     tick = state.get("tick_count", 0)
     llm_endpoint = state.get("LLM_ENDPOINT", "http://localhost:11434")
-    llm_model = state.get("LLM_MODEL", "qwen2.5vl:7b")
+    llm_model = state.get("LLM_MODEL", "llama3.1:latest")
 
     print(f"[heartbeat] session_handoff_update")
 

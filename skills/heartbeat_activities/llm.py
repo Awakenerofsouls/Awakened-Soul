@@ -6,7 +6,7 @@ via state dict or by subclassing/generating this module.
 
 Usage:
     from heartbeat_activities.llm import generate
-    content = generate(prompt, model="qwen2.5vl:7b", endpoint="http://localhost:11434")
+    content = generate(prompt, model="llama3.1:latest", endpoint="http://localhost:11434")
 """
 
 import urllib.request
@@ -16,7 +16,7 @@ import json
 
 def generate(
     prompt: str,
-    model: str = "qwen2.5vl:7b",
+    model: str = "llama3.1:latest",
     endpoint: str = "http://localhost:11434",
     temperature: float = 0.7,
     num_predict: int = 512,

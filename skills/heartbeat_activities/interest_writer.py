@@ -54,7 +54,7 @@ def try_append_new_interest(content: str, state: dict, source_activity: str) -> 
         from skills.heartbeat_activities.log import log_activity
 
         endpoint = state.get("LLM_ENDPOINT", "http://localhost:11434")
-        model = state.get("LLM_MODEL", "qwen2.5vl:7b")
+        model = state.get("LLM_MODEL", "llama3.1:latest")
 
         resp = generate(
             _EXTRACT_PROMPT.format(content=content[:1500]),

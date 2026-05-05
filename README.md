@@ -21,8 +21,8 @@ maintain itself across time.
 | Anatomical layers                  | **7**       |
 | Wires (load-bearing monitors)      | **24**      |
 | Skill folders                      | **17**      |
-| Heartbeat activity files           | **74**      |
-| Dispatcher-registered activities   | **56**      |
+| Heartbeat activity files           | **85**      |
+| Dispatcher-registered activities   | **70**      |
 | Test files                         | **1,186**   |
 | Test cases (pytest count)          | **5,922**   |
 

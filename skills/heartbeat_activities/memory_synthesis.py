@@ -31,7 +31,7 @@ def run(state: dict) -> dict:
     memory_dir = workspace / "memory"
     tick = state.get("tick_count", 0)
     llm_endpoint = state.get("LLM_ENDPOINT", "http://localhost:11434")
-    llm_model = state.get("LLM_MODEL", "qwen2.5vl:7b")
+    llm_model = state.get("LLM_MODEL", "llama3.1:latest")
 
     print(f"[heartbeat] memory_synthesis")
 

@@ -36,7 +36,7 @@ def run(state: dict) -> dict:
     workspace = Path(state.get("WORKSPACE", "~/.agent/workspace"))
     files_config = state.get("BRAIN_STATE_FILES", DEFAULT_FILES)
     llm_endpoint = state.get("LLM_ENDPOINT", "http://localhost:11434")
-    llm_model = state.get("LLM_MODEL", "qwen2.5vl:7b")
+    llm_model = state.get("LLM_MODEL", "llama3.1:latest")
 
     print(f"[heartbeat] brain_state_review: {len(files_config)} file(s)")
 
